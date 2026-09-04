@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
-import AboutHpclHero from "@/app/about-us/components/AboutHpclHero";
+import AboutHero from "@/app/about-us/components/AboutHero";
 import AboutBreadcrumb from "@/app/about-us/components/AboutBreadcrumb";
 import AboutJaiDevaContent from "@/app/about-us/components/AboutJaiDevaContent";
 import MultiBrandSolutionsSection from "@/components/MultiBrandSolutionsSection";
@@ -49,7 +49,7 @@ export default function AboutUsPage() {
       />
 
       {/* Top Hero Banner (Full-Width) */}
-      <AboutHpclHero />
+      <AboutHero />
 
       {/* Breadcrumb Bar */}
       <AboutBreadcrumb currentPage="About Us" />
