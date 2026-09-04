@@ -9,10 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        hpRed: "#eb1e25",
-        hpRedHover: "#c4141a",
-        hpNavy: "#002b5c",
-        hpDarkBlue: "#07192f",
+        brandNavy: "#0C356A",
+        brandNavyDark: "#082142",
+        brandOrange: "#C86218",
+        brandOrangeHover: "#A74D0E",
+        brandGold: "#EAA824",
+        brandGoldHover: "#D49317",
+        // Theme Aliases
+        hpRed: "#C86218",
+        hpRedHover: "#A74D0E",
+        hpNavy: "#0C356A",
+        hpDarkBlue: "#082142",
         hpLightGrey: "#f4f6f9",
       },
     },

@@ -104,8 +104,8 @@ export default function ContactFormSection() {
           <div className="lg:col-span-5 space-y-8">
             <div>
               {badge && (
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100/80 text-[#eb1e25] text-xs font-bold uppercase tracking-wider mb-4">
-                  <span className="w-2 h-2 rounded-full bg-[#eb1e25]"></span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100/80 text-[#C86218] text-xs font-bold uppercase tracking-wider mb-4">
+                  <span className="w-2 h-2 rounded-full bg-[#C86218]"></span>
                   {badge}
                 </div>
               )}
@@ -128,7 +128,7 @@ export default function ContactFormSection() {
               {/* Phone */}
               {phone && (
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-[#eb1e25] shadow-xs shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-white border border-gray-200 flex items-center justify-center text-[#C86218] shadow-xs shrink-0">
                     <Phone className="w-4 h-4" />
                   </div>
                   <div>
@@ -137,7 +137,7 @@ export default function ContactFormSection() {
                     </div>
                     <a
                       href={`tel:${phone.replace(/\s+/g, "")}`}
-                      className="text-base font-bold text-gray-900 hover:text-[#eb1e25] transition-colors inline-flex items-center gap-1.5 mt-0.5"
+                      className="text-base font-bold text-gray-900 hover:text-[#C86218] transition-colors inline-flex items-center gap-1.5 mt-0.5"
                     >
                       {phone}
                     </a>
@@ -238,7 +238,7 @@ export default function ContactFormSection() {
             {(formBadge || formTitle || formSubtitle) && (
               <div className="mb-6 pb-4 border-b border-gray-100">
                 {formBadge && (
-                  <span className="text-xs font-bold text-[#eb1e25] uppercase tracking-wider block mb-1">
+                  <span className="text-xs font-bold text-[#C86218] uppercase tracking-wider block mb-1">
                     {formBadge}
                   </span>
                 )}
@@ -289,7 +289,7 @@ export default function ContactFormSection() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
-                      Full Name <span className="text-[#eb1e25]">*</span>
+                      Full Name <span className="text-[#C86218]">*</span>
                     </label>
                     <input
                       type="text"
@@ -304,7 +304,7 @@ export default function ContactFormSection() {
 
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
-                      Mobile Number <span className="text-[#eb1e25]">*</span>
+                      Mobile Number <span className="text-[#C86218]">*</span>
                     </label>
                     <input
                       type="tel"
@@ -353,7 +353,7 @@ export default function ContactFormSection() {
                 <div>
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
                     Your Message / Requirement Details{" "}
-                    <span className="text-[#eb1e25]">*</span>
+                    <span className="text-[#C86218]">*</span>
                   </label>
                   <textarea
                     name="message"
@@ -371,7 +371,7 @@ export default function ContactFormSection() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-[#eb1e25] hover:bg-[#c9151c] active:scale-[0.99] disabled:opacity-60 text-white text-sm font-bold uppercase tracking-wider py-3.5 px-6 rounded-lg transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full bg-[#C86218] hover:bg-[#A74D0E] active:scale-[0.99] disabled:opacity-60 text-white text-sm font-bold uppercase tracking-wider py-3.5 px-6 rounded-lg transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>

@@ -39,31 +39,41 @@ export default function LubesHeadquarterSection() {
         <div className="text-gray-700 text-sm md:text-base leading-relaxed space-y-1 font-normal font-sans">
           {proprietor && (
             <p>
-              <strong className="font-bold text-gray-900">Proprietor:</strong> {proprietor}
+              <strong className="font-bold text-gray-900">Proprietor:</strong>{" "}
+              {proprietor}
             </p>
           )}
           {servingRegion && (
             <p>
-              <strong className="font-bold text-gray-900">Serving Region:</strong> {servingRegion}
+              <strong className="font-bold text-gray-900">
+                Serving Region:
+              </strong>{" "}
+              {servingRegion}
             </p>
           )}
           {establishment && (
             <p>
-              <strong className="font-bold text-gray-900">Establishment:</strong> {establishment}
+              <strong className="font-bold text-gray-900">
+                Establishment:
+              </strong>{" "}
+              {establishment}
             </p>
           )}
           {(phone || email) && (
             <p className="pt-2">
               {phone && (
                 <>
-                  <strong className="font-bold text-gray-900">Direct Contact:</strong> {phone}
+                  <strong className="font-bold text-gray-900">
+                    Direct Contact:
+                  </strong>{" "}
+                  {phone}
                 </>
               )}
               {phone && email && " | "}
               {email && (
                 <a
                   href={`mailto:${email}`}
-                  className="text-[#002b5c] hover:text-[#eb1e25] font-normal transition-colors"
+                  className="text-[#002b5c] hover:text-[#C86218] font-normal transition-colors"
                 >
                   {email}
                 </a>

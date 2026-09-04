@@ -86,11 +86,11 @@ export default function DownloadModal({
           <>
             {/* Header */}
             <div className="mb-5 pr-6">
-              <span className="text-[11px] font-extrabold text-[#eb1e25] uppercase tracking-wider block mb-1">
+              <span className="text-[11px] font-extrabold text-[#C86218] uppercase tracking-wider block mb-1">
                 TECHNICAL DATASHEET DOWNLOAD
               </span>
               <h2 className="text-xl sm:text-2xl font-black text-[#002b5c] flex items-center gap-2">
-                <FileText size={22} className="text-[#eb1e25]" /> Download {pdfType} PDF
+                <FileText size={22} className="text-[#C86218]" /> Download {pdfType} PDF
               </h2>
               <p className="text-xs text-gray-500 mt-1">
                 Product: <strong className="text-[#002b5c]">{productName}</strong>
@@ -101,7 +101,7 @@ export default function DownloadModal({
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1.5">
-                  Full Name <span className="text-[#eb1e25]">*</span>
+                  Full Name <span className="text-[#C86218]">*</span>
                 </label>
                 <input
                   type="text"
@@ -116,7 +116,7 @@ export default function DownloadModal({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
                   <label className="block text-xs font-bold text-gray-700 mb-1.5">
-                    Mobile Number <span className="text-[#eb1e25]">*</span>
+                    Mobile Number <span className="text-[#C86218]">*</span>
                   </label>
                   <input
                     type="tel"
@@ -129,7 +129,7 @@ export default function DownloadModal({
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-700 mb-1.5">
-                    Email Address <span className="text-[#eb1e25]">*</span>
+                    Email Address <span className="text-[#C86218]">*</span>
                   </label>
                   <input
                     type="email"
@@ -148,7 +148,7 @@ export default function DownloadModal({
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Mahalaxmi Industries"
+                  placeholder="e.g. Industrial Enterprises / Manufacturing Ltd."
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#002b5c] focus:ring-1 focus:ring-[#002b5c] transition-colors"
@@ -159,7 +159,7 @@ export default function DownloadModal({
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#eb1e25] hover:bg-[#c4141a] disabled:opacity-70 text-white text-xs sm:text-sm font-bold uppercase tracking-wider py-3 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-[#C86218] hover:bg-[#A74D0E] disabled:opacity-70 text-white text-xs sm:text-sm font-bold uppercase tracking-wider py-3 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>

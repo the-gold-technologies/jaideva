@@ -5,9 +5,11 @@ import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";
 import AboutSection from "@/components/AboutSection";
 import ProductsServicesSection from "@/components/ProductsServicesSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
+import MultiBrandSolutionsSection from "@/components/MultiBrandSolutionsSection";
+import IndustriesWeServeSection from "@/components/IndustriesWeServeSection";
+import WhyJaiDevaSection from "@/components/WhyJaiDevaSection";
+import BrandClosingBanner from "@/components/BrandClosingBanner";
 import TrustedClientsSection from "@/components/TrustedClientsSection";
-import DistributorBanner from "@/components/DistributorBanner";
 import LocateDistributorContactSection from "@/components/LocateDistributorContactSection";
 import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
@@ -23,7 +25,9 @@ export default function Home() {
   const [enquiryProduct, setEnquiryProduct] = useState("");
 
   const [isDistributorOpen, setIsDistributorOpen] = useState(false);
-  const [distributorType, setDistributorType] = useState("Industrial Lube Distributor (ILD)");
+  const [distributorType, setDistributorType] = useState(
+    "Industrial Lube Distributor (ILD)",
+  );
 
   const { fetchPage } = useCMSStore();
 
@@ -51,7 +55,7 @@ export default function Home() {
     >
       <SEOMeta pageSlug="home" isLandingPage={true} />
 
-      {/* 1. Top Header Utility & Navigation Bar */}
+      {/* 1. Header Utility & Navigation Bar */}
       <Navbar
         fontSizeMultiplier={fontSizeMultiplier}
         setFontSizeMultiplier={setFontSizeMultiplier}
@@ -59,34 +63,37 @@ export default function Home() {
         setLanguage={setLanguage}
       />
 
-      {/* 2. Full-Width Hero Slider */}
+      {/* 2. Full-Width Visual Hero Slider */}
       <HeroSlider />
 
-      {/* 3. About HP Lubricants Section */}
+      {/* 3. About Section (JAI DEVA OIL CO.) */}
       <AboutSection />
 
-      {/* 4. Our Products and Services Section */}
+      {/* 4. OUR PRODUCT RANGE (Original Circular Icon UI Design) */}
       <ProductsServicesSection onSelectCategory={() => handleOpenEnquiry()} />
 
-      {/* 6. Client Testimonials Section */}
-      <TestimonialsSection />
+      {/* 5. MULTI-BRAND LUBRICANT SOLUTIONS (Understand -> Recommend -> Supply -> Support) */}
+      <MultiBrandSolutionsSection />
 
-      {/* 6.5. Trusted Clients & Partners Infinite Marquee Section */}
+      {/* 6. INDUSTRIES WE SERVE */}
+      <IndustriesWeServeSection onOpenEnquiry={handleOpenEnquiry} />
+
+      {/* 7. WHY JAI DEVA OIL CO.? (6 Value Cards) */}
+      <WhyJaiDevaSection />
+
+      {/* 11. Trusted Clients Infinite Marquee Section */}
       <TrustedClientsSection />
 
-      {/* 7. Full-Width Red Distributor Banner */}
-      <DistributorBanner
-        onOpenEnquiry={handleOpenEnquiry}
-        onOpenDistributor={handleOpenDistributor}
-      />
+      {/* 13. Brand Summary Closing Banner */}
+      <BrandClosingBanner onOpenEnquiry={handleOpenEnquiry} />
 
-      {/* 8. Locate Distributor Form & Contact Details Grid */}
+      {/* 14. Locate Distributor & Contact Details Grid */}
       <LocateDistributorContactSection
         onOpenEnquiry={handleOpenEnquiry}
         onOpenDistributor={handleOpenDistributor}
       />
 
-      {/* 9. Dark Navy Footer & Sticky Enquiry Button */}
+      {/* 15. Dark Navy Footer & Sticky Enquiry Button */}
       <Footer onOpenEnquiry={handleOpenEnquiry} />
 
       {/* Enquiry Modal */}

@@ -31,7 +31,7 @@ export function FormattedText({ text, className = "" }: FormattedTextProps) {
               <Link
                 key={index}
                 href={url}
-                className="text-[#eb1e25] font-semibold hover:underline transition-colors inline"
+                className="text-[#C86218] font-semibold hover:underline transition-colors inline"
               >
                 {label}
               </Link>
@@ -44,7 +44,7 @@ export function FormattedText({ text, className = "" }: FormattedTextProps) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#eb1e25] font-semibold hover:underline transition-colors inline"
+              className="text-[#C86218] font-semibold hover:underline transition-colors inline"
             >
               {label}
             </a>
@@ -62,7 +62,7 @@ export function FormattedText({ text, className = "" }: FormattedTextProps) {
               <Link
                 key={index}
                 href={url}
-                className="text-[#eb1e25] font-semibold hover:underline transition-colors inline"
+                className="text-[#C86218] font-semibold hover:underline transition-colors inline"
               >
                 {label}
               </Link>
@@ -75,7 +75,7 @@ export function FormattedText({ text, className = "" }: FormattedTextProps) {
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#eb1e25] font-semibold hover:underline transition-colors inline"
+              className="text-[#C86218] font-semibold hover:underline transition-colors inline"
             >
               {label}
             </a>

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import { Home as HomeIcon, Phone, Mail } from "lucide-react";
+import React from "react";
+import { Home as HomeIcon, Phone, Mail, Send, PhoneCall } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 
 interface ContactSectionProps {
@@ -13,267 +13,170 @@ export default function LocateDistributorContactSection({
   onOpenEnquiry,
   onOpenDistributor,
 }: ContactSectionProps) {
-  const { pages, globalSEO } = useCMSStore();
-  const cmsLocate = pages["home"]?.LocateDistributorSection;
+  const { globalSEO } = useCMSStore();
 
-  const [lubeType, setLubeType] = useState("ILD");
-  const [country, setCountry] = useState("India");
-  const [searchResults, setSearchResults] = useState<any[] | null>(null);
-
-  if (!cmsLocate) {
-    return null;
-  }
-
-  const locateTitle = cmsLocate.locateTitle || "";
-  const locateSubtitle = cmsLocate.locateSubtitle || "";
-  const searchBtnText = cmsLocate.searchBtnText || "";
-  const contactTitle = cmsLocate.contactTitle || "";
-  const companyName = cmsLocate.companyName || "";
-  const address = cmsLocate.address || "";
-  const phone = cmsLocate.phone || "";
-  const workingHours = cmsLocate.workingHours || "";
-  const email = cmsLocate.email || "";
-  const contactBtnText = cmsLocate.contactBtnText || "";
-  const logo = cmsLocate.logo || globalSEO?.logo || "";
-
-  const lubeTypes: { label: string; value: string }[] = cmsLocate.lubeTypes || [
-    { label: "Industrial Lube Distributor (ILD)", value: "ILD" },
-    { label: "Bazaar Lube Distributor (BLD)", value: "BLD" },
-    { label: "CFA Distributor", value: "CFA" },
-    { label: "Caltex Distributor", value: "Caltex" },
-  ];
-
-  const countries: { label: string; value: string }[] = cmsLocate.countries || [
-    { label: "India", value: "India" },
-    { label: "International", value: "International" },
-  ];
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const selectedTypeObj = lubeTypes.find((t) => t.value === lubeType);
-    setSearchResults([
-      {
-        name: cmsLocate.searchResultCompany || companyName,
-        type: selectedTypeObj ? selectedTypeObj.label : lubeType,
-        address: cmsLocate.searchResultAddress || address,
-        phone: cmsLocate.searchResultPhone || phone,
-      },
-    ]);
-  };
+  const phone = globalSEO?.phone || "+91 98765 43210";
+  const email = globalSEO?.email || "sales@jaidevaoil.com";
+  const address =
+    globalSEO?.address || "Industrial Area & Distribution Hub, India";
 
   return (
-    <section id="contact" className="py-8 sm:py-12 lg:py-16 bg-white font-sans">
+    <section id="contact" className="py-10 sm:py-14 lg:py-18 bg-white font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row items-start gap-6">
-          {/* Left Column: LOCATE DISTRIBUTOR */}
-          <div className="bg-[#ECEEF2] w-full lg:w-[70%] border-[#D1D1D1] border p-4 sm:p-6 lg:py-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row items-stretch gap-6">
+          {/* Left Column: FIND THE RIGHT LUBRICANT FOR YOUR APPLICATION */}
+          <div className="bg-[#ECEEF2] w-full lg:w-[68%] border-[#D1D1D1] border p-6 sm:p-8 lg:p-10 rounded-xl flex flex-col justify-between shadow-2xs">
             <div>
-              {locateTitle && (
-                <>
-                  <h2 className="text-[#002749] font-bold text-2xl sm:text-3xl lg:text-4xl uppercase leading-[1.25] pr-0 lg:pr-24">
-                    {locateTitle}
-                  </h2>
-                  <div className="w-[110px] h-[4px] bg-[#002b5c] mt-3 mb-6 sm:mb-8" />
-                </>
-              )}
+              {/* Category Tag / Title */}
+              <h2 className="text-[#0C356A] font-extrabold text-2xl sm:text-3xl lg:text-4xl uppercase leading-tight tracking-tight">
+                FIND THE RIGHT LUBRICANT FOR YOUR APPLICATION
+              </h2>
+              <div className="w-20 h-1 bg-[#C86218] mt-3 mb-5 rounded-full" />
 
-              {locateSubtitle && (
-                <p className="text-sm text-[#4b5563] mb-6 sm:mb-8 font-medium tracking-wide">
-                  {locateSubtitle}
+              {/* Subheading */}
+              <h3 className="text-lg sm:text-xl font-bold text-[#C86218] mb-4">
+                Looking for the Right Lubrication Solution?
+              </h3>
+
+              {/* Body Text */}
+              <div className="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-sans">
+                <p>
+                  Every machine and application has different lubrication
+                  requirements. Our team can help you identify suitable products
+                  based on your equipment, application and operating conditions.
                 </p>
-              )}
-
-              <form
-                onSubmit={handleSearch}
-                className="flex flex-col gap-4 px-0 sm:px-6"
-              >
-                {/* Type Selection */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-0">
-                  <label className="w-full sm:w-40 text-sm font-bold text-[#002b5c] shrink-0">
-                    Type<span className="text-[#eb1e25]">*</span>:
-                  </label>
-                  <div className="relative flex-1 w-full">
-                    <select
-                      value={lubeType}
-                      onChange={(e) => setLubeType(e.target.value)}
-                      className="w-full bg-white border border-[#d1d5db] rounded px-4 py-1.5 sm:py-1 text-sm text-gray-700 focus:outline-none shadow-xs cursor-pointer"
-                    >
-                      {lubeTypes.map((t) => (
-                        <option key={t.value} value={t.value}>
-                          {t.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Country Selection */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-0">
-                  <label className="w-full sm:w-40 text-sm font-bold text-[#002b5c] shrink-0">
-                    Country<span className="text-[#eb1e25]">*</span>:
-                  </label>
-                  <div className="relative flex-1 w-full">
-                    <select
-                      value={country}
-                      onChange={(e) => setCountry(e.target.value)}
-                      className="w-full bg-white border border-[#d1d5db] rounded px-4 py-1.5 sm:py-1 text-sm text-gray-700 focus:outline-none shadow-xs cursor-pointer"
-                    >
-                      {countries.map((c) => (
-                        <option key={c.value} value={c.value}>
-                          {c.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Submit Search Button */}
-                {searchBtnText && (
-                  <div className="ml-0 sm:ml-40 mt-2 sm:mt-4">
-                    <button
-                      type="submit"
-                      className="bg-[#eb1e25] hover:bg-[#d0171d] text-white font-extrabold px-4 py-2.5 rounded text-sm uppercase tracking-wider shadow-none transition-all inline-block cursor-pointer"
-                    >
-                      {searchBtnText}
-                    </button>
-                  </div>
-                )}
-              </form>
+                <p>
+                  Whether you require Hydraulic Oil, Gear Oil, Engine Oil,
+                  Industrial Grease, Cutting Oil or other specialty lubricants,{" "}
+                  <strong className="text-[#0C356A] font-bold">
+                    Jai Deva Oil Co.
+                  </strong>{" "}
+                  is ready to assist.
+                </p>
+              </div>
             </div>
 
-            {/* Optional Search Results Box */}
-            {searchResults && (
-              <div className="mt-6 p-4 bg-white border border-gray-300 rounded">
-                <h4 className="text-sm font-bold text-[#002b5c]">
-                  Search Result:
-                </h4>
-                {searchResults.map((res, i) => (
-                  <div
-                    key={i}
-                    className="mt-2 text-xs sm:text-sm text-gray-700 leading-relaxed"
-                  >
-                    {res.name && <p className="font-bold text-[#eb1e25]">{res.name}</p>}
-                    {res.type && <p className="text-xs text-gray-600 font-medium">{res.type}</p>}
-                    {res.address && <p>{res.address}</p>}
-                    {res.phone && (
-                      <p className="font-semibold text-gray-800">
-                        Phone: {res.phone}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
+            {/* Action Buttons */}
+            <div className="mt-8 pt-6 border-t border-slate-300/80 flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                onClick={() =>
+                  onOpenEnquiry &&
+                  onOpenEnquiry("Custom Lubrication Application Assistance")
+                }
+                className="inline-flex items-center justify-center gap-2 bg-[#C86218] hover:bg-[#A74D0E] text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-7 py-3.5 rounded shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
+              >
+                <Send size={16} />
+                <span>Send Your Enquiry</span>
+              </button>
+
+              <a
+                href={`tel:${phone.replace(/\s+/g, "")}`}
+                className="inline-flex items-center justify-center gap-2 bg-[#0C356A] hover:bg-[#082142] text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-7 py-3.5 rounded shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
+              >
+                <PhoneCall size={16} />
+                <span>Talk to Our Team</span>
+              </a>
+            </div>
           </div>
 
-          {/* Right Column: CONTACT DETAILS */}
-          <div className="bg-[#ECEEF2] w-full lg:w-[30%] border-[#D1D1D1] border p-4 sm:p-6">
+          {/* Right Column: JAI DEVA OIL CO. CONTACT DETAILS */}
+          <div className="bg-[#ECEEF2] w-full lg:w-[32%] border-[#D1D1D1] border p-6 sm:p-8 rounded-xl flex flex-col justify-between shadow-2xs">
             <div>
-              {contactTitle && (
-                <>
-                  <h2 className="text-2xl sm:text-3xl lg:text-[32px] font-extrabold text-[#002b5c] uppercase leading-tight tracking-tight">
-                    {contactTitle}
-                  </h2>
-                  <div className="w-[110px] h-[4px] bg-[#002b5c] mt-3 mb-6" />
-                </>
-              )}
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0C356A] uppercase leading-tight tracking-tight">
+                JAI DEVA OIL CO.
+              </h2>
+              <div className="w-16 h-1 bg-[#C86218] mt-3 mb-6 rounded-full" />
 
-              {/* Logo Banner Graphic */}
-              {logo && (
-                <div className="my-6 lg:my-10 flex justify-start">
-                  <img
-                    src={logo}
-                    alt={companyName || "Brand Logo"}
-                    className="h-14 sm:h-16 w-auto object-contain"
-                  />
-                </div>
-              )}
+              {/* Brand Logo */}
+              <div className="my-5 flex justify-start">
+                <img
+                  src="/jaideva-logo.png"
+                  alt="Jai Deva Oil Co."
+                  className="h-16 sm:h-20 w-auto object-contain"
+                />
+              </div>
 
               {/* Contact Information List */}
-              <div className="mt-8 flex flex-col gap-7 text-[15px] text-[#333333] leading-relaxed font-sans">
+              <div className="mt-6 flex flex-col gap-5 text-sm text-[#333333] leading-relaxed font-sans">
                 {/* Address Item */}
-                {address && (
-                  <div className="flex gap-4 items-start">
-                    <HomeIcon
-                      className="text-[#002b5c] w-6 h-6 shrink-0 mt-0.5"
-                      strokeWidth={1.8}
-                    />
-                    <p className="text-[#333333] text-[15px] leading-relaxed">
-                      {companyName && (
-                        <>
-                          <strong className="font-bold text-[#002b5c]">
-                            {companyName}
-                          </strong>
-                          <br />
-                        </>
-                      )}
+                <div className="flex gap-3.5 items-start">
+                  <HomeIcon
+                    className="text-[#0C356A] w-5 h-5 shrink-0 mt-0.5"
+                    strokeWidth={2}
+                  />
+                  <div>
+                    <strong className="font-bold text-[#0C356A]">
+                      Jai Deva Oil Co.
+                    </strong>
+                    <p className="text-gray-600 text-xs sm:text-sm mt-0.5">
                       {address}
                     </p>
                   </div>
-                )}
+                </div>
 
-                {/* Direct Contact Phone & Hours */}
-                {phone && (
-                  <div className="flex gap-4 items-start">
-                    <Phone
-                      className="text-[#002b5c] w-6 h-6 shrink-0 mt-0.5"
-                      strokeWidth={1.8}
-                    />
-                    <div>
-                      <p className="text-[#333333] text-[15px]">
-                        Direct Contact:{" "}
-                        <strong className="font-bold text-[#002b5c]">
-                          {phone}
-                        </strong>
-                      </p>
-                      {workingHours && (
-                        <p className="text-sm text-[#555555] mt-2 leading-relaxed">
-                          {workingHours}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Email Item */}
-                {email && (
-                  <div className="flex gap-4 items-center">
-                    <Mail
-                      className="text-[#002b5c] w-6 h-6 shrink-0"
-                      strokeWidth={1.8}
-                    />
-                    <p className="text-[#333333] text-[15px]">
-                      Email:{" "}
+                {/* Phone Item */}
+                <div className="flex gap-3.5 items-start">
+                  <Phone
+                    className="text-[#0C356A] w-5 h-5 shrink-0 mt-0.5"
+                    strokeWidth={2}
+                  />
+                  <div>
+                    <p className="text-xs sm:text-sm">
+                      Direct Contact:{" "}
                       <a
-                        href={`mailto:${email}`}
-                        className="font-bold text-[#002b5c] hover:text-[#eb1e25] transition-colors"
+                        href={`tel:${phone.replace(/\s+/g, "")}`}
+                        className="font-bold text-[#0C356A] hover:text-[#C86218] transition-colors"
                       >
-                        {email}
+                        {phone}
                       </a>
                     </p>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      Working Hours: Mon - Sat: 9:00 AM - 6:30 PM
+                    </p>
                   </div>
-                )}
-              </div>
+                </div>
 
-              {/* Contact Us Action Buttons */}
-              <div className="mt-6 sm:mt-8 mb-4 flex flex-col sm:flex-row gap-3">
-                {contactBtnText && (
-                  <button
-                    onClick={() => onOpenEnquiry && onOpenEnquiry(companyName || "Direct Contact Support")}
-                    className="bg-[#eb1e25] hover:bg-[#d0171d] text-white font-extrabold px-6 py-2.5 rounded text-sm uppercase tracking-wider shadow-none transition-all inline-block cursor-pointer text-center"
-                  >
-                    {contactBtnText}
-                  </button>
-                )}
-                {onOpenDistributor && (
-                  <button
-                    onClick={() => onOpenDistributor(lubeType)}
-                    className="bg-[#002b5c] hover:bg-[#001f42] text-white font-extrabold px-6 py-2.5 rounded text-sm uppercase tracking-wider shadow-none transition-all inline-block cursor-pointer text-center"
-                  >
-                    Become a Distributor
-                  </button>
-                )}
+                {/* Email Item */}
+                <div className="flex gap-3.5 items-center">
+                  <Mail
+                    className="text-[#0C356A] w-5 h-5 shrink-0"
+                    strokeWidth={2}
+                  />
+                  <p className="text-xs sm:text-sm">
+                    Email:{" "}
+                    <a
+                      href={`mailto:${email}`}
+                      className="font-bold text-[#0C356A] hover:text-[#C86218] transition-colors"
+                    >
+                      {email}
+                    </a>
+                  </p>
+                </div>
               </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="mt-8 flex flex-col gap-3 w-full">
+              <button
+                type="button"
+                onClick={() =>
+                  onOpenEnquiry && onOpenEnquiry("Jai Deva Oil Co. Direct Contact")
+                }
+                className="w-full bg-[#C86218] hover:bg-[#A74D0E] text-white font-bold py-3 px-4 rounded text-xs uppercase tracking-wider shadow-sm transition-all text-center cursor-pointer"
+              >
+                Send Enquiry
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  onOpenDistributor &&
+                  onOpenDistributor("Industrial Lube Distributor (ILD)")
+                }
+                className="w-full bg-[#0C356A] hover:bg-[#082142] text-white font-bold py-3 px-4 rounded text-xs uppercase tracking-wider shadow-sm transition-all text-center cursor-pointer"
+              >
+                Become a Distributor
+              </button>
             </div>
           </div>
         </div>

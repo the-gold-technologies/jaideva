@@ -86,7 +86,7 @@ export default function PrivacyPolicyPage() {
       <section className="bg-[#002749] text-white py-12 md:py-16 relative overflow-hidden border-b border-[#001d37]">
         {/* Subtle Background Pattern */}
         <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-[#eb1e25]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#C86218]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Breadcrumb Links */}
@@ -95,14 +95,14 @@ export default function PrivacyPolicyPage() {
               Home
             </Link>
             <ChevronRight size={14} className="text-gray-400" />
-            <span className="text-[#eb1e25] font-semibold">{title}</span>
+            <span className="text-[#C86218] font-semibold">{title}</span>
           </nav>
 
           {/* Dynamic Hero Heading */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/10 backdrop-blur-xs border border-white/15 rounded-full text-xs font-semibold text-white mb-3">
-                <ShieldCheck size={14} className="text-[#eb1e25]" />
+                <ShieldCheck size={14} className="text-[#C86218]" />
                 <span>Legal & Privacy Compliance</span>
               </div>
               <HeadingTag className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight uppercase leading-tight">
@@ -112,7 +112,7 @@ export default function PrivacyPolicyPage() {
 
             {lastUpdated && (
               <div className="inline-flex items-center gap-2 text-xs md:text-sm text-gray-300 bg-black/20 px-3.5 py-1.5 rounded-lg border border-white/10 shrink-0">
-                <Calendar size={15} className="text-[#eb1e25]" />
+                <Calendar size={15} className="text-[#C86218]" />
                 <span>Last Updated: <strong className="text-white font-semibold">{lastUpdated}</strong></span>
               </div>
             )}
@@ -145,7 +145,7 @@ export default function PrivacyPolicyPage() {
         {(address || phone || email) && (
           <div className="mt-14 pt-8 border-t border-gray-200 bg-[#f8fafc] p-6 sm:p-8 rounded-xl">
             <div className="flex items-center gap-2 text-sm font-bold text-[#002749] mb-4">
-              <Lock size={16} className="text-[#eb1e25]" />
+              <Lock size={16} className="text-[#C86218]" />
               <span>Data Privacy & Redressal Helpdesk</span>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs md:text-sm text-gray-600">
@@ -160,7 +160,7 @@ export default function PrivacyPolicyPage() {
                   <Phone className="text-[#002749] shrink-0" size={17} />
                   <a
                     href={`tel:${phone.replace(/\s+/g, "")}`}
-                    className="hover:text-[#eb1e25] transition font-medium text-gray-800"
+                    className="hover:text-[#C86218] transition font-medium text-gray-800"
                   >
                     {phone}
                   </a>
@@ -171,7 +171,7 @@ export default function PrivacyPolicyPage() {
                   <Mail className="text-[#002749] shrink-0" size={17} />
                   <a
                     href={`mailto:${email}`}
-                    className="hover:text-[#eb1e25] transition font-medium text-gray-800"
+                    className="hover:text-[#C86218] transition font-medium text-gray-800"
                   >
                     {email}
                   </a>
@@ -251,7 +251,7 @@ export default function PrivacyPolicyPage() {
           font-weight: 700;
         }
         .privacy-rich-content a {
-          color: #eb1e25;
+          color: #C86218;
           text-decoration: underline;
           text-underline-offset: 2px;
           font-weight: 600;

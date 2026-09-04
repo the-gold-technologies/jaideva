@@ -31,11 +31,11 @@ export default function SEOMeta({
   useEffect(() => {
     // 1. Determine Title & Description strictly from CMS data
     const title = isLandingPage
-      ? globalSEO?.siteTitle || "Mahalaxmi Enterprises | HP Lubricants Distributor"
+      ? globalSEO?.siteTitle || "Jai Deva Oil Co. | Multi-Brand Industrial & Automotive Lubricants Distributor"
       : activeSEO?.metaTitle ||
         activeSEO?.title ||
         globalSEO?.siteTitle ||
-        "Mahalaxmi Enterprises";
+        "Jai Deva Oil Co.";
 
     if (title) {
       document.title = title;
@@ -74,12 +74,12 @@ export default function SEOMeta({
     // 3. Description & Keywords strictly from CMS
     const description = isLandingPage
       ? globalSEO?.siteDescription ||
-        "Authorized Industrial Lubricants Division (ILD) for HPCL lubricants, engine oils, greases, and fluids."
+        "Authorized Distributors of Industrial & Automotive Lubricants, Engine Oils, Hydraulic Oils, Greases, and Fluids."
       : activeSEO?.metaDescription || globalSEO?.siteDescription || "";
 
     const keywords =
       activeSEO?.targetKeywords ||
-      "Mahalaxmi Enterprises, HPCL, HP Lubricants, Industrial Oils, Greases, Engine Oil Dealer, Baghpat, Uttar Pradesh";
+      "Jai Deva Oil Co., Lubricant Distributor, Engine Oil, Hydraulic Oil, Gear Oil, Cutting Oil, Industrial Grease, Uttar Pradesh, India";
 
     const currentUrl =
       activeSEO?.canonicalUrl ||
@@ -328,22 +328,22 @@ function generatePageSchema({
 }) {
   const origin = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
 
-  const companyName = globalSEO?.siteTitle || "Mahalaxmi Enterprises";
+  const companyName = globalSEO?.siteTitle || "Jai Deva Oil Co.";
   const companyPhone = globalSEO?.phone || "+91 98765 43210";
-  const companyEmail = globalSEO?.email || "sales@mahalaxmienterprises.com";
+  const companyEmail = globalSEO?.email || "sales@jaidevaoil.com";
   const companyAddress =
     globalSEO?.address ||
     "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India";
   const companyLogo =
     globalSEO?.logo ||
-    "https://res.cloudinary.com/dpa93copz/image/upload/v1787731177/mahalaxmi/footer/rnrmsenowtlzykcxuprr.jpg";
+    `${origin}/jaideva-logo.png`;
 
   // Base Organization Schema Node
   const organizationNode = {
     "@type": ["LocalBusiness", "AutoPartsStore"],
     "@id": `${origin}/#organization`,
-    name: "Mahalaxmi Enterprises",
-    alternateName: "HP Lubricants Distributor Mahalaxmi Enterprises",
+    name: "Jai Deva Oil Co.",
+    alternateName: "Authorized Multi-Brand Lubricants Distributor Jai Deva Oil Co.",
     url: origin,
     logo: companyLogo,
     image: companyLogo,
@@ -352,7 +352,7 @@ function generatePageSchema({
     priceRange: "₹₹",
     description:
       globalSEO?.siteDescription ||
-      "Authorized Industrial Lubricants Division (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
+      "Authorized Distributors of Multi-Brand Industrial & Automotive Lubricants.",
     address: {
       "@type": "PostalAddress",
       streetAddress: companyAddress,
@@ -405,22 +405,18 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "AboutPage",
-      name: activeSEO?.metaTitle || "About Us | Mahalaxmi Enterprises",
+      name: activeSEO?.metaTitle || "About Us | Jai Deva Oil Co.",
       description:
         activeSEO?.metaDescription ||
-        "Authorized Industrial Lubricants Division (ILD) for Hindustan Petroleum Corporation Limited (HPCL).",
+        "Authorized Distributors of Multi-Brand Industrial & Automotive Lubricants.",
       url: `${origin}/about-us`,
       mainEntity: {
         "@type": "Organization",
-        name: "Mahalaxmi Enterprises",
+        name: "Jai Deva Oil Co.",
         url: origin,
         logo: companyLogo,
         description:
-          "Official distributor of HP Lubricants across Uttar Pradesh and Delhi-NCR.",
-        parentOrganization: {
-          "@type": "Organization",
-          name: "Hindustan Petroleum Corporation Limited (HPCL)",
-        },
+          "Official distributor of multi-brand industrial and automotive lubricants.",
       },
     };
   }
@@ -430,10 +426,10 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "ContactPage",
-      name: activeSEO?.metaTitle || "Contact Us | Mahalaxmi Enterprises",
+      name: activeSEO?.metaTitle || "Contact Us | Jai Deva Oil Co.",
       description:
         activeSEO?.metaDescription ||
-        "Get in touch with Mahalaxmi Enterprises for bulk industrial oils, greases, and HPCL dealership enquiries.",
+        "Get in touch with Jai Deva Oil Co. for bulk industrial oils, greases, and lubricant supply enquiries.",
       url: `${origin}/contact-us`,
       mainEntity: organizationNode,
     };
@@ -444,10 +440,10 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      name: activeSEO?.metaTitle || "Privacy Policy | Mahalaxmi Enterprises",
+      name: activeSEO?.metaTitle || "Privacy Policy | Jai Deva Oil Co.",
       description:
         activeSEO?.metaDescription ||
-        "Read the Privacy Policy of Mahalaxmi Enterprises HPCL Lubricants distribution.",
+        "Read the Privacy Policy of Jai Deva Oil Co. lubricants distribution.",
       url: `${origin}/privacy-policy`,
     };
   }
@@ -457,10 +453,10 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: activeSEO?.metaTitle || "Events & Gallery | Mahalaxmi Enterprises",
+      name: activeSEO?.metaTitle || "Events & Gallery | Jai Deva Oil Co.",
       description:
         activeSEO?.metaDescription ||
-        "Explore HPCL industrial meets, dealer conventions, exhibitions, and technical lubrication seminars.",
+        "Explore industrial meets, dealer conventions, exhibitions, and technical lubrication seminars.",
       url: `${origin}/events`,
     };
   }
@@ -474,7 +470,7 @@ function generatePageSchema({
       name: activeSEO?.metaTitle || "Industrial Lubrication Insights & Blog",
       description:
         activeSEO?.metaDescription ||
-        "Technical guides, automotive lubrication tips, and industrial oil insights from Mahalaxmi Enterprises.",
+        "Technical guides, automotive lubrication tips, and industrial oil insights from Jai Deva Oil Co.",
       url: `${origin}/blogs`,
       blogPost: blogList.map((b: any) => ({
         "@type": "BlogPosting",
@@ -510,11 +506,11 @@ function generatePageSchema({
       datePublished: post.publishDate || post.createdAt || new Date().toISOString(),
       author: {
         "@type": "Person",
-        name: post.author || "HPCL Technical Lubricants Team",
+        name: post.author || "Technical Lubricants Team",
       },
       publisher: {
         "@type": "Organization",
-        name: "Mahalaxmi Enterprises",
+        name: "Jai Deva Oil Co.",
         logo: {
           "@type": "ImageObject",
           url: companyLogo,
@@ -532,7 +528,7 @@ function generatePageSchema({
       product.description ||
       product.tagline ||
       activeSEO?.metaDescription ||
-      `Buy genuine HPCL ${prodName} lubricants and oils from Mahalaxmi Enterprises.`;
+      `Buy genuine ${prodName} lubricants and oils from Jai Deva Oil Co.`;
     const prodImage = product.image || companyLogo;
 
     return {
@@ -543,7 +539,7 @@ function generatePageSchema({
       description: prodDesc,
       brand: {
         "@type": "Brand",
-        name: "HP Lubricants (HPCL)",
+        name: product.brand || "Industrial Lubricants",
       },
       category: product.categorySlug || "Industrial Lubricants",
       sku: product.slug || prodSlug,
@@ -556,7 +552,7 @@ function generatePageSchema({
         availability: "https://schema.org/InStock",
         seller: {
           "@type": "Organization",
-          name: "Mahalaxmi Enterprises",
+          name: "Jai Deva Oil Co.",
         },
       },
     };
@@ -571,7 +567,7 @@ function generatePageSchema({
       name: activeSEO?.metaTitle || "Industrial Lubricants & Oils Catalog",
       description:
         activeSEO?.metaDescription ||
-        "Browse the full catalogue of genuine HPCL engine oils, gear oils, hydraulic oils, and greases.",
+        "Browse the full catalogue of genuine engine oils, gear oils, hydraulic oils, and greases from Jai Deva Oil Co.",
       url: `${origin}/${pageSlug}`,
       mainEntity: {
         "@type": "ItemList",

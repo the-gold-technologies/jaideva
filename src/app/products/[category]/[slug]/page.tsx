@@ -124,7 +124,7 @@ export default function ProductDetailPage() {
           </p>
           <Link
             href="/products/industrial-oils"
-            className="inline-flex items-center gap-2 bg-[#002b5c] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#eb1e25] transition"
+            className="inline-flex items-center gap-2 bg-[#002b5c] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#C86218] transition"
           >
             <ArrowLeft size={16} /> Return to All Products
           </Link>
@@ -185,7 +185,7 @@ export default function ProductDetailPage() {
             {category.name}
           </Link>
           <span className="text-gray-400">/</span>
-          <span className="text-[#eb1e25] font-semibold">{product.name}</span>
+          <span className="text-[#C86218] font-semibold">{product.name}</span>
         </div>
       </section>
 
@@ -198,7 +198,7 @@ export default function ProductDetailPage() {
               {currentGroup?.title || product.subtitle || category.name}
             </span>
           </h1>
-          <span className="text-xs font-bold uppercase tracking-widest text-[#eb1e25] bg-red-50 px-3 py-1 rounded-full border border-red-100 hidden sm:inline-block">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#C86218] bg-red-50 px-3 py-1 rounded-full border border-red-100 hidden sm:inline-block">
             Industrial Grade
           </span>
         </div>
@@ -225,7 +225,7 @@ export default function ProductDetailPage() {
             {/* Center Column: Product Name, Subtitle, Specifications & Quick CTAs */}
             <div className="lg:col-span-4 flex flex-col justify-center space-y-4">
               <div>
-                <span className="text-[11px] font-extrabold text-[#eb1e25] uppercase tracking-wider block mb-1">
+                <span className="text-[11px] font-extrabold text-[#C86218] uppercase tracking-wider block mb-1">
                   {product.subtitle || currentGroup?.title || category.name}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold text-[#002b5c] tracking-tight mb-2">
@@ -235,8 +235,8 @@ export default function ProductDetailPage() {
 
                 {/* Specifications or Key Highlights */}
                 {product.specsText ? (
-                  <div className="bg-slate-50 border-l-4 border-[#eb1e25] rounded-r-xl p-3.5 shadow-xs mb-4">
-                    <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#eb1e25] mb-1">
+                  <div className="bg-slate-50 border-l-4 border-[#C86218] rounded-r-xl p-3.5 shadow-xs mb-4">
+                    <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C86218] mb-1">
                       Meets Specifications:
                     </h3>
                     <p className="text-xs text-slate-700 leading-relaxed font-sans font-medium">
@@ -269,7 +269,7 @@ export default function ProductDetailPage() {
               <div className="flex flex-wrap items-center gap-3 pt-2">
                 <button
                   onClick={() => handleOpenEnquiry(product.name)}
-                  className="bg-[#eb1e25] hover:bg-[#c4141a] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer"
+                  className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer"
                 >
                   Inquire Product
                 </button>
@@ -318,7 +318,7 @@ export default function ProductDetailPage() {
           {product.description && (
             <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
               <h3 className="text-base sm:text-lg font-bold text-[#002b5c] mb-2 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#eb1e25]" />{" "}
+                <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
                 Description
               </h3>
               <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans font-normal">
@@ -332,7 +332,7 @@ export default function ProductDetailPage() {
             {/* Application Areas */}
             {product.applicationAreas && (
               <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col">
-                <h3 className="text-base sm:text-lg font-bold text-[#eb1e25] mb-3 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-bold text-[#C86218] mb-3 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-[#002b5c]" />{" "}
                   Application Areas:
                 </h3>
@@ -346,7 +346,7 @@ export default function ProductDetailPage() {
             {product.performanceBenefits &&
               product.performanceBenefits.length > 0 && (
                 <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col">
-                  <h3 className="text-base sm:text-lg font-bold text-[#eb1e25] mb-3 flex items-center gap-2">
+                  <h3 className="text-base sm:text-lg font-bold text-[#C86218] mb-3 flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#002b5c]" />{" "}
                     Performance Benefits:
                   </h3>
@@ -357,7 +357,7 @@ export default function ProductDetailPage() {
                           key={bIdx}
                           className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700"
                         >
-                          <span className="text-[#eb1e25] font-bold text-sm leading-none mt-0.5">
+                          <span className="text-[#C86218] font-bold text-sm leading-none mt-0.5">
                             •
                           </span>
                           <span>{benefit}</span>
@@ -373,7 +373,7 @@ export default function ProductDetailPage() {
           {product.specialFeatures && product.specialFeatures.length > 0 && (
             <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
               <h3 className="text-base sm:text-lg font-bold text-[#002b5c] mb-3 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#eb1e25]" /> Special
+                <span className="w-2 h-2 rounded-full bg-[#C86218]" /> Special
                 Features:
               </h3>
               <ul className="space-y-2">
@@ -391,7 +391,7 @@ export default function ProductDetailPage() {
             <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs pt-4">
               <div className="px-6 pb-3">
                 <h3 className="text-base sm:text-lg font-bold text-[#002b5c] flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#eb1e25]" />{" "}
+                  <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
                   Physico-Chemical Properties
                 </h3>
               </div>
@@ -467,7 +467,7 @@ export default function ProductDetailPage() {
           <div className="pt-4 flex flex-wrap items-center gap-3">
             <button
               onClick={() => handleOpenDownload("TDS")}
-              className="bg-[#eb1e25] hover:bg-[#c4141a] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg flex items-center gap-2 shadow-xs transition cursor-pointer"
+              className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg flex items-center gap-2 shadow-xs transition cursor-pointer"
             >
               <FileText size={15} /> Download PDF (TDS)
             </button>
@@ -517,15 +517,15 @@ export default function ProductDetailPage() {
                             size={21}
                             className={`shrink-0 transition-colors ${
                               isCurrentGroup
-                                ? "text-[#eb1e25] fill-[#eb1e25]"
-                                : "text-[#475569] fill-[#475569] group-hover:text-[#eb1e25] group-hover:fill-[#eb1e25]"
+                                ? "text-[#C86218] fill-[#C86218]"
+                                : "text-[#475569] fill-[#475569] group-hover:text-[#C86218] group-hover:fill-[#C86218]"
                             }`}
                           />
                           <span
                             className={`text-sm md:text-[15px] font-normal uppercase tracking-normal leading-relaxed transition-colors ${
                               isCurrentGroup
-                                ? "text-[#eb1e25] font-semibold"
-                                : "text-[#334155] group-hover:text-[#eb1e25]"
+                                ? "text-[#C86218] font-semibold"
+                                : "text-[#334155] group-hover:text-[#C86218]"
                             }`}
                           >
                             {subGroup.title}

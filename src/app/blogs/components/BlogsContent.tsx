@@ -94,13 +94,13 @@ export default function BlogsContent() {
                 {/* Publish Date */}
                 {post.publishDate && (
                   <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium mb-2.5">
-                    <Calendar size={12} className="text-[#eb1e25]" />
+                    <Calendar size={12} className="text-[#C86218]" />
                     <span>{post.publishDate}</span>
                   </div>
                 )}
 
                 {/* Title */}
-                <h3 className="text-base sm:text-lg font-bold text-[#002b5c] group-hover:text-[#eb1e25] leading-snug line-clamp-2 mb-3 transition-colors">
+                <h3 className="text-base sm:text-lg font-bold text-[#002b5c] group-hover:text-[#C86218] leading-snug line-clamp-2 mb-3 transition-colors">
                   <Link href={`/blogs/${post.slug}`} className="hover:underline">
                     {post.title}
                   </Link>
@@ -116,14 +116,14 @@ export default function BlogsContent() {
               <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
                 <Link
                   href={`/blogs/${post.slug}`}
-                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#002b5c] group-hover:text-[#eb1e25] transition-all group-hover:gap-3"
+                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#002b5c] group-hover:text-[#C86218] transition-all group-hover:gap-3"
                 >
                   <span>Read Full Guide</span>
                   <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                 </Link>
 
                 <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                  MAHALAXMI ENTERPRISES
+                  JAI DEVA OIL CO.
                 </span>
               </div>
             </div>

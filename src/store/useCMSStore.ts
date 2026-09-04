@@ -246,13 +246,18 @@ interface CMSStoreActions {
   submitDistributorLead: (data: {
     name: string;
     firmName: string;
-    email: string;
+    email?: string;
     phone: string;
     city?: string;
     state?: string;
     address?: string;
     businessType?: string;
+    lubeType?: string;
+    currentBusiness?: string;
+    experienceYears?: string;
+    investmentCapacity?: string;
     message?: string;
+    [key: string]: any;
   }) => Promise<{ success: boolean; data?: any; error?: string }>;
 }
 

@@ -40,7 +40,7 @@ export default function HeroSlider() {
   if (loading) {
     return (
       <section className="relative w-full overflow-hidden bg-slate-900 aspect-[16/7] sm:aspect-[16/6] md:aspect-[1920/715] max-h-[620px] min-h-[220px] flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-white/20 border-t-[#eb1e25] rounded-full animate-spin" />
+        <div className="w-8 h-8 border-4 border-white/20 border-t-[#C86218] rounded-full animate-spin" />
       </section>
     );
   }
@@ -76,7 +76,7 @@ export default function HeroSlider() {
         {slides.length > 1 && (
           <button
             onClick={prevSlide}
-            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-[#eb1e25] text-white p-2 md:p-3 rounded-full backdrop-blur-xs transition-all duration-200 cursor-pointer shadow-lg hover:scale-110"
+            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-[#C86218] text-white p-2 md:p-3 rounded-full backdrop-blur-xs transition-all duration-200 cursor-pointer shadow-lg hover:scale-110"
             aria-label="Previous Slide"
           >
             <ChevronLeft size={22} className="md:w-6 md:h-6" />
@@ -87,7 +87,7 @@ export default function HeroSlider() {
         {slides.length > 1 && (
           <button
             onClick={nextSlide}
-            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-[#eb1e25] text-white p-2 md:p-3 rounded-full backdrop-blur-xs transition-all duration-200 cursor-pointer shadow-lg hover:scale-110"
+            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 z-20 bg-black/40 hover:bg-[#C86218] text-white p-2 md:p-3 rounded-full backdrop-blur-xs transition-all duration-200 cursor-pointer shadow-lg hover:scale-110"
             aria-label="Next Slide"
           >
             <ChevronRight size={22} className="md:w-6 md:h-6" />
@@ -103,7 +103,7 @@ export default function HeroSlider() {
                 onClick={() => setCurrentSlide(index)}
                 className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
                   index === currentSlide
-                    ? "w-6 bg-[#eb1e25]"
+                    ? "w-6 bg-[#C86218]"
                     : "w-2 bg-white/70 hover:bg-white"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}

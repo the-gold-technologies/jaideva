@@ -65,7 +65,7 @@ export default function Navbar({
   const currentCategory =
     categories.find((c) => c.slug === activeHoverCategory) || categories[0];
 
-  const logoSrc = globalSEO?.logo || "/mahalaxmi png logo .png";
+  const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
 
   const categoryProducts =
     products?.filter((p) => p.categorySlug === currentCategory.slug) || [];
@@ -118,17 +118,17 @@ export default function Navbar({
       <div className="hidden md:flex lg:absolute lg:right-10 lg:top-3 z-10 justify-end px-4 py-2 md:py-0">
         <div className="flex items-center gap-3 sm:gap-4">
           {/* Language Selector */}
-          <div className="flex items-center gap-1.5 text-xs text-[#337ab7]">
+          <div className="flex items-center gap-1.5 text-xs text-[#0C356A]">
             <button
               onClick={() => setLanguage("EN")}
-              className={`hover:underline cursor-pointer ${language === "EN" ? "font-bold text-[#eb1e25]" : ""}`}
+              className={`hover:underline cursor-pointer ${language === "EN" ? "font-bold text-[#C86218]" : ""}`}
             >
               English
             </button>
             <span className="text-gray-400">|</span>
             <button
               onClick={() => setLanguage("HI")}
-              className={`hover:underline cursor-pointer ${language === "HI" ? "font-bold text-[#eb1e25]" : ""}`}
+              className={`hover:underline cursor-pointer ${language === "HI" ? "font-bold text-[#C86218]" : ""}`}
             >
               हिन्दी
             </button>
@@ -140,11 +140,11 @@ export default function Navbar({
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="outline-none border font-sans border-[#CCCCCC] border-r-0 px-2.5 text-[12px] sm:text-[13px] py-1 h-[28px] sm:h-[30px] w-[110px] sm:w-[140px] focus:w-[160px] transition-all"
+              className="outline-none border font-sans border-[#CCCCCC] border-r-0 px-2.5 text-[12px] sm:text-[13px] py-1 h-[28px] sm:h-[30px] w-[110px] sm:w-[140px] focus:w-[160px] transition-all rounded-l"
             />
             <button
               type="submit"
-              className="bg-[#eb1e25] text-white h-[28px] sm:h-[30px] px-2 border border-[#eb1e25] flex items-center justify-center hover:bg-[#c4141a] transition-colors cursor-pointer"
+              className="bg-[#C86218] text-white h-[28px] sm:h-[30px] px-2 border border-[#C86218] rounded-r flex items-center justify-center hover:bg-[#A74D0E] transition-colors cursor-pointer"
               aria-label="Search"
             >
               <Search size={14} className="font-bold stroke-[2.5]" />
@@ -155,7 +155,7 @@ export default function Navbar({
             <span className="text-gray-600 text-xs font-sans">Text</span>
             <button
               onClick={increaseFont}
-              className="bg-[#002b5c] text-white p-0.5 flex items-center justify-center hover:bg-opacity-90 cursor-pointer"
+              className="bg-[#0C356A] text-white p-0.5 flex items-center justify-center hover:bg-opacity-90 cursor-pointer rounded-xs"
               title="Increase Font Size"
               type="button"
             >
@@ -163,7 +163,7 @@ export default function Navbar({
             </button>
             <button
               onClick={decreaseFont}
-              className="bg-[#002b5c] text-white p-0.5 flex items-center justify-center hover:bg-opacity-90 cursor-pointer"
+              className="bg-[#0C356A] text-white p-0.5 flex items-center justify-center hover:bg-opacity-90 cursor-pointer rounded-xs"
               title="Decrease Font Size"
               type="button"
             >
@@ -175,17 +175,17 @@ export default function Navbar({
 
       {/* Mobile Top Utility Bar (< md) */}
       <div className="md:hidden flex justify-between items-center px-3 py-1.5 bg-[#f8fafc] border-b border-gray-200/70 text-xs">
-        <div className="flex items-center gap-1.5 text-[#337ab7]">
+        <div className="flex items-center gap-1.5 text-[#0C356A]">
           <button
             onClick={() => setLanguage("EN")}
-            className={`cursor-pointer ${language === "EN" ? "font-bold text-[#eb1e25]" : ""}`}
+            className={`cursor-pointer ${language === "EN" ? "font-bold text-[#C86218]" : ""}`}
           >
             English
           </button>
           <span className="text-gray-300">|</span>
           <button
             onClick={() => setLanguage("HI")}
-            className={`cursor-pointer ${language === "HI" ? "font-bold text-[#eb1e25]" : ""}`}
+            className={`cursor-pointer ${language === "HI" ? "font-bold text-[#C86218]" : ""}`}
           >
             हिन्दी
           </button>
@@ -198,11 +198,11 @@ export default function Navbar({
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="outline-none border border-[#CCCCCC] border-r-0 px-2 text-[11px] h-[26px] w-[90px]"
+              className="outline-none border border-[#CCCCCC] border-r-0 px-2 text-[11px] h-[26px] w-[90px] rounded-l"
             />
             <button
               type="submit"
-              className="bg-[#eb1e25] text-white h-[26px] px-1.5 border border-[#eb1e25] flex items-center justify-center cursor-pointer"
+              className="bg-[#C86218] text-white h-[26px] px-1.5 border border-[#C86218] rounded-r flex items-center justify-center cursor-pointer"
               aria-label="Search"
             >
               <Search size={12} />
@@ -213,7 +213,7 @@ export default function Navbar({
             <span className="text-gray-500 text-[11px]">Text</span>
             <button
               onClick={increaseFont}
-              className="bg-[#002b5c] text-white p-0.5 rounded-xs"
+              className="bg-[#0C356A] text-white p-0.5 rounded-xs"
               title="Increase Font Size"
               type="button"
             >
@@ -221,7 +221,7 @@ export default function Navbar({
             </button>
             <button
               onClick={decreaseFont}
-              className="bg-[#002b5c] text-white p-0.5 rounded-xs"
+              className="bg-[#0C356A] text-white p-0.5 rounded-xs"
               title="Decrease Font Size"
               type="button"
             >
@@ -237,11 +237,10 @@ export default function Navbar({
         <Link href="/" className="flex items-center py-1">
           <img
             src={logoSrc}
-            alt="MAHALAXMI ENTERPRISES"
+            alt="JAI DEVA OIL CO."
             className="h-11 sm:h-14 lg:h-16 w-auto object-contain"
             onError={(e) => {
-              (e.target as HTMLImageElement).src =
-                "https://www.hplubricants.in/sites/default/files/fevicon.png";
+              (e.target as HTMLImageElement).src = "/jaideva-logo.png";
             }}
           />
         </Link>
@@ -260,10 +259,10 @@ export default function Navbar({
                 <Link
                   href={item.link}
                   onClick={() => setActiveTab(item.name)}
-                  className={`text-[14px] font-sans font-medium tracking-normal transition flex items-center gap-1 ${
+                  className={`text-[14px] font-sans font-semibold tracking-normal transition flex items-center gap-1 ${
                     isActive
-                      ? "text-[#eb1e25] font-bold"
-                      : "text-[#37474f] hover:text-[#eb1e25]"
+                      ? "text-[#C86218] font-bold"
+                      : "text-[#0C356A] hover:text-[#C86218]"
                   }`}
                 >
                   {item.name}
@@ -272,20 +271,20 @@ export default function Navbar({
                       size={14}
                       className={
                         isActive
-                          ? "text-[#eb1e25]"
-                          : "text-gray-500 group-hover:text-[#eb1e25]"
+                          ? "text-[#C86218]"
+                          : "text-gray-500 group-hover:text-[#C86218]"
                       }
                     />
                   )}
                 </Link>
 
-                {/* Clean 2-Column Mega Menu (Pre-populated with first category, zero empty boxes) */}
+                {/* Clean 2-Column Mega Menu */}
                 {item.isMegaMenu && openDropdown === item.name && (
                   <div className="absolute top-full left-0 -ml-12 w-[560px] bg-white shadow-2xl border border-gray-100 rounded-2xl p-4 z-50 grid grid-cols-12 gap-4 animate-in fade-in zoom-in-95 duration-150">
                     {/* Left Column: Categories List */}
                     <div className="col-span-5 border-r border-gray-100 pr-2.5 space-y-1">
                       <div className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider px-3 py-1 mb-1 flex items-center gap-1.5">
-                        <Layers size={13} className="text-[#eb1e25]" />{" "}
+                        <Layers size={13} className="text-[#C86218]" />{" "}
                         Categories
                       </div>
                       {categories.map((cat) => {
@@ -302,8 +301,8 @@ export default function Navbar({
                               href={`/products/${cat.slug}`}
                               className={`flex items-center justify-between px-3 py-2.5 text-xs font-bold transition-all duration-150 cursor-pointer ${
                                 isCatActive
-                                  ? "bg-[#002b5c] text-white border-l-4 border-[#eb1e25] rounded-r-lg rounded-l-xs shadow-xs"
-                                  : "text-gray-700 hover:bg-gray-50 hover:text-[#eb1e25] rounded-lg"
+                                  ? "bg-[#0C356A] text-white border-l-4 border-[#C86218] rounded-r-lg rounded-l-xs shadow-xs"
+                                  : "text-gray-700 hover:bg-orange-50 hover:text-[#C86218] rounded-lg"
                               }`}
                             >
                               <span>{cat.name}</span>
@@ -311,7 +310,7 @@ export default function Navbar({
                                 size={14}
                                 className={
                                   isCatActive
-                                    ? "text-[#eb1e25]"
+                                    ? "text-[#EAA824]"
                                     : "text-gray-400"
                                 }
                               />
@@ -321,15 +320,15 @@ export default function Navbar({
                       })}
                     </div>
 
-                    {/* Right Column: Pre-populated Sub-Products List */}
+                    {/* Right Column: Sub-Products List */}
                     <div className="col-span-7 pl-1 flex flex-col justify-between">
                       <div
                         key={currentCategory.slug}
                         className="animate-in fade-in duration-150 space-y-2"
                       >
-                        <div className="text-[11px] font-extrabold text-[#002b5c] uppercase tracking-wider px-2 py-1 border-b border-gray-100 flex items-center justify-between">
+                        <div className="text-[11px] font-extrabold text-[#0C356A] uppercase tracking-wider px-2 py-1 border-b border-gray-100 flex items-center justify-between">
                           <span>{currentCategory.name}</span>
-                          <span className="text-[10px] text-[#eb1e25] font-bold bg-red-50 px-2 py-0.5 rounded">
+                          <span className="text-[10px] text-[#C86218] font-bold bg-orange-50 px-2 py-0.5 rounded border border-orange-100">
                             {categoryProducts.length} Products
                           </span>
                         </div>
@@ -339,9 +338,9 @@ export default function Navbar({
                               <Link
                                 key={prod.id}
                                 href={`/products/${prod.categorySlug}/${prod.slug}`}
-                                className="block px-3 py-2 text-xs font-medium text-gray-700 hover:bg-red-50 hover:text-[#eb1e25] rounded-lg transition-all duration-150 group border border-transparent hover:border-red-100"
+                                className="block px-3 py-2 text-xs font-medium text-gray-700 hover:bg-orange-50 hover:text-[#C86218] rounded-lg transition-all duration-150 group border border-transparent hover:border-orange-100"
                               >
-                                <div className="font-bold text-[#002b5c] group-hover:text-[#eb1e25] transition-colors">
+                                <div className="font-bold text-[#0C356A] group-hover:text-[#C86218] transition-colors">
                                   {prod.name}
                                 </div>
                                 {(prod.subCategoryTitle ||
@@ -358,7 +357,7 @@ export default function Navbar({
                           ) : (
                             <Link
                               href={`/products/${currentCategory.slug}`}
-                              className="block px-3 py-4 text-xs text-gray-500 italic hover:text-[#002b5c]"
+                              className="block px-3 py-4 text-xs text-gray-500 italic hover:text-[#0C356A]"
                             >
                               Explore all products in {currentCategory.name}{" "}
                               &rarr;
@@ -374,19 +373,21 @@ export default function Navbar({
           })}
         </nav>
 
-        {/* Mobile Hamburger Toggle */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden text-gray-800 p-2 focus:outline-none cursor-pointer"
-          aria-label="Toggle Menu"
-        >
-          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        {/* Mobile Hamburger Button */}
+        <div className="lg:hidden flex items-center">
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="p-2 text-[#0C356A] hover:text-[#C86218] focus:outline-none cursor-pointer rounded-lg hover:bg-gray-100 transition-colors"
+            aria-label="Open Mobile Menu"
+          >
+            <Menu size={28} />
+          </button>
+        </div>
       </div>
 
-      {/* Mobile Full Screen Menu Overlay */}
+      {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[100] bg-white flex flex-col lg:hidden animate-in fade-in slide-in-from-top-4 duration-200 overflow-y-auto">
+        <div className="fixed inset-0 z-50 bg-white flex flex-col h-full w-full overflow-y-auto animate-in slide-in-from-right duration-200">
           {/* Header Bar inside Mobile Overlay */}
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 bg-white sticky top-0 z-10 shadow-xs">
             <Link
@@ -396,17 +397,16 @@ export default function Navbar({
             >
               <img
                 src={logoSrc}
-                alt="Mahalaxmi Enterprises"
+                alt="JAI DEVA OIL CO."
                 className="h-12 w-auto object-contain"
                 onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "https://www.hplubricants.in/sites/default/files/fevicon.png";
+                  (e.target as HTMLImageElement).src = "/jaideva-logo.png";
                 }}
               />
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
-              className="p-2 text-gray-800 hover:text-[#eb1e25] focus:outline-none cursor-pointer rounded-full hover:bg-gray-100 transition-colors"
+              className="p-2 text-gray-800 hover:text-[#C86218] focus:outline-none cursor-pointer rounded-full hover:bg-gray-100 transition-colors"
               aria-label="Close Menu"
             >
               <X size={28} />
@@ -430,15 +430,15 @@ export default function Navbar({
                           }
                           className={`w-full flex items-center justify-between text-base font-extrabold py-2.5 transition-colors text-left cursor-pointer ${
                             isActive || mobileProductsOpen
-                              ? "text-[#eb1e25]"
-                              : "text-[#002b5c] hover:text-[#eb1e25]"
+                              ? "text-[#C86218]"
+                              : "text-[#0C356A] hover:text-[#C86218]"
                           }`}
                         >
                           <span>{item.name}</span>
                           {mobileProductsOpen ? (
                             <ChevronDown
                               size={20}
-                              className="text-[#eb1e25] transition-transform"
+                              className="text-[#C86218] transition-transform"
                             />
                           ) : (
                             <ChevronRight
@@ -450,7 +450,7 @@ export default function Navbar({
 
                         {/* Collapsible Sub-Categories for PRODUCTS & SERVICES */}
                         {mobileProductsOpen && (
-                          <div className="pl-3 mt-1 flex flex-col gap-1.5 border-l-2 border-[#eb1e25]/70 bg-gray-50/80 p-3 rounded-r-lg animate-in fade-in duration-150">
+                          <div className="pl-3 mt-1 flex flex-col gap-1.5 border-l-2 border-[#C86218]/70 bg-orange-50/40 p-3 rounded-r-lg animate-in fade-in duration-150">
                             <span className="text-[11px] font-bold uppercase text-gray-400 tracking-wider">
                               Product Categories
                             </span>
@@ -462,7 +462,7 @@ export default function Navbar({
                                   setMobileMenuOpen(false);
                                   setMobileProductsOpen(false);
                                 }}
-                                className="text-xs text-gray-700 hover:text-[#eb1e25] font-semibold py-1.5 px-2 rounded hover:bg-white flex items-center justify-between transition-colors"
+                                className="text-xs text-gray-700 hover:text-[#C86218] font-semibold py-1.5 px-2 rounded hover:bg-white flex items-center justify-between transition-colors"
                               >
                                 <span>{cat.name}</span>
                                 <ChevronRight
@@ -488,8 +488,8 @@ export default function Navbar({
                         }}
                         className={`flex items-center justify-between text-base font-extrabold py-2.5 transition-colors ${
                           isActive
-                            ? "text-[#eb1e25]"
-                            : "text-[#002b5c] hover:text-[#eb1e25]"
+                            ? "text-[#C86218]"
+                            : "text-[#0C356A] hover:text-[#C86218]"
                         }`}
                       >
                         <span>{item.name}</span>
@@ -505,7 +505,7 @@ export default function Navbar({
               <Link
                 href="/#contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full bg-[#eb1e25] hover:bg-[#c4141a] text-white font-extrabold py-3 rounded-lg text-center text-sm uppercase tracking-wider shadow-md transition-colors"
+                className="w-full bg-[#C86218] hover:bg-[#A74D0E] text-white font-extrabold py-3 rounded-lg text-center text-sm uppercase tracking-wider shadow-md transition-colors"
               >
                 CONTACT US / LOCATE DEALER
               </Link>

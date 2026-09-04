@@ -106,7 +106,7 @@ export default function CategoryProductsPage() {
             Home
           </Link>
           <span className="text-gray-400">/</span>
-          <span className="text-[#eb1e25] font-semibold">{categoryName}</span>
+          <span className="text-[#C86218] font-semibold">{categoryName}</span>
         </div>
       </section>
 
@@ -169,7 +169,7 @@ export default function CategoryProductsPage() {
                     {/* Red VIEW MORE Action Link */}
                     <Link
                       href={`/products/${categorySlug}/${group.products[0]?.slug || ""}`}
-                      className="bg-[#eb1e25] hover:bg-[#c4141a] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-6 rounded-lg text-center transition-all shadow-xs hover:shadow-md inline-flex items-center justify-center gap-1.5 w-full sm:w-[230px]"
+                      className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-6 rounded-lg text-center transition-all shadow-xs hover:shadow-md inline-flex items-center justify-center gap-1.5 w-full sm:w-[230px]"
                     >
                       <span>VIEW MORE</span>
                       <span className="text-sm">→</span>
@@ -185,7 +185,7 @@ export default function CategoryProductsPage() {
                         className="group/item bg-slate-100/80 hover:bg-white text-slate-700 hover:text-[#002b5c] text-xs font-semibold px-4 py-2.5 rounded-lg border border-slate-200/90 hover:border-sky-400/60 hover:shadow-2xs flex items-center justify-between transition-all uppercase tracking-tight leading-snug"
                       >
                         <span className="truncate pr-2">{prod.name}</span>
-                        <span className="text-slate-400 group-hover/item:text-[#eb1e25] transition-transform duration-200 group-hover/item:translate-x-0.5 text-xs">
+                        <span className="text-slate-400 group-hover/item:text-[#C86218] transition-transform duration-200 group-hover/item:translate-x-0.5 text-xs">
                           →
                         </span>
                       </Link>
@@ -221,9 +221,9 @@ export default function CategoryProductsPage() {
                       >
                         <Droplet
                           size={21}
-                          className="text-[#475569] fill-[#475569] shrink-0 group-hover:text-[#eb1e25] group-hover:fill-[#eb1e25] transition-colors"
+                          className="text-[#475569] fill-[#475569] shrink-0 group-hover:text-[#C86218] group-hover:fill-[#C86218] transition-colors"
                         />
-                        <span className="text-sm md:text-[15px] font-normal uppercase text-[#334155] group-hover:text-[#eb1e25] tracking-normal leading-relaxed transition-colors">
+                        <span className="text-sm md:text-[15px] font-normal uppercase text-[#334155] group-hover:text-[#C86218] tracking-normal leading-relaxed transition-colors">
                           {subGroup.title}
                         </span>
                       </a>

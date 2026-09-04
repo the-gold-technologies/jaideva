@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import AboutHpclHero from "@/app/about-us/components/AboutHpclHero";
 import AboutBreadcrumb from "@/app/about-us/components/AboutBreadcrumb";
-import AboutMahalaxmiContent from "@/app/about-us/components/AboutMahalaxmiContent";
+import AboutJaiDevaContent from "@/app/about-us/components/AboutJaiDevaContent";
+import MultiBrandSolutionsSection from "@/components/MultiBrandSolutionsSection";
 import LubesHeadquarterSection from "@/app/about-us/components/LubesHeadquarterSection";
 import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
@@ -53,10 +54,13 @@ export default function AboutUsPage() {
       {/* Breadcrumb Bar */}
       <AboutBreadcrumb currentPage="About Us" />
 
-      {/* 1. Mahalaxmi Enterprises About & Why Choose Us Section */}
-      <AboutMahalaxmiContent />
+      {/* 1. Jai Deva Oil Co. About & Why Choose Us Section */}
+      <AboutJaiDevaContent />
 
-      {/* 2. Lubes Marketing Headquarter (Full-Width) */}
+      {/* 2. Multi-Brand Lubricant Solutions (Understand -> Recommend -> Supply -> Support) */}
+      <MultiBrandSolutionsSection />
+
+      {/* 3. Lubes Marketing Headquarter (Full-Width) */}
       <LubesHeadquarterSection />
 
       {/* Footer & Enquiry Modal */}

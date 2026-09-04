@@ -75,7 +75,7 @@ export default function BlogDetailPage() {
           </p>
           <Link
             href="/blogs"
-            className="inline-flex items-center gap-2 bg-[#002b5c] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#eb1e25] transition"
+            className="inline-flex items-center gap-2 bg-[#002b5c] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#C86218] transition"
           >
             <ArrowLeft size={16} /> Return to All Technical Articles
           </Link>
@@ -130,7 +130,7 @@ export default function BlogDetailPage() {
         {/* Category & Title */}
         <div className="mb-6">
           {post.category && (
-            <span className="inline-block bg-[#eb1e25] text-white text-xs font-extrabold uppercase px-3.5 py-1.5 rounded shadow-xs mb-4 tracking-wider">
+            <span className="inline-block bg-[#C86218] text-white text-xs font-extrabold uppercase px-3.5 py-1.5 rounded shadow-xs mb-4 tracking-wider">
               {post.category}
             </span>
           )}
@@ -203,7 +203,7 @@ export default function BlogDetailPage() {
                       >
                         <CheckCircle2
                           size={18}
-                          className="text-[#eb1e25] shrink-0 mt-1"
+                          className="text-[#C86218] shrink-0 mt-1"
                         />
                         <span>{point}</span>
                       </li>
@@ -227,18 +227,18 @@ export default function BlogDetailPage() {
         {recommendedProducts && recommendedProducts.length > 0 && (
           <div className="my-12 bg-gradient-to-r from-[#002b5c] to-[#004085] text-white rounded-2xl p-6 md:p-8 shadow-md">
             <h3 className="text-lg md:text-xl font-bold mb-3 flex items-center gap-2">
-              <Tag size={20} className="text-[#eb1e25]" /> Recommended Industrial Lubricants
+              <Tag size={20} className="text-[#C86218]" /> Recommended Industrial Lubricants
             </h3>
             <p className="text-xs md:text-sm text-gray-200 mb-4">
-              Mahalaxmi Enterprises supplies genuine industrial lubricants for
-              industrial & fleet operations across Baghpat and Uttar Pradesh.
+              Jai Deva Oil Co. supplies genuine industrial & automotive lubricants for
+              diverse operations across Uttar Pradesh and surrounding regions.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               {recommendedProducts.map((prod: string, pIdx: number) => (
                 <button
                   key={pIdx}
                   onClick={() => handleOpenEnquiry(prod)}
-                  className="bg-white text-[#002b5c] hover:bg-[#eb1e25] hover:text-white text-xs md:text-sm font-bold uppercase px-4 py-2 rounded-lg transition-all shadow-xs cursor-pointer"
+                  className="bg-white text-[#002b5c] hover:bg-[#C86218] hover:text-white text-xs md:text-sm font-bold uppercase px-4 py-2 rounded-lg transition-all shadow-xs cursor-pointer"
                 >
                   Inquire {prod}
                 </button>
@@ -259,13 +259,13 @@ export default function BlogDetailPage() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-6 bg-[#f8f9fa] border border-gray-200 rounded-xl mb-16">
           <Link
             href="/blogs"
-            className="text-xs md:text-sm font-bold text-[#002b5c] hover:text-[#eb1e25] flex items-center gap-2 uppercase tracking-wide transition-colors"
+            className="text-xs md:text-sm font-bold text-[#002b5c] hover:text-[#C86218] flex items-center gap-2 uppercase tracking-wide transition-colors"
           >
             <ArrowLeft size={16} /> Return to All Blogs
           </Link>
           <button
             onClick={() => handleOpenEnquiry(post.title)}
-            className="w-full sm:w-auto bg-[#eb1e25] hover:bg-[#c4141a] text-white text-xs md:text-sm font-bold uppercase px-6 py-3 rounded-lg flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
+            className="w-full sm:w-auto bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs md:text-sm font-bold uppercase px-6 py-3 rounded-lg flex items-center justify-center gap-2 shadow-md transition cursor-pointer"
           >
             <Send size={16} /> Request Product Quotation
           </button>
@@ -292,11 +292,11 @@ export default function BlogDetailPage() {
                   </div>
                   <div className="p-4">
                     {rel.category && (
-                      <span className="text-[10px] font-bold text-[#eb1e25] uppercase tracking-wider block mb-1">
+                      <span className="text-[10px] font-bold text-[#C86218] uppercase tracking-wider block mb-1">
                         {rel.category}
                       </span>
                     )}
-                    <h4 className="text-xs md:text-sm font-bold text-[#002b5c] group-hover:text-[#eb1e25] line-clamp-2 transition-colors">
+                    <h4 className="text-xs md:text-sm font-bold text-[#002b5c] group-hover:text-[#C86218] line-clamp-2 transition-colors">
                       <Link href={`/blogs/${rel.slug}`}>{rel.title}</Link>
                     </h4>
                   </div>

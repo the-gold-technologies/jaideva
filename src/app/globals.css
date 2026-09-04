@@ -31,14 +31,14 @@ html, body {
   transform: translateX(-50%);
   width: 70px;
   height: 3px;
-  background-color: #002b5c;
+  background-color: #C86218;
 }
 
 /* Custom Scrollbar for Product Containers */
 .scrollbar-visible {
   -ms-overflow-style: auto !important;
   scrollbar-width: thin !important;
-  scrollbar-color: #002b5c #e9ecef !important;
+  scrollbar-color: #0C356A #e9ecef !important;
 }
 
 .scrollbar-visible::-webkit-scrollbar {
@@ -52,7 +52,7 @@ html, body {
 }
 
 .scrollbar-visible::-webkit-scrollbar-thumb {
-  background: #002b5c !important;
+  background: #0C356A !important;
   border-radius: 4px !important;
 }
 
@@ -61,7 +61,7 @@ html, body {
 .blog-rich-content h2 {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #002b5c;
+  color: #0C356A;
   margin-top: 1.75rem;
   margin-bottom: 0.75rem;
   letter-spacing: -0.02em;
@@ -70,7 +70,7 @@ html, body {
 .blog-rich-content h3 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #002b5c;
+  color: #0C356A;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
@@ -106,7 +106,7 @@ html, body {
 
 .blog-rich-content blockquote {
   background-color: #f8f9fa;
-  border-left: 4px solid #002b5c;
+  border-left: 4px solid #C86218;
   padding: 1rem 1.25rem;
   border-radius: 0 0.75rem 0.75rem 0;
   font-style: italic;
@@ -115,13 +115,13 @@ html, body {
 }
 
 .blog-rich-content a {
-  color: #337ab7;
+  color: #C86218;
   font-weight: 600;
   text-decoration: underline;
 }
 
 .blog-rich-content a:hover {
-  color: #eb1e25;
+  color: #A74D0E;
 }
 
 .blog-rich-content strong,

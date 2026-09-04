@@ -66,7 +66,7 @@ export default function TrustedClientsSection() {
           {marqueeClients.map((client, idx) => (
             <div
               key={`${client.id || idx}-${idx}`}
-              className="shrink-0 bg-white border border-gray-200/90 rounded-xl px-4 py-3 shadow-xs hover:shadow-md hover:border-[#eb1e25]/40 transition-all duration-300 flex items-center gap-3.5 min-w-[220px] sm:min-w-[260px] h-20"
+              className="shrink-0 bg-white border border-gray-200/90 rounded-xl px-4 py-3 shadow-xs hover:shadow-md hover:border-[#C86218]/40 transition-all duration-300 flex items-center gap-3.5 min-w-[220px] sm:min-w-[260px] h-20"
             >
               {/* Client Logo / Badge Box */}
               {client.logo && (
@@ -85,7 +85,7 @@ export default function TrustedClientsSection() {
                   {client.name}
                 </h3>
                 {client.category && (
-                  <p className="text-[11px] font-semibold text-[#eb1e25] mt-0.5 tracking-wide">
+                  <p className="text-[11px] font-semibold text-[#C86218] mt-0.5 tracking-wide">
                     {client.category}
                   </p>
                 )}
