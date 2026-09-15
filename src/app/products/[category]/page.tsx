@@ -7,7 +7,15 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
 import DownloadModal from "@/components/DownloadModal";
-import { ArrowLeft, Droplet } from "lucide-react";
+import {
+  Droplet,
+  ChevronRight,
+  ArrowRight,
+  Package,
+  Phone,
+  Download,
+  Layers,
+} from "lucide-react";
 import {
   useCMSStore,
   CMSProduct,
@@ -18,6 +26,7 @@ import SEOMeta from "@/components/SEOMeta";
 
 export default function CategoryProductsPage() {
   const params = useParams();
+  const [activeSection, setActiveSection] = useState<number>(0);
   const categorySlug = params?.category as string;
 
   const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);
@@ -103,10 +112,8 @@ export default function CategoryProductsPage() {
 
   return (
     <main
-      className="min-h-screen bg-white text-gray-800 font-sans flex flex-col justify-between"
-      style={{
-        fontSize: `${16 * fontSizeMultiplier}px`,
-      }}
+      className="min-h-screen bg-[#f5f7fa] text-gray-800 font-sans flex flex-col"
+      style={{ fontSize: `${16 * fontSizeMultiplier}px` }}
     >
       <SEOMeta pageSlug={`products/${categorySlug}`} />
 
@@ -117,141 +124,246 @@ export default function CategoryProductsPage() {
         setLanguage={setLanguage}
       />
 
-      {/* Breadcrumbs matching exact HP Lubricants style */}
-      <section className="bg-white py-4 border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 md:px-8 text-xs md:text-sm text-gray-600 flex items-center gap-2 font-medium">
-          <Link href="/" className="text-[#337ab7] hover:underline">
-            Home
-          </Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-[#C86218] font-semibold">{categoryName}</span>
-        </div>
-      </section>
+      {/* ── Page Header Banner ── */}
+      <div className="relative bg-[#F6F7FA] text-gray-800 overflow-hidden border-b border-gray-100">
+        <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-8 pb-8">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-1.5 text-[11px] text-gray-400 mb-6 font-medium tracking-wide">
+            <Link href="/" className="hover:text-[#002b5c] transition-colors">
+              Home
+            </Link>
+            <ChevronRight size={12} className="opacity-50" />
+            <Link
+              href="/products"
+              className="hover:text-[#002b5c] transition-colors"
+            >
+              Products
+            </Link>
+            <ChevronRight size={12} className="opacity-50" />
+            <span className="text-[#002b5c] font-semibold">{categoryName}</span>
+          </nav>
 
-      {/* Main Content Grid strictly matching HP Lubricants official design */}
-      <div className="max-w-6xl mx-auto px-4 md:px-8 py-10 md:py-14 w-full">
-        {/* Category H1 Heading from SEO */}
-        <div className="mb-8 border-b-2 border-gray-100 pb-4">
-          <HeadingTag className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#002b5c] tracking-tight uppercase">
-            {categoryTitle}
-          </HeadingTag>
-          {categoryDesc && (
-            <p className="mt-2 text-sm md:text-base text-gray-600 max-w-3xl">
-              {categoryDesc}
-            </p>
-          )}
-        </div>
-
-        {/* Sub-Category Groups Grid (2 Columns) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-14">
-          {subCategoryGroups.map((group, idx) => {
-            const words = group.title.split(" ");
-            const firstWord = words[0];
-            const remainingWords = words.slice(1).join(" ");
-
-            return (
-              <div
-                key={idx}
-                id={`subcat-${idx}`}
-                className="flex flex-col space-y-5 scroll-mt-24"
-              >
-                {/* Header Title with Dark Blue Underline on First Word */}
-                <div className="border-b border-gray-200 pb-2">
-                  <h2 className="text-lg md:text-xl font-extrabold text-[#002b5c] tracking-wide uppercase inline-block relative">
-                    <span className="border-b-4 border-[#002b5c] pb-2">
-                      {firstWord}
-                    </span>
-                    {remainingWords && (
-                      <span className="ml-2">{remainingWords}</span>
-                    )}
-                  </h2>
-                </div>
-
-                {/* Sub-category Row Layout: Left Square Image Frame & VIEW MORE Button + Right Pills List */}
-                <div className="flex flex-col sm:flex-row gap-6 items-start">
-                  {/* Left Column: Dark Blue Box with Center Rounded Square Image + VIEW MORE Button */}
-                  <div className="flex flex-col space-y-3 shrink-0 w-full sm:w-auto">
-                    <div className="group w-full sm:w-[230px] h-[210px] sm:h-[230px] bg-gradient-to-br from-[#002b5c] via-[#0d3b66] to-[#0275d8] rounded-2xl p-2.5 flex items-center justify-center relative overflow-hidden shadow-md border border-blue-900/40">
-                      {/* Rounded Square Inner Container with Subtle Border */}
-                      <div className="w-full h-full rounded-xl overflow-hidden border border-white/25 shadow-inner relative bg-slate-900/20">
-                        <img
-                          src={group.coverImage}
-                          alt={group.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
-                        />
-                        {/* Subtle bottom gradient tint */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#002b5c]/40 via-transparent to-transparent opacity-60 pointer-events-none" />
-                      </div>
-                    </div>
-
-                    {/* Red VIEW MORE Action Link */}
-                    <Link
-                      href={`/products/${categorySlug}/${group.products[0]?.slug || ""}`}
-                      className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-bold uppercase tracking-wider py-2.5 px-6 rounded-lg text-center transition-all shadow-xs hover:shadow-md inline-flex items-center justify-center gap-1.5 w-full sm:w-[230px]"
-                    >
-                      <span>VIEW MORE</span>
-                      <span className="text-sm">→</span>
-                    </Link>
-                  </div>
-
-                  {/* Right Column: Uniform Fixed Height Product Pills Container with Vertical Scrollbar */}
-                  <div className="flex-1 max-h-[230px] w-full overflow-y-auto space-y-2 pr-1.5 scrollbar-visible">
-                    {group.products.map((prod) => (
-                      <Link
-                        key={prod.id}
-                        href={`/products/${categorySlug}/${prod.slug}`}
-                        className="group/item bg-slate-100/80 hover:bg-white text-slate-700 hover:text-[#002b5c] text-xs font-semibold px-4 py-2.5 rounded-lg border border-slate-200/90 hover:border-sky-400/60 hover:shadow-2xs flex items-center justify-between transition-all uppercase tracking-tight leading-snug"
-                      >
-                        <span className="truncate pr-2">{prod.name}</span>
-                        <span className="text-slate-400 group-hover/item:text-[#C86218] transition-transform duration-200 group-hover/item:translate-x-0.5 text-xs">
-                          →
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+          <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-10">
+            <div className="flex-1">
+              {/* Category label */}
+              <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-[#C86218] text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
+                <Layers size={11} />
+                Product Catalogue
               </div>
-            );
-          })}
-        </div>
-
-        {/* Bottom Sub-Category Teardrop Navigation Grid */}
-        {subCategoryGroups.length > 0 && (
-          <div className="mt-16 pt-8 border-t border-gray-200">
-            <div className="border-t border-gray-200">
-              {Array.from({
-                length: Math.ceil(subCategoryGroups.length / 4),
-              }).map((_, rIdx) => {
-                const rowItems = subCategoryGroups.slice(
-                  rIdx * 4,
-                  rIdx * 4 + 4,
-                );
-                return (
-                  <div
-                    key={rIdx}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 items-center py-5 border-b border-gray-200"
-                  >
-                    {rowItems.map((subGroup, cIdx) => (
-                      <a
-                        key={cIdx}
-                        href={`#subcat-${rIdx * 4 + cIdx}`}
-                        className="flex items-center gap-3.5 group transition-colors py-1.5"
-                      >
-                        <Droplet
-                          size={21}
-                          className="text-[#475569] fill-[#475569] shrink-0 group-hover:text-[#C86218] group-hover:fill-[#C86218] transition-colors"
-                        />
-                        <span className="text-sm md:text-[15px] font-normal uppercase text-[#334155] group-hover:text-[#C86218] tracking-normal leading-relaxed transition-colors">
-                          {subGroup.title}
-                        </span>
-                      </a>
-                    ))}
-                  </div>
-                );
-              })}
+              <HeadingTag className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-[1.1] text-[#002b5c]">
+                {categoryTitle}
+              </HeadingTag>
+              {categoryDesc && (
+                <p className="mt-4 text-sm md:text-[15px] text-gray-500 max-w-xl leading-relaxed">
+                  {categoryDesc}
+                </p>
+              )}
             </div>
           </div>
-        )}
+        </div>
+      </div>
+
+      {/* ── Main Body: Sidebar + Content ── */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14 w-full flex-1 flex gap-8 items-start">
+        {/* ── LEFT SIDEBAR ── */}
+        <aside className="hidden lg:flex flex-col w-60 shrink-0 sticky top-28 self-start gap-4">
+          {/* Nav card */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-gradient-to-br from-[#002b5c] to-[#0a4080] px-5 py-5">
+              <div className="flex items-center gap-2 mb-1">
+                <Layers size={13} className="text-blue-300" />
+                <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-blue-300">
+                  Browse Range
+                </p>
+              </div>
+              <p className="text-white font-extrabold text-sm uppercase tracking-wide leading-tight">
+                {categoryName}
+              </p>
+              <p className="text-blue-300 text-[10px] mt-1.5">
+                {subCategoryGroups.length} sub-categories
+              </p>
+            </div>
+
+            <nav className="divide-y divide-gray-50">
+              {subCategoryGroups.map((group, idx) => (
+                <a
+                  key={idx}
+                  href={`#subcat-${idx}`}
+                  onClick={() => setActiveSection(idx)}
+                  className={`flex items-center gap-3 px-4 py-3 transition-all border-l-[3px] group ${
+                    activeSection === idx
+                      ? "border-[#C86218] bg-orange-50/70 text-[#C86218]"
+                      : "border-transparent text-gray-500 hover:bg-gray-50 hover:text-[#002b5c] hover:border-gray-200"
+                  }`}
+                >
+                  <Droplet
+                    size={12}
+                    className={`shrink-0 transition-colors ${
+                      activeSection === idx
+                        ? "fill-[#C86218] text-[#C86218]"
+                        : "fill-gray-300 text-gray-300 group-hover:fill-gray-400"
+                    }`}
+                  />
+                  <span className="flex-1 truncate text-[11px] font-semibold uppercase tracking-wide leading-snug">
+                    {group.title}
+                  </span>
+                  <span
+                    className={`text-[10px] font-bold shrink-0 px-1.5 py-0.5 rounded ${
+                      activeSection === idx
+                        ? "bg-[#C86218]/15 text-[#C86218]"
+                        : "bg-gray-100 text-gray-400"
+                    }`}
+                  >
+                    {group.products.length}
+                  </span>
+                </a>
+              ))}
+            </nav>
+          </div>
+
+          {/* CTA cards */}
+          <button
+            onClick={() => handleOpenEnquiry()}
+            className="w-full bg-[#C86218] hover:bg-[#a74f10] text-white text-[11px] font-bold uppercase tracking-widest py-3.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm shadow-orange-900/20"
+          >
+            <Phone size={13} />
+            Request a Quote
+          </button>
+
+          <div className="bg-white rounded-2xl border border-gray-100 px-5 py-4 shadow-sm">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-3">
+              Need help?
+            </p>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              Our technical team is available to help you select the right
+              lubricant for your application.
+            </p>
+            <Link
+              href="/contact"
+              className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#002b5c] hover:text-[#C86218] transition-colors uppercase tracking-wide"
+            >
+              Contact Us <ChevronRight size={11} />
+            </Link>
+          </div>
+        </aside>
+
+        {/* ── RIGHT CONTENT AREA ── */}
+        <div className="flex-1 min-w-0 flex flex-col gap-8">
+          {subCategoryGroups.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-24 text-center">
+              <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-5">
+                <Droplet size={28} className="text-gray-400" />
+              </div>
+              <p className="text-gray-500 text-sm">
+                No products found in this category.
+              </p>
+            </div>
+          ) : (
+            subCategoryGroups.map((group, idx) => (
+              <section
+                key={idx}
+                id={`subcat-${idx}`}
+                className="scroll-mt-28 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group/card hover:shadow-md hover:border-gray-200 transition-all duration-300"
+              >
+                {/* Section Header */}
+                <div className="flex items-center gap-3 px-5 md:px-7 py-4 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+                  {/* Index badge */}
+                  <div className="w-8 h-8 rounded-xl bg-[#002b5c] text-white text-[11px] font-black flex items-center justify-center shrink-0 shadow-sm">
+                    {String(idx + 1).padStart(2, "0")}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-sm md:text-[15px] font-extrabold text-[#002b5c] uppercase tracking-wide truncate">
+                      {group.title}
+                    </h2>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="inline-flex items-center gap-1 bg-[#002b5c]/8 text-[#002b5c] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">
+                      <Package size={9} />
+                      {group.products.length} Products
+                    </span>
+                    <Link
+                      href={`/products/${categorySlug}/${group.products[0]?.slug || ""}`}
+                      className="hidden sm:inline-flex items-center gap-1 bg-[#C86218] hover:bg-[#a74f10] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full transition-all"
+                    >
+                      View All <ArrowRight size={10} />
+                    </Link>
+                  </div>
+                </div>
+
+                <div className="flex flex-col md:flex-row">
+                  {/* Left: Cover Image Panel — richer with overlay label */}
+                  <div className="md:w-56 lg:w-64 shrink-0 relative bg-gradient-to-br from-[#001e42] via-[#002b5c] to-[#0a4080] flex items-center justify-center p-5 min-h-[200px] overflow-hidden">
+                    {/* Subtle dot pattern */}
+                    <div
+                      className="absolute inset-0 opacity-10"
+                      style={{
+                        backgroundImage:
+                          "radial-gradient(circle, #fff 1px, transparent 1px)",
+                        backgroundSize: "18px 18px",
+                      }}
+                    />
+                    <div className="relative w-full h-44 rounded-2xl overflow-hidden shadow-xl border border-white/10">
+                      <img
+                        src={group.coverImage}
+                        alt={group.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group/card-hover:scale-105"
+                      />
+                      {/* Bottom label overlay */}
+                      <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-3">
+                        <p className="text-white text-[10px] font-bold uppercase tracking-widest truncate">
+                          {group.title}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right: Product Grid */}
+                  <div className="flex-1 p-5 md:p-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2">
+                      {group.products.map((prod, pIdx) => (
+                        <Link
+                          key={prod.id}
+                          href={`/products/${categorySlug}/${prod.slug}`}
+                          className="group/prod relative flex items-center gap-2.5 bg-[#f8f9fb] hover:bg-[#002b5c] text-gray-700 hover:text-white px-3.5 py-2.5 rounded-xl border border-gray-200/80 hover:border-[#002b5c] transition-all duration-200 text-[11px] font-semibold uppercase tracking-tight overflow-hidden"
+                        >
+                          {/* Subtle index number */}
+                          <span className="text-[9px] font-black text-gray-300 group-hover/prod:text-white/30 w-4 shrink-0 transition-colors">
+                            {String(pIdx + 1).padStart(2, "0")}
+                          </span>
+                          <span className="flex-1 truncate leading-snug">
+                            {prod.name}
+                          </span>
+                          <ChevronRight
+                            size={11}
+                            className="shrink-0 text-gray-300 group-hover/prod:text-[#C86218] transition-colors"
+                          />
+                        </Link>
+                      ))}
+                    </div>
+
+                    {/* Mobile: View All */}
+                    <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between sm:justify-end gap-4">
+                      <Link
+                        href={`/products/${categorySlug}/${group.products[0]?.slug || ""}`}
+                        className="sm:hidden inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#C86218] hover:text-[#a74f10] transition-colors"
+                      >
+                        View All <ArrowRight size={11} />
+                      </Link>
+                      <button
+                        onClick={() =>
+                          handleOpenEnquiry(group.products[0]?.name)
+                        }
+                        className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-gray-400 hover:text-[#002b5c] transition-colors"
+                      >
+                        <Phone size={11} /> Enquire
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            ))
+          )}
+        </div>
       </div>
 
       <Footer onOpenEnquiry={handleOpenEnquiry} />
