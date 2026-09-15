@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
@@ -12,7 +12,6 @@ interface ProductsServicesProps {
 export default function ProductsServicesSection({
   onSelectCategory,
 }: ProductsServicesProps) {
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
   const { pages } = useCMSStore();
 
   const cmsSection = pages["home"]?.ProductsServicesSection;
@@ -29,48 +28,65 @@ export default function ProductsServicesSection({
     return null;
   }
 
-  const topRowItems = items.slice(0, 4);
-  const bottomRowItems = items.slice(4);
-
-  const renderProductCard = (item: any, idx: number) => {
+  const renderProductTile = (item: any, idx: number) => {
     const itemId = item.id || item.slug || `cat-${idx}`;
-    const isHovered = hoveredId === itemId;
-    const bgImage = isHovered
-      ? item.hoverImg || item.img
-      : item.img || item.hoverImg;
     const link = item.link || `/products/${item.slug || itemId}`;
+    const name = item.name || item.title;
+    const baseImage = item.img;
+    const hoverImage = item.hoverImg;
 
     return (
       <Link
         key={itemId}
         href={link}
-        onMouseEnter={() => setHoveredId(itemId)}
-        onMouseLeave={() => setHoveredId(null)}
         onClick={() => onSelectCategory && onSelectCategory(itemId)}
-        className="group flex flex-col items-center cursor-pointer transition-transform duration-300 hover:-translate-y-1.5"
+        className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
       >
-        {/* Circular Background Image Box */}
-        {bgImage ? (
-          <div
-            className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-contain bg-no-repeat bg-center transition-all duration-300 drop-shadow-md group-hover:drop-shadow-xl"
-            style={{
-              backgroundImage: `url(${bgImage})`,
-            }}
-          />
-        ) : (
-          <div className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full bg-gradient-to-b from-[#009bf2] to-[#004f9e] transition-all duration-300 drop-shadow-md group-hover:drop-shadow-xl flex items-center justify-center text-white font-bold" />
-        )}
+        {/* Icon Ring Panel */}
+        <div className="flex aspect-square w-full items-center justify-center bg-[#f8fafc] p-6">
+          <div className="relative flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-2 border-[#0C356A]/30 bg-white transition-colors duration-300 sm:h-28 sm:w-28 group-hover:border-[#C86218]">
+            {baseImage ? (
+              <>
+                <img
+                  src={baseImage}
+                  alt={name}
+                  className="h-full w-full rounded-full object-contain p-3 transition-opacity duration-300 group-hover:opacity-0"
+                />
+                {hoverImage && (
+                  <img
+                    src={hoverImage}
+                    alt={name}
+                    className="absolute inset-0 h-full w-full rounded-full object-contain p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                  />
+                )}
+              </>
+            ) : (
+              <span className="text-2xl font-black text-[#0C356A]">
+                {name ? name.charAt(0) : "?"}
+              </span>
+            )}
+          </div>
+        </div>
 
-        {/* Product Name */}
-        <h3 className="mt-2.5 text-sm sm:text-base font-bold text-[#0C356A] group-hover:text-[#C86218] transition-colors text-center">
-          {item.name || item.title}
-        </h3>
+        {/* Name Band */}
+        <div className="flex min-h-[56px] items-center justify-between gap-2 bg-[#0C356A] px-4 py-3 transition-colors duration-300 group-hover:bg-[#C86218] sm:min-h-[64px]">
+          <span className="text-xs font-bold uppercase leading-snug tracking-wide text-white sm:text-sm">
+            {name}
+          </span>
+          <ArrowRight
+            size={14}
+            className="shrink-0 text-white transition-transform duration-300 group-hover:translate-x-1"
+          />
+        </div>
       </Link>
     );
   };
 
   return (
-    <section id="products" className="py-10 sm:py-12 bg-[#f8fafc] text-center font-sans">
+    <section
+      id="products"
+      className="py-10 sm:py-12 bg-[#f8fafc] text-center font-sans"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title with Underline */}
         {title && (
@@ -86,22 +102,13 @@ export default function ProductsServicesSection({
           </p>
         )}
 
-        {/* Row 1: 4 in Top Row */}
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 max-w-4xl mx-auto justify-items-center">
-          {topRowItems.map((item, idx) => renderProductCard(item, idx))}
+        {/* Catalog Tile Grid */}
+        <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6 lg:grid-cols-6">
+          {items.map((item, idx) => renderProductTile(item, idx))}
         </div>
 
-        {/* Row 2: Rest 2 in Bottom Row with Reduced Gap */}
-        {bottomRowItems.length > 0 && (
-          <div className="mt-4 sm:mt-5 flex justify-center items-center gap-10 sm:gap-16 flex-wrap">
-            {bottomRowItems.map((item, idx) =>
-              renderProductCard(item, idx + 4)
-            )}
-          </div>
-        )}
-
         {/* View All Products Button */}
-        <div className="mt-8 text-center">
+        <div className="mt-10 text-center">
           <Link
             href="/products"
             className="inline-flex items-center justify-center gap-2 bg-[#0C356A] hover:bg-[#082142] text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-8 py-3 rounded shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"

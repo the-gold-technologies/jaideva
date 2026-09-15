@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useCMSStore } from '@/store/useCMSStore';
+import React from "react";
+import { useCMSStore } from "@/store/useCMSStore";
 
 export interface TrustedClientItem {
   id?: string | number;
@@ -25,7 +25,8 @@ export default function TrustedClientsSection() {
   }
 
   const title = cmsClientsSection.title || "";
-  const subtitle = cmsClientsSection.subtitle || cmsClientsSection.description || "";
+  const subtitle =
+    cmsClientsSection.subtitle || cmsClientsSection.description || "";
 
   // Multiple clones for seamless infinite looping
   const marqueeClients = [
@@ -40,7 +41,7 @@ export default function TrustedClientsSection() {
       id="trusted-clients"
       className="py-14 bg-[#f8fafc] text-center font-sans overflow-hidden border-t border-b border-gray-200/80"
     >
-      <div className="max-w-7xl mx-auto px-4 mb-8">
+      <div className="max-w-7xl mx-auto px-4 mb-10">
         {/* Section Heading */}
         {title && (
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] uppercase tracking-wide section-underline">
@@ -56,40 +57,33 @@ export default function TrustedClientsSection() {
       </div>
 
       {/* Infinite Horizontal Logo Marquee Container */}
-      <div className="relative w-full overflow-hidden py-4 flex select-none group">
+      <div className="relative w-full overflow-hidden py-2 flex select-none group">
         {/* Left & Right Gradient Fades */}
         <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#f8fafc] to-transparent z-10 pointer-events-none" />
         <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#f8fafc] to-transparent z-10 pointer-events-none" />
 
         {/* Scrolling Flex Track */}
-        <div className="flex gap-6 sm:gap-8 items-center animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
+        <div className="flex gap-5 sm:gap-6 items-stretch animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
           {marqueeClients.map((client, idx) => (
             <div
               key={`${client.id || idx}-${idx}`}
-              className="shrink-0 bg-white border border-gray-200/90 rounded-xl px-4 py-3 shadow-xs hover:shadow-md hover:border-[#C86218]/40 transition-all duration-300 flex items-center gap-3.5 min-w-[220px] sm:min-w-[260px] h-20"
+              className="group/card shrink-0 bg-white border border-gray-200/90 rounded-xl shadow-xs hover:shadow-lg hover:-translate-y-0.5 hover:border-[#C86218]/40 transition-all duration-300 flex flex-col items-center justify-center gap-3 w-[184px] sm:w-[208px] h-28 px-4"
             >
-              {/* Client Logo / Badge Box */}
+              {/* Client Logo */}
               {client.logo && (
-                <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-white border border-gray-100 shadow-xs flex items-center justify-center p-1.5 shrink-0">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-slate-50 ring-1 ring-slate-200 p-2 transition-all duration-300 group-hover/card:ring-[#C86218]/50">
                   <img
                     src={client.logo}
                     alt={client.name}
-                    className="w-full h-full object-contain"
+                    className="h-full w-full object-contain"
                   />
                 </div>
               )}
 
-              {/* Client Name & Category */}
-              <div className="text-left">
-                <h3 className="text-sm sm:text-base font-extrabold text-[#002b5c] tracking-tight leading-tight">
-                  {client.name}
-                </h3>
-                {client.category && (
-                  <p className="text-[11px] font-semibold text-[#C86218] mt-0.5 tracking-wide">
-                    {client.category}
-                  </p>
-                )}
-              </div>
+              {/* Client Name */}
+              <p className="text-sm font-extrabold text-[#002b5c] tracking-tight leading-tight">
+                {client.name}
+              </p>
             </div>
           ))}
         </div>

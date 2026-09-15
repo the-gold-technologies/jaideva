@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
-import HeroSlider from "@/components/HeroSlider";
-import AboutSection from "@/components/AboutSection";
+import HomeHero from "@/components/HomeHero";
+// import AboutSection from "@/components/AboutSection";
 import ProductsServicesSection from "@/components/ProductsServicesSection";
 import MultiBrandSolutionsSection from "@/components/MultiBrandSolutionsSection";
 import IndustriesWeServeSection from "@/components/IndustriesWeServeSection";
@@ -63,11 +63,14 @@ export default function Home() {
         setLanguage={setLanguage}
       />
 
-      {/* 2. Full-Width Visual Hero Slider */}
-      <HeroSlider />
+      {/* 2. Homepage Hero */}
+      <HomeHero
+        onOpenEnquiry={handleOpenEnquiry}
+        onOpenDistributor={handleOpenDistributor}
+      />
 
-      {/* 3. About Section (JAI DEVA OIL CO.) */}
-      <AboutSection />
+      {/* 3. About Section - content moved into the homepage hero */}
+      {/* <AboutSection /> */}
 
       {/* 4. OUR PRODUCT RANGE (Original Circular Icon UI Design) */}
       <ProductsServicesSection onSelectCategory={() => handleOpenEnquiry()} />
