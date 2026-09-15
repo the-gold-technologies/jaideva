@@ -8,7 +8,12 @@ import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
 import DownloadModal from "@/components/DownloadModal";
 import { ArrowLeft, Droplet } from "lucide-react";
-import { useCMSStore, CMSProduct, PageSEO, getHeadingTag } from "@/store/useCMSStore";
+import {
+  useCMSStore,
+  CMSProduct,
+  PageSEO,
+  getHeadingTag,
+} from "@/store/useCMSStore";
 import SEOMeta from "@/components/SEOMeta";
 
 export default function CategoryProductsPage() {
@@ -44,14 +49,24 @@ export default function CategoryProductsPage() {
     if (!products || products.length === 0) return [];
 
     const categoryProducts = products.filter(
-      (p) => !categorySlug || p.categorySlug === categorySlug
+      (p) => !categorySlug || p.categorySlug === categorySlug,
     );
 
-    const groupMap = new Map<string, { title: string; coverImage: string; products: CMSProduct[] }>();
+    const groupMap = new Map<
+      string,
+      { title: string; coverImage: string; products: CMSProduct[] }
+    >();
 
     categoryProducts.forEach((p) => {
-      const subTitle = (p as any).subCategoryTitle || (p as any).subtitle || (category?.name ? `${category.name} Range` : "Featured Products");
-      const cover = (p as any).containerImage || p.coverImage || category?.bannerImage || "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=600";
+      const subTitle =
+        (p as any).subCategoryTitle ||
+        (p as any).subtitle ||
+        (category?.name ? `${category.name} Range` : "Featured Products");
+      const cover =
+        (p as any).containerImage ||
+        p.coverImage ||
+        category?.bannerImage ||
+        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=600";
 
       if (!groupMap.has(subTitle)) {
         groupMap.set(subTitle, {
@@ -77,7 +92,10 @@ export default function CategoryProductsPage() {
     setIsEnquiryOpen(true);
   };
 
-  const categoryName = category?.name || categorySlug?.replace(/-/g, " ").toUpperCase() || "Products";
+  const categoryName =
+    category?.name ||
+    categorySlug?.replace(/-/g, " ").toUpperCase() ||
+    "Products";
   const currentSEO = pageSEO[`products/${categorySlug}`] || pageSEO["products"];
   const categoryTitle = currentSEO?.title || categoryName;
   const categoryDesc = currentSEO?.metaDescription || category?.description;
@@ -206,7 +224,7 @@ export default function CategoryProductsPage() {
               }).map((_, rIdx) => {
                 const rowItems = subCategoryGroups.slice(
                   rIdx * 4,
-                  rIdx * 4 + 4
+                  rIdx * 4 + 4,
                 );
                 return (
                   <div

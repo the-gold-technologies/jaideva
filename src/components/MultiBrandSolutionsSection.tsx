@@ -43,7 +43,10 @@ export default function MultiBrandSolutionsSection() {
   const steps: any[] = Array.isArray(cmsSection.steps) ? cmsSection.steps : [];
 
   return (
-    <section id="solutions" className="py-16 sm:py-20 bg-white border-y border-slate-100 font-sans">
+    <section
+      id="solutions"
+      className="py-16 sm:py-20 bg-white border-y border-slate-100 font-sans"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column: Heading & Company Narrative */}
@@ -51,7 +54,9 @@ export default function MultiBrandSolutionsSection() {
             {badge && (
               <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-extrabold tracking-widest text-[#C86218] uppercase mb-2">
                 <Layers size={16} />
-                <span><FormattedText text={badge} /></span>
+                <span>
+                  <FormattedText text={badge} />
+                </span>
               </div>
             )}
 

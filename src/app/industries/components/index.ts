@@ -1,0 +1,11 @@
+export { default as IndustriesHero } from "./IndustriesHero";
+export { default as IndustryDossierSection } from "./IndustryDossierSection";
+export { default as MachinerySystemsSection } from "./MachinerySystemsSection";
+export { default as PlantServicesSection } from "./PlantServicesSection";
+export { default as MultiBrandAdvantageSection } from "./MultiBrandAdvantageSection";
+export { default as IndustriesConsultationCTA } from "./IndustriesConsultationCTA";
+export { default as IndustryPortfolioBrandsSection } from "./IndustryPortfolioBrandsSection";
+export { default as IndustryInfrastructureWarehouseSection } from "./IndustryInfrastructureWarehouseSection";
+export { default as IndustryMarketsExportSection } from "./IndustryMarketsExportSection";
+export { default as IndustryFactsheetStatutorySection } from "./IndustryFactsheetStatutorySection";
+export { default as IndustryLeadershipCommitmentSection } from "./IndustryLeadershipCommitmentSection";
