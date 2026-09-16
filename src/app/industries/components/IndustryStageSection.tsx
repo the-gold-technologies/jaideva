@@ -50,8 +50,7 @@ export const SECTOR_STAGE_DATA: SectorStageItem[] = [
     icon: Factory,
     plantImage:
       "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80",
-    oilImage:
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
+    oilImage: "/industrial-gear-oil.jpg",
     headline: "Extreme-Heat & Shock-Load Protection",
     promise: "Resists 650°C radiant heat & eliminates bearing seizure",
     operatingCondition: "Temps up to 650°C • Extreme Shock Load • Heavy Mill Scale",
@@ -70,8 +69,7 @@ export const SECTOR_STAGE_DATA: SectorStageItem[] = [
     icon: Building2,
     plantImage:
       "https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?auto=format&fit=crop&w=1200&q=80",
-    oilImage:
-      "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=600&q=80",
+    oilImage: "/oil-drums-warehouse.jpg",
     headline: "Abrasive Clinker Dust & Kiln Heat Resistance",
     promise: "Prevents girth gear pitting and cuts relubrication cycles",
     operatingCondition: "Kiln Drive 220°C • Fine Clinker Abrasives • High Vibration",
@@ -90,8 +88,7 @@ export const SECTOR_STAGE_DATA: SectorStageItem[] = [
     icon: Zap,
     plantImage:
       "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=80",
-    oilImage:
-      "https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=600&q=80",
+    oilImage: "/oil-lab-quality.jpg",
     headline: "Varnish-Free Ultra-Clean Turbine Fluids",
     promise: "20,000+ hour oxidation life with zero servo valve sticking",
     operatingCondition: "Continuous 24/7 Run • Steam Condensation • High Thermal Stress",
@@ -110,8 +107,7 @@ export const SECTOR_STAGE_DATA: SectorStageItem[] = [
     icon: Car,
     plantImage:
       "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=1200&q=80",
-    oilImage:
-      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80",
+    oilImage: "/engine-oil-hero.jpg",
     headline: "Heavy Fleet Efficiency & Press Hydraulics",
     promise: "Maximizes fleet km/L fuel savings and extends oil drains to 80k km",
     operatingCondition: "BS-VI DPF Aftertreatment • 250 Bar Stamping Cycle • Highway Hauls",
@@ -130,8 +126,7 @@ export const SECTOR_STAGE_DATA: SectorStageItem[] = [
     icon: Wrench,
     plantImage:
       "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1200&q=80",
-    oilImage:
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
+    oilImage: "/industrial-gear-oil.jpg",
     headline: "Bio-Stable Coolants & Anti-Chatter Waylubes",
     promise: "Extends tool life by 30% and eliminates slideway stick-slip",
     operatingCondition: "30,000 RPM Spindles • Micro-Tolerances • High Cutting Heat",
@@ -150,8 +145,7 @@ export const SECTOR_STAGE_DATA: SectorStageItem[] = [
     icon: UtensilsCrossed,
     plantImage:
       "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80",
-    oilImage:
-      "https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=600&q=80",
+    oilImage: "/oil-lab-quality.jpg",
     headline: "100% Non-Toxic NSF H1 Certified Lubricants",
     promise: "Guarantees food safety compliance and resists caustic steam washdowns",
     operatingCondition: "Incidental Food Contact • Daily Chemical Washdown • Sub-Zero Freezers",
@@ -170,8 +164,7 @@ export const SECTOR_STAGE_DATA: SectorStageItem[] = [
     icon: Shirt,
     plantImage:
       "https://images.unsplash.com/photo-1574484284002-952d92456975?auto=format&fit=crop&w=1200&q=80",
-    oilImage:
-      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80",
+    oilImage: "/engine-oil-bottles.jpg",
     headline: "Zero-Staining Scourable Needle Oils & Chain Fluids",
     promise: "Prevents fabric oil spots and resists carbonization in 240°C stenter ovens",
     operatingCondition: "1,200 Picks/min • 240°C Stenter Heat • High Lint Atmosphere",

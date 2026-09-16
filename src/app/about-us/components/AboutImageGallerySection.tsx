@@ -24,7 +24,7 @@ const GALLERY_FACILITIES = [
     category: "Warehousing & Inventory",
     desc: "Covered, temperature-regulated depot equipped for high-density storage of 210L barrels, 20L pails, and IBC intermediate bulk containers.",
     badges: ["Batch Segregation", "Spill Containment System"],
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=80",
+    image: "/oil-drums-warehouse.jpg",
     icon: Warehouse,
   },
   {
@@ -44,7 +44,7 @@ const GALLERY_FACILITIES = [
     category: "Quality Control",
     desc: "Verification protocols ensuring every supplied barrel matches OEM specifications, viscosity standards, and valid refinery test certificates.",
     badges: ["OEM Specification Checks", "Sealed Batch Integrity"],
-    image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80",
+    image: "/oil-lab-quality.jpg",
     icon: ShieldCheck,
   },
   {
@@ -54,7 +54,7 @@ const GALLERY_FACILITIES = [
     category: "Distribution Logistics",
     desc: "Logistics infrastructure ensuring on-schedule delivery across manufacturing clusters, power plants, and automotive workshops in 40+ cities.",
     badges: ["Fast Dispatch Routes", "Zero In-Transit Contamination"],
-    image: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1000&q=80",
+    image: "/oil-fleet-logistics.jpg",
     icon: Truck,
   },
 ];

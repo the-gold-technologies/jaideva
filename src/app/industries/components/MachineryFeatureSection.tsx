@@ -13,8 +13,7 @@ const SYSTEMS = [
     icon: Cog,
     title: "Heavy Industrial Gearboxes",
     spec: "ISO VG 150 to 680 • FVA 54 Certified",
-    image:
-      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=80",
+    image: "/industrial-gear-oil.jpg",
     desc: "Formulated with sulfur-phosphorus EP chemistry to eliminate gear tooth micropitting in continuous planetary and helical drives.",
     oilHighlight: "HP Parthan EP / Mobilgear 600 XP / Omala S2 G",
     benefits: [
@@ -28,8 +27,7 @@ const SYSTEMS = [
     icon: Gauge,
     title: "High-Pressure Hydraulic Systems",
     spec: "ISO VG 32, 46, 68 • DIN 51524 HLP/HVLP",
-    image:
-      "https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?auto=format&fit=crop&w=1000&q=80",
+    image: "/oil-drums-warehouse.jpg",
     desc: "Engineered for high-flow proportional servo valves with ultra-rapid air release and sub-3-micron filterability.",
     oilHighlight: "HP Enklo / Mobil DTE 10 Excel / Tellus S2 MX",
     benefits: [
@@ -43,8 +41,7 @@ const SYSTEMS = [
     icon: Wind,
     title: "Turbines & Rotary Compressors",
     spec: "Non-Zinc Ashless • 20,000+ Hour Drain",
-    image:
-      "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1000&q=80",
+    image: "/oil-lab-quality.jpg",
     desc: "Ashless non-zinc formulation delivering extreme oxidation resistance and zero lacquer formation across high-speed rotating shafts.",
     oilHighlight: "HP Turbinol / Mobil DTE 700 / Rarus 427",
     benefits: [
@@ -58,8 +55,7 @@ const SYSTEMS = [
     icon: Disc,
     title: "Heavy Bearings & Open Girth Gears",
     spec: "NLGI 1, 2, 3 • High-Temp Synthetic Base",
-    image:
-      "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=1000&q=80",
+    image: "/industrial-gear-oil.jpg",
     desc: "Heavy calcium sulfonate and polyurea greases with solid MoS2 for kiln hoods, vibrating screens, and heavy crusher bearings.",
     oilHighlight: "Molygraph Ultra / Mobilith SHC / Gadus S2",
     benefits: [

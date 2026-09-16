@@ -1,7 +1,17 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Facebook, Youtube, Instagram, Mail, Linkedin, Twitter } from "lucide-react";
+import Link from "next/link";
+import {
+  Facebook,
+  Youtube,
+  Instagram,
+  Mail,
+  Linkedin,
+  Twitter,
+  MapPin,
+  Phone,
+} from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 
 interface FooterProps {
@@ -9,137 +19,175 @@ interface FooterProps {
 }
 
 export default function Footer({ onOpenEnquiry }: FooterProps) {
-  const { globalSEO, fetchGlobalSEO } = useCMSStore();
+  const { globalSEO, fetchGlobalSEO, pages, fetchPage } = useCMSStore();
 
   useEffect(() => {
     fetchGlobalSEO().catch(console.error);
-  }, [fetchGlobalSEO]);
+    fetchPage("contact-us").catch(console.error);
+  }, [fetchGlobalSEO, fetchPage]);
 
   const socialLinks: any = globalSEO?.socialLinks || {};
-  const hpclBadge = socialLinks.hpclBadge || "";
-  const indiaGovBadge = socialLinks.indiaGovBadge || "";
-  const globalCompactBadge = socialLinks.globalCompactBadge || "";
-  const copyrightText = socialLinks.copyrightText || "";
+  const copyrightText =
+    socialLinks.copyrightText ||
+    `© ${new Date().getFullYear()} Jai Deva Oil Co. All rights reserved.`;
+
+  const contactHeadquarter = pages["contact-us"]?.ContactHeadquarter || {};
+  const companyPhone =
+    contactHeadquarter.phone || globalSEO?.phone || "+91 98120 22340";
+  const companyEmail =
+    contactHeadquarter.email || globalSEO?.email || "sales@jaideva.com";
+  const companyAddress =
+    contactHeadquarter.address ||
+    globalSEO?.address ||
+    "Industrial Area & Regional Distribution Hub, Haryana / Delhi NCR, India";
+  const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
+
+  const quickLinks = [
+    { name: "Products", href: "/products" },
+    { name: "Brands", href: "/brands" },
+    { name: "Industries", href: "/industries" },
+  ];
 
   return (
     <>
-      {/* Dark Navy Footer matching original site */}
-      <footer className="bg-[#002749] text-white py-5 px-4 sm:px-8 border-t border-[#002b5c]">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs sm:text-sm font-medium">
-          {/* Left Copyright */}
-          {copyrightText && (
-            <div className="text-center md:text-left">
-              <p>{copyrightText}</p>
-            </div>
-          )}
-
-          {/* Middle Links */}
-          <div className="flex items-center gap-8 text-white">
-            <a href="/sitemap.xml" className="underline hover:text-gray-300 transition">
-              Site Map
-            </a>
-            <a href="/privacy-policy" className="underline hover:text-gray-300 transition">
-              Privacy Policy
-            </a>
-          </div>
-
-          {/* Official Partner Badges */}
-          {(hpclBadge || indiaGovBadge || globalCompactBadge) && (
-            <div className="flex items-center gap-3 mr-8">
-              {/* HPCL Logo */}
-              {hpclBadge && (
-                <div className="bg-white rounded p-1.5 shadow-xs flex items-center justify-center">
+      <footer className="bg-[#002242] text-white pt-12 pb-6 border-t border-[#003366] font-sans">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-white/10 items-start">
+            {/* 1. LOGO & Social Media */}
+            <div className="md:col-span-5 space-y-5">
+              <Link href="/" className="inline-block">
+                <div className="bg-white rounded-xl p-2.5 inline-flex items-center shadow-md">
                   <img
-                    src={hpclBadge}
-                    alt="HPCL Logo"
-                    className="h-[69px] w-auto object-contain"
+                    src={logoSrc}
+                    alt="Jai Deva Oil Co."
+                    className="h-10 w-auto object-contain"
                   />
                 </div>
-              )}
+              </Link>
 
-              {/* India.gov.in and UN Global Compact Badges */}
-              {(indiaGovBadge || globalCompactBadge) && (
-                <div className="flex flex-col gap-2">
-                  {indiaGovBadge && (
-                    <div className="bg-white rounded px-3 py-1.5 shadow-xs flex items-center justify-center">
-                      <img
-                        src={indiaGovBadge}
-                        alt="india.gov.in"
-                        className="h-6 w-auto object-contain"
-                      />
-                    </div>
-                  )}
-                  {globalCompactBadge && (
-                    <div className="bg-white rounded px-3 py-1.5 shadow-xs flex items-center justify-center">
-                      <img
-                        src={globalCompactBadge}
-                        alt="UN Global Compact"
-                        className="h-6 w-auto object-contain"
-                      />
-                    </div>
-                  )}
+              {/* Social Media */}
+              <div>
+                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+                  Social Media
                 </div>
-              )}
+                <div className="flex items-center gap-2">
+                  <a
+                    href={socialLinks.facebook || "https://facebook.com"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#3b5998] flex items-center justify-center text-white transition-colors"
+                    aria-label="Facebook"
+                  >
+                    <Facebook size={16} />
+                  </a>
+                  <a
+                    href={socialLinks.linkedin || "https://linkedin.com"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#0077b5] flex items-center justify-center text-white transition-colors"
+                    aria-label="LinkedIn"
+                  >
+                    <Linkedin size={16} />
+                  </a>
+                  <a
+                    href={socialLinks.youtube || "https://youtube.com"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#ff0000] flex items-center justify-center text-white transition-colors"
+                    aria-label="YouTube"
+                  >
+                    <Youtube size={16} />
+                  </a>
+                  <a
+                    href={socialLinks.instagram || "https://instagram.com"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#e4405f] flex items-center justify-center text-white transition-colors"
+                    aria-label="Instagram"
+                  >
+                    <Instagram size={16} />
+                  </a>
+                  <a
+                    href={socialLinks.twitter || "https://twitter.com"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#1da1f2] flex items-center justify-center text-white transition-colors"
+                    aria-label="Twitter"
+                  >
+                    <Twitter size={16} />
+                  </a>
+                </div>
+              </div>
             </div>
-          )}
 
-          {/* Social Media Circular Buttons */}
-          <div className="flex items-center gap-2.5">
-            {socialLinks.facebook && (
-              <a
-                href={socialLinks.facebook}
-                target="_blank"
-                rel="noreferrer"
-                className="w-9 h-9 rounded-full bg-[#3b5998] flex items-center justify-center text-white hover:opacity-90 transition shadow-xs"
-                aria-label="Facebook"
-              >
-                <Facebook size={18} />
+            {/* 2. Quick Links: Products, Brands, Industries */}
+            <div className="md:col-span-3 space-y-3">
+              <h4 className="text-sm font-black text-white uppercase tracking-wider border-l-2 border-[#C86218] pl-2.5">
+                Quick Links
+              </h4>
+              <ul className="space-y-2.5 text-sm">
+                {quickLinks.map((link, idx) => (
+                  <li key={idx}>
+                    <Link
+                      href={link.href}
+                      className="text-slate-300 hover:text-[#F4B24D] transition-colors flex items-center gap-1.5"
+                    >
+                      <span className="text-[#C86218] text-xs">›</span>
+                      <span>{link.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* 3. Contact Details */}
+            <div className="md:col-span-4 space-y-3">
+              <h4 className="text-sm font-black text-white uppercase tracking-wider border-l-2 border-[#C86218] pl-2.5">
+                Contact Details
+              </h4>
+              <div className="space-y-2.5 text-sm text-slate-300">
+                <div className="flex items-start gap-2.5">
+                  <MapPin size={16} className="text-[#C86218] shrink-0 mt-0.5" />
+                  <span className="leading-snug text-xs sm:text-sm">{companyAddress}</span>
+                </div>
+
+                <div className="flex items-center gap-2.5">
+                  <Phone size={16} className="text-[#C86218] shrink-0" />
+                  <a
+                    href={`tel:${companyPhone.replace(/\s+/g, "")}`}
+                    className="hover:text-white font-medium transition-colors text-xs sm:text-sm"
+                  >
+                    {companyPhone}
+                  </a>
+                </div>
+
+                <div className="flex items-center gap-2.5">
+                  <Mail size={16} className="text-[#C86218] shrink-0" />
+                  <a
+                    href={`mailto:${companyEmail}`}
+                    className="hover:text-white transition-colors text-xs sm:text-sm"
+                  >
+                    {companyEmail}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+            <p>{copyrightText}</p>
+            <div className="flex items-center gap-6">
+              <Link href="/privacy-policy" className="hover:text-white transition-colors">
+                Privacy Policy
+              </Link>
+              <a href="/sitemap.xml" className="hover:text-white transition-colors">
+                Site Map
               </a>
-            )}
-            {socialLinks.youtube && (
-              <a
-                href={socialLinks.youtube}
-                target="_blank"
-                rel="noreferrer"
-                className="w-9 h-9 rounded-full bg-[#ff0000] flex items-center justify-center text-white hover:opacity-90 transition shadow-xs"
-                aria-label="YouTube"
-              >
-                <Youtube size={18} />
-              </a>
-            )}
-            {socialLinks.instagram && (
-              <a
-                href={socialLinks.instagram}
-                target="_blank"
-                rel="noreferrer"
-                className="w-9 h-9 rounded-full bg-[#e4405f] flex items-center justify-center text-white hover:opacity-90 transition shadow-xs"
-                aria-label="Instagram"
-              >
-                <Instagram size={18} />
-              </a>
-            )}
-            {socialLinks.linkedin && (
-              <a
-                href={socialLinks.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="w-9 h-9 rounded-full bg-[#0077b5] flex items-center justify-center text-white hover:opacity-90 transition shadow-xs"
-                aria-label="LinkedIn"
-              >
-                <Linkedin size={18} />
-              </a>
-            )}
-            {socialLinks.twitter && (
-              <a
-                href={socialLinks.twitter}
-                target="_blank"
-                rel="noreferrer"
-                className="w-9 h-9 rounded-full bg-[#1da1f2] flex items-center justify-center text-white hover:opacity-90 transition shadow-xs"
-                aria-label="Twitter"
-              >
-                <Twitter size={18} />
-              </a>
-            )}
+              <Link href="/contact-us" className="hover:text-white transition-colors">
+                Contact Us
+              </Link>
+            </div>
           </div>
         </div>
       </footer>

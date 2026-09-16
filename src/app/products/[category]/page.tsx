@@ -75,7 +75,7 @@ export default function CategoryProductsPage() {
         (p as any).containerImage ||
         p.coverImage ||
         category?.bannerImage ||
-        "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&q=80&w=600";
+        "/engine-oil-bottles.jpg";
 
       if (!groupMap.has(subTitle)) {
         groupMap.set(subTitle, {
