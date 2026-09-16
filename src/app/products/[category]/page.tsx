@@ -239,7 +239,7 @@ export default function CategoryProductsPage() {
               lubricant for your application.
             </p>
             <Link
-              href="/contact"
+              href="/contact-us"
               className="mt-3 inline-flex items-center gap-1 text-[11px] font-bold text-[#002b5c] hover:text-[#C86218] transition-colors uppercase tracking-wide"
             >
               Contact Us <ChevronRight size={11} />

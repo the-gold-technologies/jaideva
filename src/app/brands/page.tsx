@@ -53,11 +53,11 @@ export default function BrandsPage() {
       {/* 2. Key Industry Statistics Band */}
       <BrandsStatsBand />
 
-      {/* 3. 10-Brand Portfolio Showcase with Per-Brand Images & Filtering */}
-      <BrandsShowcaseSection onOpenEnquiry={handleOpenEnquiry} />
-
-      {/* 4. Brand Value Pillars */}
+      {/* 3. Brand Value Pillars */}
       <BrandsPillarsSection />
+
+      {/* 4. 10-Brand Portfolio Showcase with Per-Brand Images & Filtering */}
+      <BrandsShowcaseSection onOpenEnquiry={handleOpenEnquiry} />
 
       {/* 5. Product Categories Spectrum */}
       <BrandsProductCategoriesSection />

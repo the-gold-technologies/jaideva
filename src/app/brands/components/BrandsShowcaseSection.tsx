@@ -27,8 +27,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Authorized Industrial Partner",
     category: "Industrial",
     desc: "Complete public sector refinery backing with extensive ISO VG hydraulic, turbine, compressor, and machinery lubricants.",
-    highlights: ["Enklo Hydraulic Oils", "Parthan Gear Fluids", "Turbinol Turbine Oils"],
-    image: "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "Enklo Hydraulic Oils",
+      "Parthan Gear Fluids",
+      "Turbinol Turbine Oils",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80",
     application: "Heavy Manufacturing, Power Plants & Steel Mills",
   },
   {
@@ -37,8 +42,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Automotive & Heavy Duty",
     category: "Automotive",
     desc: "World-renowned engine oils, gear fluids, and coolants engineered for long drain intervals, fleet durability, and severe duty cycles.",
-    highlights: ["All-Fleet Premium Engine Oils", "Heavy-Duty Gear Oils", "Long-Life Coolants"],
-    image: "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "All-Fleet Premium Engine Oils",
+      "Heavy-Duty Gear Oils",
+      "Long-Life Coolants",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1486006920555-c77dce18193b?auto=format&fit=crop&w=800&q=80",
     application: "Commercial Fleets, Heavy Earthmoving & Transport",
   },
   {
@@ -47,8 +57,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Kixx Synthetic Range",
     category: "Automotive",
     desc: "Advanced Group II/III base oil formulations delivering peak thermal oxidation resistance and fuel efficiency for modern engines.",
-    highlights: ["Kixx HDX CK-4 Engine Oils", "Hydro HD Hydraulic", "Thermic Heat Transfer"],
-    image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "Kixx HDX CK-4 Engine Oils",
+      "Hydro HD Hydraulic",
+      "Thermic Heat Transfer",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
     application: "Modern Logistics, Construction & Turbocharged Fleets",
   },
   {
@@ -57,9 +72,15 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Precision Japanese OEM Tech",
     category: "Specialty",
     desc: "Engineered to demanding Japanese OEM tolerances, delivering ultra-low viscosity performance and friction reduction.",
-    highlights: ["Daphne Precision Series", "High-Speed Spindle Oils", "Low-Ash Engine Formulations"],
-    image: "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80",
-    application: "Japanese Machinery, High-Speed Spindles & Precision Automation",
+    highlights: [
+      "Daphne Precision Series",
+      "High-Speed Spindle Oils",
+      "Low-Ash Engine Formulations",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80",
+    application:
+      "Japanese Machinery, High-Speed Spindles & Precision Automation",
   },
   {
     id: "molygraph",
@@ -67,8 +88,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Specialty Greases & Compounds",
     category: "Specialty",
     desc: "High-temperature, extreme-pressure, and water-resistant synthetic greases designed for zero unscheduled plant stoppage.",
-    highlights: ["Molylube Ultra High Temp", "Open Gear Compounds", "Anti-Seize Pastes"],
-    image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "Molylube Ultra High Temp",
+      "Open Gear Compounds",
+      "Anti-Seize Pastes",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
     application: "Cement Kilns, Steel Mill Bearings & Mining Machinery",
   },
   {
@@ -77,8 +103,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "High-Performance Fluids",
     category: "Industrial",
     desc: "Specialized French industrial division delivering high-performance metal transformation, dielectric fluids, and quench oils.",
-    highlights: ["Thermocool Heat Transfer", "Supracool CNC Emulsions", "Safco Clean Degreasers"],
-    image: "https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "Thermocool Heat Transfer",
+      "Supracool CNC Emulsions",
+      "Safco Clean Degreasers",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=800&q=80",
     application: "Automotive Component Die-Casting & Heat Treatment",
   },
   {
@@ -87,8 +118,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Compressor & Air Line Oils",
     category: "Industrial",
     desc: "Formulated specifically for rotary screw, reciprocating, and vane air compressors ensuring carbon-free valve performance.",
-    highlights: ["Screw Compressor Oils 46/68", "Pneumatic Tool Lubes", "Synthetic 8000h Drain Fluids"],
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "Screw Compressor Oils 46/68",
+      "Pneumatic Tool Lubes",
+      "Synthetic 8000h Drain Fluids",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=800&q=80",
     application: "Compressed Air Plants, Textile Looms & Packaging Lines",
   },
   {
@@ -97,8 +133,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Custom Industrial Formulations",
     category: "Industrial",
     desc: "Tailored industrial blends meeting custom viscosity and anti-wear standards across manufacturing and processing plants.",
-    highlights: ["Custom Blend Hydraulics", "Slideway ISO 68/220", "Heavy Circulating Oils"],
-    image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "Custom Blend Hydraulics",
+      "Slideway ISO 68/220",
+      "Heavy Circulating Oils",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80",
     application: "Custom Factory Equipment & Secondary Processing Mills",
   },
   {
@@ -107,8 +148,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Advanced Metalworking Solutions",
     category: "Metalworking",
     desc: "State-of-the-art semi-synthetic and neat cutting oils delivering extended tool life, superior surface finish, and biostability.",
-    highlights: ["Bio-Stable Soluble Coolants", "Neat Honing & Broaching Oils", "Rust Preventives (Dewatering)"],
-    image: "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "Bio-Stable Soluble Coolants",
+      "Neat Honing & Broaching Oils",
+      "Rust Preventives (Dewatering)",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=800&q=80",
     application: "CNC Machining Centers, Lathes, Grinding & Tooling",
   },
   {
@@ -117,8 +163,13 @@ export const BRAND_SHOWCASE: BrandItem[] = [
     badge: "Mist Extraction & Plant Care",
     category: "Metalworking",
     desc: "Clean plant air solutions capturing oil mist at source to protect machine electronics, operators, and workplace safety.",
-    highlights: ["Oil Mist Extraction Units", "After-Filters & Ducting", "Spindle Cooling Accessories"],
-    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+    highlights: [
+      "Oil Mist Extraction Units",
+      "After-Filters & Ducting",
+      "Spindle Cooling Accessories",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
     application: "Enclosed CNC Cabinets, Machine Shops & Clean Workshops",
   },
 ];
@@ -127,7 +178,9 @@ interface BrandsShowcaseProps {
   onOpenEnquiry?: (subject?: string) => void;
 }
 
-export default function BrandsShowcaseSection({ onOpenEnquiry }: BrandsShowcaseProps) {
+export default function BrandsShowcaseSection({
+  onOpenEnquiry,
+}: BrandsShowcaseProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   const filteredBrands = useMemo(() => {
@@ -136,7 +189,10 @@ export default function BrandsShowcaseSection({ onOpenEnquiry }: BrandsShowcaseP
   }, [selectedCategory]);
 
   return (
-    <section id="brand-showcase" className="py-20 bg-slate-50 border-b border-slate-200">
+    <section
+      id="brand-showcase"
+      className="py-20 bg-slate-50 border-b border-slate-200"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-200">
@@ -148,14 +204,21 @@ export default function BrandsShowcaseSection({ onOpenEnquiry }: BrandsShowcaseP
               Leading Industrial & Automotive Brands
             </h2>
             <p className="mt-3 text-base text-slate-600 leading-relaxed">
-              Explore our curated portfolio of 10 industry-defining lubrication and workshop brands.
-              Every brand is backed by technical documentation, direct refinery channels, and stock availability.
+              Explore our curated portfolio of 10 industry-defining lubrication
+              and workshop brands. Every brand is backed by technical
+              documentation, direct refinery channels, and stock availability.
             </p>
           </div>
 
           {/* Category Filter Pills */}
           <div className="flex flex-wrap items-center gap-2">
-            {["All", "Industrial", "Automotive", "Metalworking", "Specialty"].map((cat) => {
+            {[
+              "All",
+              "Industrial",
+              "Automotive",
+              "Metalworking",
+              "Specialty",
+            ].map((cat) => {
               const isActive = selectedCategory === cat;
               return (
                 <button
@@ -168,7 +231,9 @@ export default function BrandsShowcaseSection({ onOpenEnquiry }: BrandsShowcaseP
                       : "bg-white text-slate-600 border border-slate-200 hover:border-[#C86218] hover:text-[#0C356A]"
                   }`}
                 >
-                  {cat === "All" ? `All Brands (${BRAND_SHOWCASE.length})` : cat}
+                  {cat === "All"
+                    ? `All Brands (${BRAND_SHOWCASE.length})`
+                    : cat}
                 </button>
               );
             })}
@@ -216,7 +281,8 @@ export default function BrandsShowcaseSection({ onOpenEnquiry }: BrandsShowcaseP
                 <div>
                   {/* Primary Application */}
                   <div className="mb-3 text-[11px] font-bold text-slate-500 uppercase tracking-wide">
-                    <span className="text-[#C86218]">Ideal For:</span> {brand.application}
+                    <span className="text-[#C86218]">Ideal For:</span>{" "}
+                    {brand.application}
                   </div>
 
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -246,52 +312,22 @@ export default function BrandsShowcaseSection({ onOpenEnquiry }: BrandsShowcaseP
                 <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
                   <button
                     type="button"
-                    onClick={() => onOpenEnquiry && onOpenEnquiry(`${brand.name} Supply Enquiry`)}
+                    onClick={() =>
+                      onOpenEnquiry &&
+                      onOpenEnquiry(`${brand.name} Supply Enquiry`)
+                    }
                     className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#0C356A] group-hover:bg-[#C86218] px-4 py-2.5 text-xs font-black uppercase tracking-wider text-white transition-colors duration-200"
                   >
                     <span>Enquire For {brand.name}</span>
-                    <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                    <ArrowRight
+                      size={14}
+                      className="transition-transform group-hover:translate-x-1"
+                    />
                   </button>
                 </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Bottom Trust Guarantee Card */}
-        <div className="mt-14 rounded-3xl bg-[#071f3b] text-white p-8 sm:p-10 border border-white/10 shadow-xl relative overflow-hidden">
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#F4B24D] mb-2">
-                <ShieldCheck size={16} /> 100% Guaranteed Genuine Formulations
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
-                Looking for a Specific Brand or Custom Viscosity Grade?
-              </h3>
-              <p className="mt-3 text-sm text-slate-300 leading-relaxed">
-                Jai Deva Oil Co. holds supply agreements and procurement credentials with major oil marketing companies.
-                We provide original factory batch test certificates, MSDS sheets, and technical data sheets for all supplied products.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
-              <button
-                type="button"
-                onClick={() => onOpenEnquiry && onOpenEnquiry("Technical Data Sheet & Quotation")}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#C86218] hover:bg-[#a94e0e] px-6 py-3.5 text-xs font-black uppercase tracking-wider text-white transition-colors shadow-lg"
-              >
-                <Droplets size={15} />
-                <span>Request TDS / MSDS</span>
-              </button>
-              <a
-                href="tel:+919810000000"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 hover:bg-white/15 px-6 py-3.5 text-xs font-black uppercase tracking-wider text-white transition-colors"
-              >
-                <PhoneCall size={15} />
-                <span>Direct Sales Desk</span>
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </section>
