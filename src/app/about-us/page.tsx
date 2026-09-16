@@ -49,7 +49,7 @@ export default function AboutUsPage() {
       />
 
       {/* Top Hero Banner (Full-Width) */}
-      <AboutHero />
+      <AboutHero onOpenEnquiry={handleOpenEnquiry} />
 
       {/* Breadcrumb Bar */}
       <AboutBreadcrumb currentPage="About Us" />

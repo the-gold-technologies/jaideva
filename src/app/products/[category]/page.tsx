@@ -144,10 +144,16 @@ export default function CategoryProductsPage() {
   const categoryTitle = currentSEO?.title || categoryName;
   const categoryDesc = currentSEO?.metaDescription || category?.description;
   const HeadingTag = getHeadingTag(currentSEO?.headingOptions, "h1");
-  const heroImage =
-    matchedBrand?.heroImage ||
+  const heroImage = matchedBrand?.heroImage || "/oil-drums-warehouse.jpg";
+  const heroProduct =
+    matchedBrand?.categories[0]?.products[0] ||
+    subCategoryGroups[0]?.products[0];
+  const heroProductImage =
+    heroProduct?.coverImage ||
+    matchedBrand?.categories[0]?.coverImage ||
     subCategoryGroups[0]?.coverImage ||
-    "/engine-oil-hero.jpg";
+    "/engine-oil-bottles.jpg";
+  const heroProductName = heroProduct?.name || categoryName;
   const heroDescription = matchedBrand?.about || categoryDesc;
 
   return (
@@ -167,13 +173,13 @@ export default function CategoryProductsPage() {
       <section className="relative isolate overflow-hidden bg-[#071f3b] text-white">
         <img
           src={heroImage}
-          alt={matchedBrand?.name || categoryName}
-          className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+          alt=""
+          className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
         />
-        <div className="absolute inset-0 -z-10 bg-[#071f3b]/50" />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#071f3b]/90 via-[#071f3b]/80 to-[#071f3b]/70" />
+        <div className="pointer-events-none absolute inset-0 bg-[#071f3b]/50" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#071f3b]/90 via-[#071f3b]/80 to-[#071f3b]/70" />
 
-        <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-8 pb-12 md:pt-10 md:pb-16">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 pt-8 pb-12 md:pt-10 md:pb-16">
           <nav className="flex items-center gap-1.5 text-[11px] text-blue-200/80 mb-8 font-medium tracking-wide">
             <Link href="/" className="hover:text-white transition-colors">
               Home
@@ -189,40 +195,68 @@ export default function CategoryProductsPage() {
             <span className="text-[#F4B24D] font-semibold">{categoryName}</span>
           </nav>
 
-          <div className="max-w-3xl">
-            <HeadingTag className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-[1.08] text-white">
-              {matchedBrand?.name || categoryTitle}
-            </HeadingTag>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-7">
+              <HeadingTag className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-[1.08] text-white">
+                {matchedBrand?.name || categoryTitle}
+              </HeadingTag>
 
-            {matchedBrand?.tagline && (
-              <p className="mt-3 text-base md:text-lg font-semibold text-[#F4B24D]">
-                {matchedBrand.tagline}
-              </p>
-            )}
-
-            {heroDescription && (
-              <p className="mt-4 text-sm md:text-base leading-7 text-slate-200 max-w-2xl">
-                {heroDescription}
-              </p>
-            )}
-
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <button
-                type="button"
-                onClick={() => handleOpenEnquiry()}
-                className="inline-flex items-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-[#C86218]/25 transition hover:bg-[#A74D0E]"
-              >
-                <Phone size={13} />
-                Request a Quote
-              </button>
-              {subCategoryGroups.length > 0 && (
-                <a
-                  href="#subcat-0"
-                  className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b]"
-                >
-                  Browse range <ArrowRight size={12} />
-                </a>
+              {matchedBrand?.tagline && (
+                <p className="mt-3 text-base md:text-lg font-semibold text-[#F4B24D]">
+                  {matchedBrand.tagline}
+                </p>
               )}
+
+              {heroDescription && (
+                <p className="mt-4 text-sm md:text-base leading-7 text-slate-200 max-w-2xl">
+                  {heroDescription}
+                </p>
+              )}
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleOpenEnquiry()}
+                  className="inline-flex items-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-[#C86218]/25 transition hover:bg-[#A74D0E]"
+                >
+                  <Phone size={13} />
+                  Request a Quote
+                </button>
+                {subCategoryGroups.length > 0 && (
+                  <a
+                    href="#subcat-0"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document
+                        .getElementById("subcat-0")
+                        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                    className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b]"
+                  >
+                    Browse range <ArrowRight size={12} />
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <div className="lg:col-span-5">
+              <div className="relative mx-auto max-w-sm lg:max-w-none">
+                <div className="rounded-2xl overflow-hidden border border-white/20 bg-white/10 shadow-2xl">
+                  <img
+                    src={heroProductImage}
+                    alt={heroProductName}
+                    className="w-full h-56 md:h-72 object-cover object-center"
+                  />
+                  <div className="px-4 py-3 bg-[#071f3b]/80 backdrop-blur-sm">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-[#F4B24D]">
+                      Featured product
+                    </p>
+                    <p className="mt-0.5 text-sm font-extrabold uppercase tracking-wide text-white truncate">
+                      {heroProductName}
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

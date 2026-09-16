@@ -183,11 +183,7 @@ const DEFAULT_PARAGRAPHS = [
 
 export default function AboutJaiDevaContent() {
   const { pages, pageSEO } = useCMSStore();
-  const cmsStory = pages["about-us"]?.AboutJaiDevaContent;
-
-  if (!cmsStory) {
-    return null;
-  }
+  const cmsStory = pages["about-us"]?.AboutJaiDevaContent || {};
 
   const title = cmsStory.title || DEFAULT_TITLE;
   const subtitle = cmsStory.subtitle || DEFAULT_SUBTITLE;
@@ -216,7 +212,10 @@ export default function AboutJaiDevaContent() {
   const HeadingTag = getHeadingTag(pageSEO["about-us"]?.headingOptions, "h1");
 
   return (
-    <section className="max-w-6xl mx-auto px-4 md:px-8 py-10 md:py-14 font-sans">
+    <section
+      id="about-story"
+      className="max-w-6xl mx-auto px-4 md:px-8 py-10 md:py-14 font-sans scroll-mt-24"
+    >
       {/* Main Section Header */}
       {title && (
         <HeadingTag className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0C356A] tracking-tight uppercase mb-3 border-b-2 border-gray-100 pb-4">
