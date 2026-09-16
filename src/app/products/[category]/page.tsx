@@ -13,21 +13,16 @@ import {
   ArrowRight,
   Package,
   Phone,
-  Download,
   Layers,
 } from "lucide-react";
-import {
-  useCMSStore,
-  CMSProduct,
-  PageSEO,
-  getHeadingTag,
-} from "@/store/useCMSStore";
+import { useCMSStore, CMSProduct, getHeadingTag } from "@/store/useCMSStore";
 import SEOMeta from "@/components/SEOMeta";
+import { BRAND_PRODUCTS, BrandData } from "@/data/brandProductsData";
 
 export default function CategoryProductsPage() {
   const params = useParams();
   const [activeSection, setActiveSection] = useState<number>(0);
-  const categorySlug = params?.category as string;
+  const categorySlug = (params?.category as string) || "hp-lubricants";
 
   const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);
   const [language, setLanguage] = useState<"EN" | "HI">("EN");
@@ -47,14 +42,53 @@ export default function CategoryProductsPage() {
     }
   }, [categorySlug, fetchProducts]);
 
-  // Current category from CMS store
+  // Match brand from BRAND_PRODUCTS data
+  const matchedBrand: BrandData | undefined = useMemo(() => {
+    const direct = BRAND_PRODUCTS.find((b) => b.id === categorySlug);
+    if (direct) return direct;
+
+    const byCat = BRAND_PRODUCTS.find((b) =>
+      b.categories.some((c) => c.slug === categorySlug),
+    );
+    if (byCat) return byCat;
+
+    if (categorySlug === "industrial-oils") return BRAND_PRODUCTS[0];
+    return undefined;
+  }, [categorySlug]);
+
+  // Current category from CMS store (fallback)
   const category = useMemo(() => {
+    if (matchedBrand) {
+      return {
+        id: matchedBrand.id,
+        name: matchedBrand.name,
+        slug: matchedBrand.id,
+        description: matchedBrand.about,
+      };
+    }
     if (!productCategories) return null;
     return productCategories.find((c) => c.slug === categorySlug) || null;
-  }, [productCategories, categorySlug]);
+  }, [productCategories, categorySlug, matchedBrand]);
 
-  // Filter and group products dynamically from CMS
+  // Filter and group products dynamically (from brand if matched, else CMS)
   const subCategoryGroups = useMemo(() => {
+    if (matchedBrand) {
+      return matchedBrand.categories.map((cat) => ({
+        title: cat.name,
+        coverImage: cat.coverImage,
+        products: cat.products.map((p) => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          categorySlug: categorySlug,
+          subCategoryTitle: cat.name,
+          coverImage: p.coverImage,
+          containerImage: p.coverImage,
+          description: p.description,
+        })) as unknown as CMSProduct[],
+      }));
+    }
+
     if (!products || products.length === 0) return [];
 
     const categoryProducts = products.filter(
@@ -105,10 +139,16 @@ export default function CategoryProductsPage() {
     category?.name ||
     categorySlug?.replace(/-/g, " ").toUpperCase() ||
     "Products";
-  const currentSEO = pageSEO[`products/${categorySlug}`] || pageSEO["products"];
+  const currentSEO =
+    pageSEO?.[`products/${categorySlug}`] || pageSEO?.["products"];
   const categoryTitle = currentSEO?.title || categoryName;
   const categoryDesc = currentSEO?.metaDescription || category?.description;
   const HeadingTag = getHeadingTag(currentSEO?.headingOptions, "h1");
+  const heroImage =
+    matchedBrand?.heroImage ||
+    subCategoryGroups[0]?.coverImage ||
+    "/engine-oil-hero.jpg";
+  const heroDescription = matchedBrand?.about || categoryDesc;
 
   return (
     <main
@@ -124,44 +164,69 @@ export default function CategoryProductsPage() {
         setLanguage={setLanguage}
       />
 
-      {/* ── Page Header Banner ── */}
-      <div className="relative bg-[#F6F7FA] text-gray-800 overflow-hidden border-b border-gray-100">
-        <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-8 pb-8">
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-1.5 text-[11px] text-gray-400 mb-6 font-medium tracking-wide">
-            <Link href="/" className="hover:text-[#002b5c] transition-colors">
+      <section className="relative isolate overflow-hidden bg-[#071f3b] text-white">
+        <img
+          src={heroImage}
+          alt={matchedBrand?.name || categoryName}
+          className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+        />
+        <div className="absolute inset-0 -z-10 bg-[#071f3b]/50" />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#071f3b]/90 via-[#071f3b]/80 to-[#071f3b]/70" />
+
+        <div className="relative max-w-7xl mx-auto px-4 md:px-8 pt-8 pb-12 md:pt-10 md:pb-16">
+          <nav className="flex items-center gap-1.5 text-[11px] text-blue-200/80 mb-8 font-medium tracking-wide">
+            <Link href="/" className="hover:text-white transition-colors">
               Home
             </Link>
             <ChevronRight size={12} className="opacity-50" />
             <Link
               href="/products"
-              className="hover:text-[#002b5c] transition-colors"
+              className="hover:text-white transition-colors"
             >
               Products
             </Link>
             <ChevronRight size={12} className="opacity-50" />
-            <span className="text-[#002b5c] font-semibold">{categoryName}</span>
+            <span className="text-[#F4B24D] font-semibold">{categoryName}</span>
           </nav>
 
-          <div className="flex flex-col md:flex-row md:items-end gap-6 md:gap-10">
-            <div className="flex-1">
-              {/* Category label */}
-              <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-[#C86218] text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full mb-4">
-                <Layers size={11} />
-                Product Catalogue
-              </div>
-              <HeadingTag className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-[1.1] text-[#002b5c]">
-                {categoryTitle}
-              </HeadingTag>
-              {categoryDesc && (
-                <p className="mt-4 text-sm md:text-[15px] text-gray-500 max-w-xl leading-relaxed">
-                  {categoryDesc}
-                </p>
+          <div className="max-w-3xl">
+            <HeadingTag className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-[1.08] text-white">
+              {matchedBrand?.name || categoryTitle}
+            </HeadingTag>
+
+            {matchedBrand?.tagline && (
+              <p className="mt-3 text-base md:text-lg font-semibold text-[#F4B24D]">
+                {matchedBrand.tagline}
+              </p>
+            )}
+
+            {heroDescription && (
+              <p className="mt-4 text-sm md:text-base leading-7 text-slate-200 max-w-2xl">
+                {heroDescription}
+              </p>
+            )}
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleOpenEnquiry()}
+                className="inline-flex items-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-[#C86218]/25 transition hover:bg-[#A74D0E]"
+              >
+                <Phone size={13} />
+                Request a Quote
+              </button>
+              {subCategoryGroups.length > 0 && (
+                <a
+                  href="#subcat-0"
+                  className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b]"
+                >
+                  Browse range <ArrowRight size={12} />
+                </a>
               )}
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* ── Main Body: Sidebar + Content ── */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14 w-full flex-1 flex gap-8 items-start">

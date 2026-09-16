@@ -12,6 +12,8 @@ import { useCMSStore, PageSEO } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
 import SEOMeta from "@/components/SEOMeta";
 
+import { BRAND_PRODUCTS } from "@/data/brandProductsData";
+
 export default function ProductDetailPage() {
   const params = useParams();
   const categorySlug = params?.category as string;
@@ -45,11 +47,98 @@ export default function ProductDetailPage() {
     }
   }, [productSlug, categorySlug, fetchProductBySlug, fetchProducts]);
 
-  const product: any =
-    productDetails[productSlug] ||
-    products?.find((p) => p.slug === productSlug);
+  // Match brand and product from BRAND_PRODUCTS
+  const brandProductMatch = useMemo(() => {
+    if (!productSlug) return null;
+
+    // 1. Direct match with categorySlug matching brand.id
+    if (categorySlug) {
+      const brand = BRAND_PRODUCTS.find((b) => b.id === categorySlug);
+      if (brand) {
+        for (const cat of brand.categories) {
+          const prod = cat.products.find(
+            (p) => p.slug === productSlug || p.id === productSlug,
+          );
+          if (prod) {
+            return { brand, category: cat, product: prod };
+          }
+        }
+      }
+    }
+
+    // 2. Search all brands if not directly matched by brand.id
+    for (const b of BRAND_PRODUCTS) {
+      for (const cat of b.categories) {
+        const prod = cat.products.find(
+          (p) => p.slug === productSlug || p.id === productSlug,
+        );
+        if (prod) {
+          return { brand: b, category: cat, product: prod };
+        }
+      }
+    }
+    return null;
+  }, [categorySlug, productSlug]);
+
+  const product: any = useMemo(() => {
+    const cmsProduct =
+      productDetails[productSlug] ||
+      products?.find((p) => p.slug === productSlug);
+    if (cmsProduct) return cmsProduct;
+
+    if (brandProductMatch) {
+      const { brand, category: cat, product: p } = brandProductMatch;
+      return {
+        id: p.id,
+        name: p.name,
+        slug: p.slug,
+        subtitle: `${brand.name} • ${cat.name}`,
+        subCategoryTitle: cat.name,
+        categorySlug: brand.id,
+        specsText: p.specs,
+        description: p.description,
+        coverImage: p.coverImage,
+        containerImage: p.coverImage,
+        packaging: p.packaging,
+        applicationAreas: p.applications.join(", "),
+        performanceBenefits: [
+          `Formulated with advanced additive chemistry meeting ${p.specs}.`,
+          `Exceptional thermal stability, oxidation resistance, and extended operational fluid life.`,
+          `Robust anti-wear protection minimizing metal friction and maintenance downtime.`,
+          `Guaranteed authentic factory quality backed by ${brand.name}.`,
+        ],
+        specialFeatures: [
+          `Original certified factory supply from ${brand.name}`,
+          `Available industrial packaging: ${p.packaging.join(" / ")}`,
+          `Target application areas: ${p.applications.join(", ")}`,
+          `Meets & exceeds specifications: ${p.specs}`,
+        ],
+        propertiesTable: [
+          { property: "Brand / Manufacturer", value: brand.name },
+          { property: "Supply / Authorization", value: `${brand.country} (${brand.authStatus})` },
+          { property: "Product Range", value: cat.name },
+          { property: "Industry Specification", value: p.specs },
+          { property: "Primary Applications", value: p.applications.join(", ") },
+          { property: "Standard Packaging Options", value: p.packaging.join(", ") },
+          { property: "Authenticity Status", value: "100% Genuine Sealed Direct Stock" },
+        ],
+        tdsPdfUrl: "#",
+        msdsPdfUrl: "#",
+      };
+    }
+
+    return null;
+  }, [productDetails, products, productSlug, brandProductMatch]);
 
   const category = useMemo(() => {
+    if (brandProductMatch) {
+      return {
+        slug: brandProductMatch.brand.id,
+        name: brandProductMatch.brand.name,
+        shortDesc: brandProductMatch.brand.tagline,
+        fullDesc: brandProductMatch.brand.about,
+      };
+    }
     const found = productCategories?.find((c) => c.slug === categorySlug);
     if (found) return found;
     return {
@@ -62,18 +151,35 @@ export default function ProductDetailPage() {
       shortDesc: "",
       fullDesc: "",
     };
-  }, [productCategories, categorySlug]);
+  }, [productCategories, categorySlug, brandProductMatch]);
 
   const siblingProducts = useMemo(() => {
+    if (brandProductMatch) {
+      return brandProductMatch.category.products
+        .filter((p) => p.slug !== productSlug && p.id !== productSlug)
+        .map((p) => ({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          categorySlug: brandProductMatch.brand.id,
+        }));
+    }
     if (!products) return [];
     return products.filter(
       (p) =>
         (!categorySlug || p.categorySlug === categorySlug) &&
         p.slug !== productSlug,
     );
-  }, [products, categorySlug, productSlug]);
+  }, [products, categorySlug, productSlug, brandProductMatch]);
 
   const subCategoryList = useMemo(() => {
+    if (brandProductMatch) {
+      return brandProductMatch.brand.categories.map((cat, idx) => ({
+        title: cat.name,
+        slug: cat.slug,
+        index: idx,
+      }));
+    }
     if (!products) return [];
     const catProducts = products.filter(
       (p) => !categorySlug || p.categorySlug === categorySlug,
@@ -85,8 +191,8 @@ export default function ProductDetailPage() {
           .filter(Boolean),
       ),
     );
-    return titles.map((title) => ({ title }));
-  }, [products, categorySlug]);
+    return titles.map((title, idx) => ({ title, slug: "", index: idx }));
+  }, [products, categorySlug, brandProductMatch]);
 
   const handleOpenDownload = (pdfType: "TDS" | "MSDS") => {
     if (!product) return;
@@ -94,8 +200,8 @@ export default function ProductDetailPage() {
     setDownloadPdfType(pdfType);
     setDownloadPdfUrl(
       pdfType === "TDS"
-        ? product.tdsPdfUrl || product.pdfUrl
-        : product.msdsPdfUrl || product.msdsUrl || product.pdfUrl,
+        ? product.tdsPdfUrl || product.pdfUrl || "#"
+        : product.msdsPdfUrl || product.msdsUrl || product.pdfUrl || "#",
     );
     setIsDownloadOpen(true);
   };
@@ -510,7 +616,7 @@ export default function ProductDetailPage() {
                       return (
                         <Link
                           key={cIdx}
-                          href={`/products/${category.slug}#subcat-${rIdx * 4 + cIdx}`}
+                          href={`/products/${category.slug}#subcat-${subGroup.index !== undefined ? subGroup.index : rIdx * 4 + cIdx}`}
                           className="flex items-center gap-3.5 group transition-colors py-1.5"
                         >
                           <Droplet

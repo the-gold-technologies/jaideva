@@ -7,6 +7,7 @@ import {
   Search,
   ChevronDown,
   ChevronRight,
+  ArrowRight,
   Menu,
   X,
   Plus,
@@ -22,12 +23,7 @@ interface NavbarProps {
   setLanguage: (lang: "EN" | "HI") => void;
 }
 
-const DEFAULT_CATEGORIES = [
-  { slug: "industrial-oils", name: "Industrial Oils" },
-  { slug: "industrial-greases", name: "Industrial Greases" },
-  { slug: "automotive-oils", name: "Automotive Oils" },
-  { slug: "bike-oils", name: "Bike Engine Oils" },
-];
+import { BRAND_PRODUCTS } from "@/data/brandProductsData";
 
 export default function Navbar({
   fontSizeMultiplier,
@@ -38,37 +34,27 @@ export default function Navbar({
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobileSelectedBrand, setMobileSelectedBrand] = useState<string | null>(
+    "hp-lubricants",
+  );
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [activeHoverCategory, setActiveHoverCategory] =
-    useState<string>("industrial-oils");
+  const [activeBrandId, setActiveBrandId] = useState<string>("hp-lubricants");
   const [activeTab, setActiveTab] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
 
   const {
-    products,
-    productCategories,
-    fetchProducts,
     globalSEO,
     fetchGlobalSEO,
   } = useCMSStore();
 
   React.useEffect(() => {
-    fetchProducts().catch(console.error);
     fetchGlobalSEO().catch(console.error);
-  }, [fetchProducts, fetchGlobalSEO]);
+  }, [fetchGlobalSEO]);
 
-  const categories =
-    productCategories && productCategories.length > 0
-      ? productCategories
-      : DEFAULT_CATEGORIES;
-
-  const currentCategory =
-    categories.find((c) => c.slug === activeHoverCategory) || categories[0];
+  const currentBrand =
+    BRAND_PRODUCTS.find((b) => b.id === activeBrandId) || BRAND_PRODUCTS[0];
 
   const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
-
-  const categoryProducts =
-    products?.filter((p) => p.categorySlug === currentCategory.slug) || [];
 
   const increaseFont = () => {
     if (fontSizeMultiplier < 1.25) setFontSizeMultiplier((prev) => prev + 0.08);
@@ -282,103 +268,110 @@ export default function Navbar({
 
                 {/* Clean 2-Column Mega Menu */}
                 {item.isMegaMenu && openDropdown === item.name && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-[min(640px,calc(100vw-32px))] pt-2">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-[min(700px,calc(100vw-32px))] pt-2">
                     <div className="overflow-hidden rounded-xl border border-[#dce5ef] bg-white shadow-[0_18px_45px_rgba(12,53,106,0.16)] animate-in fade-in slide-in-from-top-2 duration-150">
                       <div className="flex items-center justify-between gap-4 bg-[#0C356A] px-4 py-3 text-white">
                         <div>
                           <div className="mb-0.5 flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[#F4B24D]">
-                            <Layers size={12} /> Product range
+                            <Layers size={12} /> Products
                           </div>
                           <p className="text-xs font-semibold text-white/90">
-                            Find the right lubricant for your application
+                            Our Brands | Quality Products | Trusted Solutions
                           </p>
                         </div>
                         <Link
-                          href="/products"
+                          href={`/products/${currentBrand.id}`}
+                          onClick={() => setOpenDropdown(null)}
                           className="shrink-0 rounded-full border border-white/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#0C356A]"
                         >
                           View all
                         </Link>
                       </div>
 
-                      <div className="border-b border-gray-100 px-4 py-2.5">
-                        <div className="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-visible">
-                          {categories.map((cat) => {
-                            const isCatActive =
-                              activeHoverCategory === cat.slug;
+                      <div className="border-b border-gray-100 bg-[#fbfcfe] px-4 py-2.5">
+                        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-visible">
+                          {BRAND_PRODUCTS.map((brand, bIdx) => {
+                            const isBrandActive = activeBrandId === brand.id;
                             return (
                               <Link
-                                key={cat.slug}
-                                href={`/products/${cat.slug}`}
-                                onMouseEnter={() =>
-                                  setActiveHoverCategory(cat.slug)
-                                }
-                                className={`shrink-0 rounded-full border px-3 py-1.5 text-[11px] font-bold transition-colors ${
-                                  isCatActive
-                                    ? "border-[#0C356A] bg-[#0C356A] text-white"
+                                key={brand.id}
+                                href={`/products/${brand.id}`}
+                                onMouseEnter={() => setActiveBrandId(brand.id)}
+                                onClick={() => {
+                                  setActiveBrandId(brand.id);
+                                  setOpenDropdown(null);
+                                }}
+                                className={`shrink-0 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold transition-all cursor-pointer ${
+                                  isBrandActive
+                                    ? "border-[#0C356A] bg-[#0C356A] text-white shadow-xs"
                                     : "border-gray-200 bg-white text-gray-600 hover:border-[#C86218] hover:text-[#C86218]"
                                 }`}
                               >
-                                {cat.name}
+                                <span
+                                  className={`flex h-4 w-4 items-center justify-center rounded-full text-[8px] font-extrabold ${
+                                    isBrandActive
+                                      ? "bg-[#F4B24D] text-[#0C356A]"
+                                      : "bg-gray-100 text-gray-600"
+                                  }`}
+                                >
+                                  {bIdx + 1}
+                                </span>
+                                <span>{brand.name}</span>
                               </Link>
                             );
                           })}
                         </div>
                       </div>
 
-                      <div className="px-4 py-3">
-                        <div className="mb-2 flex items-center justify-between">
+                      <div className="px-5 py-4">
+                        <div className="mb-2.5 flex items-center justify-between">
                           <div>
                             <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#C86218]">
-                              Featured category
+                              Featured Brand
                             </p>
-                            <h3 className="text-base font-black text-[#0C356A]">
-                              {currentCategory.name}
-                            </h3>
+                            <Link
+                              href={`/products/${currentBrand.id}`}
+                              onClick={() => setOpenDropdown(null)}
+                              className="group/bname flex items-center gap-1.5 hover:text-[#C86218] transition-colors"
+                            >
+                              <h3 className="text-base font-black text-[#0C356A] group-hover/bname:text-[#C86218] transition-colors">
+                                {currentBrand.name}
+                              </h3>
+                              <ArrowRight size={14} className="text-gray-400 group-hover/bname:text-[#C86218] transition-colors" />
+                            </Link>
                           </div>
-                          <span className="rounded-full bg-orange-50 px-2.5 py-1 text-[9px] font-bold text-[#C86218]">
-                            {categoryProducts.length} products
-                          </span>
+                          <Link
+                            href={`/products/${currentBrand.id}`}
+                            onClick={() => setOpenDropdown(null)}
+                            className="rounded-full bg-orange-50 px-2.5 py-1 text-[9px] font-bold text-[#C86218] hover:bg-orange-100 transition-colors"
+                          >
+                            {currentBrand.categories.length} categories →
+                          </Link>
                         </div>
 
-                        {categoryProducts.length > 0 ? (
-                          <div className="grid max-h-44 grid-cols-2 gap-1.5 overflow-y-auto pr-1 scrollbar-visible">
-                            {categoryProducts.map((prod) => (
-                              <Link
-                                key={prod.id}
-                                href={`/products/${prod.categorySlug}/${prod.slug}`}
-                                className="group rounded-lg border border-gray-100 bg-[#f8fafc] px-3 py-2.5 transition hover:border-[#F4B24D] hover:bg-orange-50"
-                              >
-                                <div className="flex items-start justify-between gap-2">
-                                  <span className="text-[11px] font-extrabold leading-snug text-[#0C356A] group-hover:text-[#C86218]">
-                                    {prod.name}
-                                  </span>
-                                  <ChevronRight
-                                    size={13}
-                                    className="mt-0.5 shrink-0 text-gray-300 group-hover:text-[#C86218]"
-                                  />
-                                </div>
-                                {(prod.subCategoryTitle ||
-                                  prod.tagline ||
-                                  (prod as any).subtitle) && (
-                                  <span className="mt-0.5 block text-[9px] text-gray-500">
-                                    {prod.subCategoryTitle ||
-                                      prod.tagline ||
-                                      (prod as any).subtitle}
-                                  </span>
-                                )}
-                              </Link>
-                            ))}
-                          </div>
-                        ) : (
-                          <Link
-                            href={`/products/${currentCategory.slug}`}
-                            className="block rounded-xl border border-dashed border-gray-200 bg-gray-50 px-4 py-5 text-sm text-gray-500 transition hover:border-[#C86218] hover:text-[#0C356A]"
-                          >
-                            Explore all products in {currentCategory.name}{" "}
-                            <ChevronRight size={15} className="inline" />
-                          </Link>
-                        )}
+                        <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto pr-1 scrollbar-visible">
+                          {currentBrand.categories.map((cat, cIdx) => (
+                            <Link
+                              key={cIdx}
+                              href={`/products/${currentBrand.id}#subcat-${cIdx}`}
+                              onClick={() => setOpenDropdown(null)}
+                              className="group flex items-center justify-between rounded-lg border border-gray-100 bg-[#f8fafc] px-3.5 py-2.5 transition hover:border-[#F4B24D] hover:bg-orange-50"
+                            >
+                              <div className="min-w-0 pr-2">
+                                <span className="block truncate text-[11.5px] font-extrabold leading-snug text-[#0C356A] group-hover:text-[#C86218] transition-colors">
+                                  {cat.name}
+                                </span>
+                                <span className="block text-[9px] text-gray-400 font-medium">
+                                  {currentBrand.name}
+                                </span>
+                              </div>
+                              <ChevronRight
+                                size={13}
+                                className="mt-0.5 shrink-0 text-gray-300 group-hover:text-[#C86218] group-hover:translate-x-0.5 transition-all"
+                              />
+                            </Link>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -465,27 +458,91 @@ export default function Navbar({
 
                         {/* Collapsible Sub-Categories for PRODUCTS & SERVICES */}
                         {mobileProductsOpen && (
-                          <div className="pl-3 mt-1 flex flex-col gap-1.5 border-l-2 border-[#C86218]/70 bg-orange-50/40 p-3 rounded-r-lg animate-in fade-in duration-150">
-                            <span className="text-[11px] font-bold uppercase text-gray-400 tracking-wider">
-                              Product Categories
-                            </span>
-                            {categories.map((cat) => (
+                          <div className="pl-2 mt-1 flex flex-col gap-2 border-l-2 border-[#C86218]/70 bg-orange-50/40 p-2.5 rounded-r-lg animate-in fade-in duration-150">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-bold uppercase text-[#C86218] tracking-wider">
+                                Our Brands &amp; Categories
+                              </span>
                               <Link
-                                key={cat.slug}
-                                href={`/products/${cat.slug}`}
+                                href="/products"
                                 onClick={() => {
                                   setMobileMenuOpen(false);
                                   setMobileProductsOpen(false);
                                 }}
-                                className="text-xs text-gray-700 hover:text-[#C86218] font-semibold py-1.5 px-2 rounded hover:bg-white flex items-center justify-between transition-colors"
+                                className="text-[10px] font-bold text-[#0C356A] underline"
                               >
-                                <span>{cat.name}</span>
-                                <ChevronRight
-                                  size={14}
-                                  className="text-gray-400"
-                                />
+                                View All
                               </Link>
-                            ))}
+                            </div>
+                            <div className="flex flex-col gap-1.5 max-h-72 overflow-y-auto pr-1">
+                              {BRAND_PRODUCTS.map((brand, bIdx) => {
+                                const isBrandOpen =
+                                  mobileSelectedBrand === brand.id;
+                                return (
+                                  <div
+                                    key={brand.id}
+                                    className="overflow-hidden rounded-md border border-gray-200/80 bg-white"
+                                  >
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        setMobileSelectedBrand(
+                                          isBrandOpen ? null : brand.id,
+                                        )
+                                      }
+                                      className="flex w-full items-center justify-between px-2.5 py-2 text-left text-xs font-bold text-[#0C356A] hover:text-[#C86218]"
+                                    >
+                                      <div className="flex items-center gap-1.5">
+                                        <span className="flex h-4 w-4 items-center justify-center rounded-full bg-orange-100 text-[8px] font-extrabold text-[#C86218]">
+                                          {bIdx + 1}
+                                        </span>
+                                        <span>{brand.name}</span>
+                                      </div>
+                                      <ChevronDown
+                                        size={14}
+                                        className={`text-gray-400 transition-transform ${
+                                          isBrandOpen
+                                            ? "rotate-180 text-[#C86218]"
+                                            : ""
+                                        }`}
+                                      />
+                                    </button>
+                                    {isBrandOpen && (
+                                      <div className="flex flex-col gap-1 border-t border-gray-100 bg-gray-50/70 px-2.5 py-1.5">
+                                        <Link
+                                          href={`/products/${brand.id}`}
+                                          onClick={() => {
+                                            setMobileMenuOpen(false);
+                                            setMobileProductsOpen(false);
+                                          }}
+                                          className="flex items-center justify-between py-1 text-[11px] font-bold text-[#C86218] hover:underline border-b border-gray-200/60 pb-1.5 mb-1"
+                                        >
+                                          <span>View all {brand.name}</span>
+                                          <ArrowRight size={11} />
+                                        </Link>
+                                        {brand.categories.map((cat, cIdx) => (
+                                          <Link
+                                            key={cIdx}
+                                            href={`/products/${brand.id}#subcat-${cIdx}`}
+                                            onClick={() => {
+                                              setMobileMenuOpen(false);
+                                              setMobileProductsOpen(false);
+                                            }}
+                                            className="flex items-center justify-between py-1 text-[11px] font-medium text-gray-600 hover:text-[#C86218]"
+                                          >
+                                            <span>{cat.name}</span>
+                                            <ChevronRight
+                                              size={12}
+                                              className="text-gray-400"
+                                            />
+                                          </Link>
+                                        ))}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
                           </div>
                         )}
                       </div>
