@@ -8,6 +8,8 @@ import {
   PhoneCall,
   Clock,
   Send,
+  CheckCircle2,
+  Headphones,
 } from "lucide-react";
 
 interface IndustriesConsultationCTAProps {
@@ -38,66 +40,66 @@ export default function IndustriesConsultationCTA({
   };
 
   return (
-    <section className="py-20 bg-[#041224] text-white relative isolate overflow-hidden">
-      {/* Subtle radial lighting */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-[#C86218]/25 via-transparent to-transparent" />
-
+    <section className="py-16 sm:py-20 bg-white border-t border-slate-200 text-slate-800 relative overflow-hidden font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-white/15 bg-gradient-to-r from-white/10 via-white/5 to-white/[0.02] p-8 sm:p-12 lg:p-16 backdrop-blur-2xl shadow-2xl">
+        <div className="rounded-3xl border border-slate-200 bg-[#f8fafc] p-8 sm:p-12 lg:p-14 shadow-sm">
           <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
             {/* Left 7 Cols */}
             <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 rounded-full bg-[#F4B24D]/15 border border-[#F4B24D]/30 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-[#F4B24D] mb-4">
-                <ShieldCheck size={14} />
-                <span>Zero-Cost Plant Technical Assessment</span>
+              <div className="inline-flex items-center gap-2 border-l-4 border-[#C86218] pl-3 text-xs font-black uppercase tracking-[0.2em] text-[#C86218] mb-4">
+                Zero-Cost Technical Assessment
               </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-white leading-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-[#0C356A] leading-[1.08]">
                 Optimize Your Plant's Lubrication Performance Today
               </h2>
 
-              <p className="mt-4 text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl">
-                Whether you need an urgent barrel replacement, a cross-reference
-                recommendation for an imported machine, or a full plant SKU audit,
-                our lubrication specialists are ready to support your facility.
+              <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">
+                Whether you need urgent barrel dispatch, cross-referencing for an imported machine,
+                or a full plant SKU consolidation audit, our lubrication specialists are ready to support your facility.
               </p>
 
-              <div className="mt-8 grid grid-cols-2 gap-4 border-t border-white/10 pt-6 max-w-lg">
-                <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                  <Clock size={16} className="text-[#F4B24D]" />
+              {/* Trust Indicators */}
+              <div className="mt-8 flex flex-wrap gap-4 border-t border-slate-200/80 pt-6">
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-lg border border-slate-200/80 shadow-2xs">
+                  <Clock size={16} className="text-[#C86218]" />
                   <span>24-Hour Quotation Turnaround</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-                  <ShieldCheck size={16} className="text-emerald-400" />
-                  <span>Genuine Factory Batch CoAs</span>
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-lg border border-slate-200/80 shadow-2xs">
+                  <ShieldCheck size={16} className="text-emerald-600" />
+                  <span>100% Genuine Batch CoAs</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-lg border border-slate-200/80 shadow-2xs">
+                  <Headphones size={16} className="text-[#0C356A]" />
+                  <span>Dedicated Plant Support</span>
                 </div>
               </div>
             </div>
 
-            {/* Right 5 Cols: Quick Interactive Launcher */}
+            {/* Right 5 Cols: Interactive Clean Form Card */}
             <div className="lg:col-span-5">
               <form
                 onSubmit={handleSubmit}
-                className="rounded-2xl border border-white/15 bg-[#071f3b]/80 p-6 sm:p-8 backdrop-blur-xl shadow-xl"
+                className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-lg"
               >
-                <h3 className="text-lg font-bold text-white mb-2">
+                <h3 className="text-lg font-black text-[#0C356A] uppercase tracking-tight mb-1">
                   Request Sector Specification
                 </h3>
-                <p className="text-xs text-slate-300 mb-5 leading-relaxed">
+                <p className="text-xs text-slate-500 mb-5 leading-relaxed">
                   Select your primary operating vertical to launch a tailored technical enquiry:
                 </p>
 
                 <div className="mb-5">
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-[#F4B24D] mb-2">
+                  <label className="block text-[11px] font-black uppercase tracking-wider text-[#0C356A] mb-2">
                     Industry / Machinery Application:
                   </label>
                   <select
                     value={chosenSector}
                     onChange={(e) => setChosenSector(e.target.value)}
-                    className="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-sm text-white focus:outline-none focus:border-[#F4B24D] transition-colors"
+                    className="w-full rounded-xl bg-slate-50 border border-slate-300 px-4 py-3 text-sm text-slate-800 font-medium focus:outline-none focus:border-[#C86218] focus:bg-white transition-colors cursor-pointer shadow-2xs"
                   >
                     {SECTOR_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt} className="bg-[#071f3b] text-white">
+                      <option key={opt} value={opt} className="text-slate-800">
                         {opt}
                       </option>
                     ))}
@@ -106,7 +108,7 @@ export default function IndustriesConsultationCTA({
 
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#C86218] hover:bg-[#a94e0e] py-3.5 text-xs font-black uppercase tracking-wider text-white transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#C86218] hover:bg-[#A74D0E] py-3.5 text-xs font-black uppercase tracking-wider text-white transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg active:translate-y-0 hover:-translate-y-0.5"
                 >
                   <Send size={15} />
                   <span>Get Technical Recommendation & Pricing</span>
@@ -115,7 +117,7 @@ export default function IndustriesConsultationCTA({
                 <div className="mt-4 text-center">
                   <Link
                     href="/contact-us"
-                    className="text-xs text-slate-400 hover:text-[#F4B24D] transition-colors inline-flex items-center gap-1.5"
+                    className="text-xs text-slate-500 hover:text-[#C86218] transition-colors inline-flex items-center gap-1.5 font-medium"
                   >
                     <PhoneCall size={13} />
                     <span>Or visit our contact page for direct depot locations</span>

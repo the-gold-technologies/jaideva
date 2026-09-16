@@ -9,9 +9,10 @@ import { useCMSStore } from "@/store/useCMSStore";
 import {
   BrandsHero,
   BrandsStatsBand,
-  BrandsShowcaseSection,
+  BrandsMapSection,
   BrandsPillarsSection,
   BrandsProductCategoriesSection,
+  BrandsLogisticsStageSection,
   BrandsCtaSection,
 } from "./components";
 
@@ -53,16 +54,19 @@ export default function BrandsPage() {
       {/* 2. Key Industry Statistics Band */}
       <BrandsStatsBand />
 
-      {/* 3. Brand Value Pillars */}
+      {/* 4. Brand Value Pillars */}
       <BrandsPillarsSection />
-
-      {/* 4. 10-Brand Portfolio Showcase with Per-Brand Images & Filtering */}
-      <BrandsShowcaseSection onOpenEnquiry={handleOpenEnquiry} />
 
       {/* 5. Product Categories Spectrum */}
       <BrandsProductCategoriesSection />
 
-      {/* 6. Consultation & Contact CTA */}
+      {/* 3. Interactive Global Sourcing & Authorization Network Map: BRANDS WE DEAL IN */}
+      <BrandsMapSection onOpenEnquiry={handleOpenEnquiry} />
+
+      {/* 4. Stage-Wise Packaging, Payment & Shipping Support */}
+      <BrandsLogisticsStageSection onOpenEnquiry={handleOpenEnquiry} />
+
+      {/* 7. Consultation & Contact CTA */}
       <BrandsCtaSection onOpenEnquiry={handleOpenEnquiry} />
 
       <Footer onOpenEnquiry={handleOpenEnquiry} />

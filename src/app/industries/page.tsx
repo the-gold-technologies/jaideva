@@ -8,11 +8,10 @@ import SEOMeta from "@/components/SEOMeta";
 import { useCMSStore } from "@/store/useCMSStore";
 import {
   IndustriesHero,
-  IndustryDossierSection,
-  MachinerySystemsSection,
-  PlantServicesSection,
-  MultiBrandAdvantageSection,
-  IndustryMarketsExportSection,
+  IndustryStageSection,
+  LessYouBurnImpactSection,
+  MachineryFeatureSection,
+  PlantProcessSection,
   IndustriesConsultationCTA,
 } from "./components";
 
@@ -21,7 +20,6 @@ export default function IndustriesPage() {
   const [language, setLanguage] = useState<"EN" | "HI">("EN");
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [enquiryProduct, setEnquiryProduct] = useState("");
-  const [selectedIndustryId, setSelectedIndustryId] = useState<string>("steel");
 
   const { fetchPage } = useCMSStore();
 
@@ -35,12 +33,6 @@ export default function IndustriesPage() {
     setIsEnquiryOpen(true);
   };
 
-  const handleSelectIndustry = (industryId: string) => {
-    setSelectedIndustryId(industryId);
-    const el = document.getElementById("sector-explorer");
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <main
       className="min-h-screen bg-white text-slate-800"
@@ -48,7 +40,7 @@ export default function IndustriesPage() {
     >
       <SEOMeta pageSlug="industries" />
 
-      {/* 1. Navigation */}
+      {/* 1. Header Navigation */}
       <Navbar
         fontSizeMultiplier={fontSizeMultiplier}
         setFontSizeMultiplier={setFontSizeMultiplier}
@@ -56,35 +48,25 @@ export default function IndustriesPage() {
         setLanguage={setLanguage}
       />
 
-      {/* 2. Hero – Interactive Sector Telemetry Panel */}
-      <IndustriesHero
-        onOpenEnquiry={handleOpenEnquiry}
-        onSelectIndustry={handleSelectIndustry}
-      />
+      {/* 2. Hero: Jai Deva Oil Co. • Less You Burn, the More You Earn */}
+      <IndustriesHero onOpenEnquiry={handleOpenEnquiry} />
 
-      {/* 3. Interactive Industry Dossier Explorer */}
-      <IndustryDossierSection
-        key={selectedIndustryId}
-        onOpenEnquiry={handleOpenEnquiry}
-        selectedIndustryId={selectedIndustryId}
-      />
+      {/* 3. Interactive Split-Screen Industry Stage (No card grids!) */}
+      <IndustryStageSection onOpenEnquiry={handleOpenEnquiry} />
 
-      {/* 4. Critical Plant Machinery Systems */}
-      <MachinerySystemsSection onOpenEnquiry={handleOpenEnquiry} />
+      {/* 4. "Less You Burn, the More You Earn" Full-Width Impact & Metrics Strip */}
+      <LessYouBurnImpactSection onOpenEnquiry={handleOpenEnquiry} />
 
-      {/* 5. Plant Technical Services */}
-      <PlantServicesSection onOpenEnquiry={handleOpenEnquiry} />
+      {/* 5. Critical Plant Machinery Deep-Dive (Tabbed split-view with large photography) */}
+      <MachineryFeatureSection onOpenEnquiry={handleOpenEnquiry} />
 
-      {/* 6. Multi-Brand Procurement Advantage */}
-      <MultiBrandAdvantageSection />
+      {/* 6. Plant Lubrication Engineering Journey (Connected 01-04 Process Timeline) */}
+      <PlantProcessSection onOpenEnquiry={handleOpenEnquiry} />
 
-      {/* 7. Major Domestic & International Export Markets */}
-      <IndustryMarketsExportSection />
-
-      {/* 8. Interactive Consultation CTA with Sector Dropdown */}
+      {/* 7. Clean Light-Themed Consultation CTA */}
       <IndustriesConsultationCTA onOpenEnquiry={handleOpenEnquiry} />
 
-      {/* 9. Footer */}
+      {/* 8. Footer */}
       <Footer onOpenEnquiry={handleOpenEnquiry} />
 
       {/* Enquiry Modal */}
