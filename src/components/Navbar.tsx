@@ -529,13 +529,13 @@ export default function Navbar({
         </Link>
 
         {/* Desktop Menu */}
-        <nav className="hidden lg:flex items-center gap-7">
+        <nav className="hidden lg:flex items-center gap-7 relative">
           {navItems.map((item, idx) => {
             const isActive = checkIsActive(item);
             return (
               <div
                 key={idx}
-                className="relative py-2"
+                className={`${item.isMegaMenu ? "" : "relative"} py-2`}
                 onMouseEnter={() => setOpenDropdown(item.name)}
                 onMouseLeave={() => setOpenDropdown(null)}
               >
@@ -563,7 +563,7 @@ export default function Navbar({
 
                 {/* Clean 2-Column Mega Menu */}
                 {item.isMegaMenu && openDropdown === item.name && (
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 w-[min(700px,calc(100vw-32px))] pt-2">
+                  <div className="absolute top-full right-0 w-[min(700px,calc(100vw-32px))] pt-2 z-50">
                     <div className="overflow-hidden rounded-xl border border-[#dce5ef] bg-white shadow-[0_18px_45px_rgba(12,53,106,0.16)] animate-in fade-in slide-in-from-top-2 duration-150">
                       <div className="flex items-center justify-between gap-4 bg-[#0C356A] px-4 py-3 text-white">
                         <div>

@@ -242,6 +242,27 @@ export default function GoogleTranslator() {
     } else {
       document.documentElement.classList.remove("translating-hi");
     }
+
+    // Body style guard to neutralize Google Translate's injected top: 40px
+    const resetBodySpacing = () => {
+      if (document.body && document.body.style.top && document.body.style.top !== "0px") {
+        document.body.style.top = "0px";
+      }
+    };
+
+    resetBodySpacing();
+    const observer = new MutationObserver(() => {
+      resetBodySpacing();
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ["style", "class"],
+    });
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
   return <div id="google_translate_element" style={{ display: "none" }} aria-hidden="true" />;
