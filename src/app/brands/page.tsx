@@ -9,10 +9,8 @@ import { useCMSStore } from "@/store/useCMSStore";
 import {
   BrandsHero,
   BrandsStatsBand,
-  BrandsMapSection,
   BrandsPillarsSection,
   BrandsProductCategoriesSection,
-  BrandsLogisticsStageSection,
   BrandsCtaSection,
 } from "./components";
 
@@ -59,12 +57,6 @@ export default function BrandsPage() {
 
       {/* 5. Product Categories Spectrum */}
       <BrandsProductCategoriesSection />
-
-      {/* 3. Interactive Global Sourcing & Authorization Network Map: BRANDS WE DEAL IN */}
-      <BrandsMapSection onOpenEnquiry={handleOpenEnquiry} />
-
-      {/* 4. Stage-Wise Packaging, Payment & Shipping Support */}
-      <BrandsLogisticsStageSection onOpenEnquiry={handleOpenEnquiry} />
 
       {/* 7. Consultation & Contact CTA */}
       <BrandsCtaSection onOpenEnquiry={handleOpenEnquiry} />

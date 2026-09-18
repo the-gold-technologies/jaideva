@@ -73,7 +73,7 @@ export default function Home() {
       {/* <AboutSection /> */}
 
       {/* 4. OUR PRODUCT RANGE (Original Circular Icon UI Design) */}
-      <ProductsServicesSection onSelectCategory={() => handleOpenEnquiry()} />
+      <ProductsServicesSection />
 
       {/* 5. MULTI-BRAND LUBRICANT SOLUTIONS (Understand -> Recommend -> Supply -> Support) */}
       <MultiBrandSolutionsSection />

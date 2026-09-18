@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Search,
   ChevronDown,
@@ -15,15 +15,15 @@ import {
   Layers,
 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
+import { changeLanguage, useLanguage } from "@/components/GoogleTranslator";
+import { BRAND_PRODUCTS } from "@/data/brandProductsData";
 
 interface NavbarProps {
-  fontSizeMultiplier: number;
-  setFontSizeMultiplier: React.Dispatch<React.SetStateAction<number>>;
-  language: "EN" | "HI";
-  setLanguage: (lang: "EN" | "HI") => void;
+  fontSizeMultiplier?: number;
+  setFontSizeMultiplier?: React.Dispatch<React.SetStateAction<number>>;
+  language?: "EN" | "HI";
+  setLanguage?: (lang: "EN" | "HI") => void;
 }
-
-import { BRAND_PRODUCTS } from "@/data/brandProductsData";
 
 export default function Navbar({
   fontSizeMultiplier,
@@ -32,6 +32,7 @@ export default function Navbar({
   setLanguage,
 }: NavbarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [mobileSelectedBrand, setMobileSelectedBrand] = useState<string | null>(
@@ -40,29 +41,197 @@ export default function Navbar({
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [activeBrandId, setActiveBrandId] = useState<string>("hp-lubricants");
   const [activeTab, setActiveTab] = useState<string>("");
+
+  // Search state
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
+  const searchDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileSearchDropdownRef = useRef<HTMLDivElement>(null);
 
   const {
+    products,
+    fetchProducts,
     globalSEO,
     fetchGlobalSEO,
   } = useCMSStore();
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchGlobalSEO().catch(console.error);
-  }, [fetchGlobalSEO]);
+    fetchProducts().catch(console.error);
+  }, [fetchGlobalSEO, fetchProducts]);
+
+  // Click outside search dropdown listener
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      const isOutsideDesktop = !searchDropdownRef.current || !searchDropdownRef.current.contains(target);
+      const isOutsideMobile = !mobileSearchDropdownRef.current || !mobileSearchDropdownRef.current.contains(target);
+      if (isOutsideDesktop && isOutsideMobile) {
+        setIsSearchDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Consolidate searchable products from BRAND_PRODUCTS & CMS
+  const allSearchableProducts = useMemo(() => {
+    const list: Array<{
+      id: string;
+      name: string;
+      slug: string;
+      categorySlug: string;
+      subCategoryTitle: string;
+      description: string;
+    }> = [];
+
+    // 1. From BRAND_PRODUCTS
+    BRAND_PRODUCTS.forEach((b) => {
+      b.categories.forEach((cat) => {
+        cat.products.forEach((p) => {
+          list.push({
+            id: p.id,
+            name: p.name,
+            slug: p.slug,
+            categorySlug: b.id,
+            subCategoryTitle: `${b.name} • ${cat.name}`,
+            description: p.description || p.specs || "",
+          });
+        });
+      });
+    });
+
+    // 2. From CMS Store
+    if (products && products.length > 0) {
+      products.forEach((p) => {
+        if (!list.some((existing) => existing.slug === p.slug)) {
+          list.push({
+            id: p.id,
+            name: p.name,
+            slug: p.slug,
+            categorySlug: p.categorySlug || "hp-lubricants",
+            subCategoryTitle:
+              (p as any).subCategoryTitle ||
+              (p as any).subtitle ||
+              p.categorySlug ||
+              "Products",
+            description: p.description || "",
+          });
+        }
+      });
+    }
+
+    return list;
+  }, [products]);
+
+  // Live filter results for search dropdown
+  const liveSearchResults = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase().trim();
+    return allSearchableProducts
+      .filter((p) => {
+        const name = (p.name || "").toLowerCase();
+        const desc = (p.description || "").toLowerCase();
+        const sub = (p.subCategoryTitle || "").toLowerCase();
+        return name.includes(q) || desc.includes(q) || sub.includes(q);
+      })
+      .slice(0, 6);
+  }, [allSearchableProducts, searchQuery]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+    setIsSearchDropdownOpen(false);
+    const q = searchQuery.toLowerCase().trim();
+
+    const matched = allSearchableProducts.find((p) => {
+      const name = (p.name || "").toLowerCase();
+      const desc = (p.description || "").toLowerCase();
+      const sub = (p.subCategoryTitle || "").toLowerCase();
+      return name.includes(q) || desc.includes(q) || sub.includes(q);
+    });
+
+    const targetCat = matched ? matched.categorySlug : "hp-lubricants";
+    router.push(`/products/${targetCat}?search=${encodeURIComponent(searchQuery.trim())}`);
+  };
+
+  // Font sizing with local storage persistence and root style scaling
+  const [currentFontSize, setCurrentFontSize] = useState<number>(16);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("jaideva_font_size") || localStorage.getItem("mahalaxmi_font_size");
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        if (!isNaN(parsed) && parsed >= 12 && parsed <= 26) {
+          setCurrentFontSize(parsed);
+          document.documentElement.style.fontSize = `${parsed}px`;
+          if (setFontSizeMultiplier) {
+            setFontSizeMultiplier(parsed / 16);
+          }
+          return;
+        }
+      }
+      const computed =
+        Math.round(
+          parseFloat(getComputedStyle(document.documentElement).fontSize),
+        ) || 16;
+      setCurrentFontSize(computed);
+    } catch {
+      setCurrentFontSize(16);
+    }
+  }, [setFontSizeMultiplier]);
+
+  const increaseFont = () => {
+    setCurrentFontSize((prev) => {
+      const next = Math.min(26, prev + 1);
+      document.documentElement.style.fontSize = `${next}px`;
+      try {
+        localStorage.setItem("jaideva_font_size", String(next));
+      } catch {}
+      if (setFontSizeMultiplier) {
+        setFontSizeMultiplier(next / 16);
+      }
+      return next;
+    });
+  };
+
+  const decreaseFont = () => {
+    setCurrentFontSize((prev) => {
+      const next = Math.max(12, prev - 1);
+      document.documentElement.style.fontSize = `${next}px`;
+      try {
+        localStorage.setItem("jaideva_font_size", String(next));
+      } catch {}
+      if (setFontSizeMultiplier) {
+        setFontSizeMultiplier(next / 16);
+      }
+      return next;
+    });
+  };
+
+  // Google Translator language integration
+  const detectedLanguage = useLanguage();
+  const [currentLanguage, setCurrentLanguage] = useState<"EN" | "HI">(
+    language || detectedLanguage || "EN",
+  );
+
+  useEffect(() => {
+    setCurrentLanguage(detectedLanguage);
+  }, [detectedLanguage]);
+
+  const handleLanguageChange = (lang: "EN" | "HI") => {
+    setCurrentLanguage(lang);
+    if (setLanguage) setLanguage(lang);
+    changeLanguage(lang);
+  };
 
   const currentBrand =
     BRAND_PRODUCTS.find((b) => b.id === activeBrandId) || BRAND_PRODUCTS[0];
 
   const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
-
-  const increaseFont = () => {
-    if (fontSizeMultiplier < 1.25) setFontSizeMultiplier((prev) => prev + 0.08);
-  };
-
-  const decreaseFont = () => {
-    if (fontSizeMultiplier > 0.85) setFontSizeMultiplier((prev) => prev - 0.08);
-  };
 
   const navItems = [
     { name: "HOME", link: "/" },
@@ -89,7 +258,7 @@ export default function Navbar({
     return activeTab === item.name;
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -108,52 +277,116 @@ export default function Navbar({
           {/* Language Selector */}
           <div className="flex items-center gap-1.5 text-xs text-[#0C356A]">
             <button
-              onClick={() => setLanguage("EN")}
-              className={`hover:underline cursor-pointer ${language === "EN" ? "font-bold text-[#C86218]" : ""}`}
+              onClick={() => handleLanguageChange("EN")}
+              className={`hover:underline cursor-pointer notranslate ${currentLanguage === "EN" ? "font-bold text-[#C86218]" : ""}`}
+              translate="no"
+              type="button"
+              title="Translate to English"
             >
               English
             </button>
-            <span className="text-gray-400">|</span>
+            <span className="text-gray-400 notranslate" translate="no">|</span>
             <button
-              onClick={() => setLanguage("HI")}
-              className={`hover:underline cursor-pointer ${language === "HI" ? "font-bold text-[#C86218]" : ""}`}
+              onClick={() => handleLanguageChange("HI")}
+              className={`hover:underline cursor-pointer notranslate ${currentLanguage === "HI" ? "font-bold text-[#C86218]" : ""}`}
+              translate="no"
+              type="button"
+              title="Translate to Hindi (हिन्दी)"
             >
               हिन्दी
             </button>
           </div>
 
-          <form className="flex items-center font-sans">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-[30px] w-[120px] rounded-l-lg border border-[#d7dee8] border-r-0 bg-white px-2.5 py-1 font-sans text-[12px] outline-none transition-all focus:w-[160px] sm:w-[150px] sm:text-[13px]"
-            />
-            <button
-              type="submit"
-              className="flex h-[30px] items-center justify-center rounded-r-lg border border-[#C86218] bg-[#C86218] px-2 text-white transition-colors hover:bg-[#A74D0E]"
-              aria-label="Search"
-            >
-              <Search size={14} className="font-bold stroke-[2.5]" />
-            </button>
-          </form>
+          {/* Desktop Search */}
+          <div className="relative" ref={searchDropdownRef}>
+            <form onSubmit={handleSearchSubmit} className="flex items-center font-sans">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchDropdownOpen(true);
+                }}
+                onFocus={() => setIsSearchDropdownOpen(true)}
+                className="h-[30px] w-[120px] rounded-l-lg border border-[#d7dee8] border-r-0 bg-white px-2.5 py-1 font-sans text-[12px] outline-none transition-all focus:w-[170px] sm:w-[150px] sm:text-[13px]"
+              />
+              <button
+                type="submit"
+                disabled={!searchQuery.trim()}
+                className="flex h-[30px] items-center justify-center rounded-r-lg border border-[#C86218] bg-[#C86218] px-2 text-white transition-colors hover:bg-[#A74D0E] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                aria-label="Search"
+              >
+                <Search size={14} className="font-bold stroke-[2.5]" />
+              </button>
+            </form>
 
-          <div className="flex items-center gap-1">
-            <span className="text-gray-600 text-xs font-sans">Text</span>
+            {/* Instant Search Results Dropdown */}
+            {isSearchDropdownOpen && searchQuery.trim().length >= 1 && (
+              <div className="absolute right-0 mt-1 w-72 sm:w-80 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 text-left">
+                <div className="px-3 py-2 bg-[#f8fafc] border-b border-gray-100 flex items-center justify-between text-[10px] font-bold text-gray-500 uppercase tracking-wider">
+                  <span>Matching Products ({liveSearchResults.length})</span>
+                  <span className="text-[#C86218] truncate max-w-[120px]">
+                    &ldquo;{searchQuery}&rdquo;
+                  </span>
+                </div>
+                {liveSearchResults.length > 0 ? (
+                  <div className="max-h-64 overflow-y-auto divide-y divide-gray-50">
+                    {liveSearchResults.map((p) => (
+                      <Link
+                        key={`${p.categorySlug}-${p.slug}`}
+                        href={`/products/${p.categorySlug}/${p.slug}`}
+                        onClick={() => setIsSearchDropdownOpen(false)}
+                        className="p-2.5 hover:bg-orange-50/60 flex flex-col transition-colors group/item block text-left"
+                      >
+                        <span className="text-xs font-bold text-[#0C356A] group-hover/item:text-[#C86218] leading-snug">
+                          {p.name}
+                        </span>
+                        <span className="text-[10px] text-gray-400 uppercase mt-0.5 font-medium">
+                          {p.subCategoryTitle}
+                        </span>
+                      </Link>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={handleSearchSubmit}
+                      className="w-full p-2.5 bg-gray-50 hover:bg-[#0C356A] hover:text-white text-xs font-bold text-center text-[#0C356A] transition-colors uppercase tracking-wider cursor-pointer block border-t border-gray-100"
+                    >
+                      View All Search Results →
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-4 text-center text-xs text-gray-400">
+                    No products found for &ldquo;{searchQuery}&rdquo;
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Desktop Font Sizing Controls */}
+          <div
+            className="flex items-center gap-1"
+            title={`Text Size: ${currentFontSize}px`}
+          >
+            <span className="text-gray-600 text-xs font-sans select-none">Text</span>
             <button
               onClick={increaseFont}
-              className="bg-[#0C356A] text-white p-0.5 flex items-center justify-center hover:bg-opacity-90 cursor-pointer rounded-xs"
-              title="Increase Font Size"
+              disabled={currentFontSize >= 26}
+              className="bg-[#0C356A] text-white p-0.5 flex items-center justify-center hover:bg-opacity-90 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all rounded-xs"
+              title={`Increase Font Size (+1px) - Current: ${currentFontSize}px`}
               type="button"
+              aria-label="Increase font size"
             >
               <Plus size={12} strokeWidth={3} />
             </button>
             <button
               onClick={decreaseFont}
-              className="bg-[#0C356A] text-white p-0.5 flex items-center justify-center hover:bg-opacity-90 cursor-pointer rounded-xs"
-              title="Decrease Font Size"
+              disabled={currentFontSize <= 12}
+              className="bg-[#0C356A] text-white p-0.5 flex items-center justify-center hover:bg-opacity-90 active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all rounded-xs"
+              title={`Decrease Font Size (-1px) - Current: ${currentFontSize}px`}
               type="button"
+              aria-label="Decrease font size"
             >
               <Minus size={12} strokeWidth={3} />
             </button>
@@ -165,53 +398,115 @@ export default function Navbar({
       <div className="md:hidden flex justify-between items-center px-3 py-1.5 bg-[#f8fafc] border-b border-gray-200/70 text-xs">
         <div className="flex items-center gap-1.5 text-[#0C356A]">
           <button
-            onClick={() => setLanguage("EN")}
-            className={`cursor-pointer ${language === "EN" ? "font-bold text-[#C86218]" : ""}`}
+            onClick={() => handleLanguageChange("EN")}
+            className={`cursor-pointer notranslate ${currentLanguage === "EN" ? "font-bold text-[#C86218]" : ""}`}
+            translate="no"
+            type="button"
+            title="Translate to English"
           >
             English
           </button>
-          <span className="text-gray-300">|</span>
+          <span className="text-gray-300 notranslate" translate="no">|</span>
           <button
-            onClick={() => setLanguage("HI")}
-            className={`cursor-pointer ${language === "HI" ? "font-bold text-[#C86218]" : ""}`}
+            onClick={() => handleLanguageChange("HI")}
+            className={`cursor-pointer notranslate ${currentLanguage === "HI" ? "font-bold text-[#C86218]" : ""}`}
+            translate="no"
+            type="button"
+            title="Translate to Hindi (हिन्दी)"
           >
             हिन्दी
           </button>
         </div>
 
         <div className="flex items-center gap-2">
-          <form className="flex items-center font-sans">
-            <input
-              type="text"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="outline-none border border-[#CCCCCC] border-r-0 px-2 text-[11px] h-[26px] w-[90px] rounded-l"
-            />
-            <button
-              type="submit"
-              className="bg-[#C86218] text-white h-[26px] px-1.5 border border-[#C86218] rounded-r flex items-center justify-center cursor-pointer"
-              aria-label="Search"
-            >
-              <Search size={12} />
-            </button>
-          </form>
+          {/* Mobile Search */}
+          <div className="relative" ref={mobileSearchDropdownRef}>
+            <form onSubmit={handleSearchSubmit} className="flex items-center font-sans">
+              <input
+                type="text"
+                placeholder="Search"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setIsSearchDropdownOpen(true);
+                }}
+                onFocus={() => setIsSearchDropdownOpen(true)}
+                className="outline-none border border-[#CCCCCC] border-r-0 px-2 text-[11px] h-[26px] w-[90px] rounded-l"
+              />
+              <button
+                type="submit"
+                disabled={!searchQuery.trim()}
+                className="bg-[#C86218] text-white h-[26px] px-1.5 border border-[#C86218] rounded-r flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                aria-label="Search"
+              >
+                <Search size={12} />
+              </button>
+            </form>
 
-          <div className="flex items-center gap-1">
-            <span className="text-gray-500 text-[11px]">Text</span>
+            {/* Mobile Search Dropdown */}
+            {isSearchDropdownOpen && searchQuery.trim().length >= 1 && (
+              <div className="absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 text-left">
+                <div className="px-2.5 py-1.5 bg-[#f8fafc] border-b border-gray-100 flex items-center justify-between text-[9px] font-bold text-gray-500 uppercase">
+                  <span>Products ({liveSearchResults.length})</span>
+                  <span className="text-[#C86218] truncate max-w-[80px]">&ldquo;{searchQuery}&rdquo;</span>
+                </div>
+                {liveSearchResults.length > 0 ? (
+                  <div className="max-h-48 overflow-y-auto divide-y divide-gray-50">
+                    {liveSearchResults.map((p) => (
+                      <Link
+                        key={`m-${p.categorySlug}-${p.slug}`}
+                        href={`/products/${p.categorySlug}/${p.slug}`}
+                        onClick={() => setIsSearchDropdownOpen(false)}
+                        className="p-2 hover:bg-orange-50/60 flex flex-col transition-colors block text-left"
+                      >
+                        <span className="text-[11px] font-bold text-[#0C356A] truncate">
+                          {p.name}
+                        </span>
+                        <span className="text-[9px] text-gray-400 uppercase truncate">
+                          {p.subCategoryTitle}
+                        </span>
+                      </Link>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={handleSearchSubmit}
+                      className="w-full p-2 bg-gray-50 hover:bg-[#0C356A] hover:text-white text-[10px] font-bold text-center text-[#0C356A] transition-colors uppercase cursor-pointer block border-t border-gray-100"
+                    >
+                      View All Results →
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-3 text-center text-[10px] text-gray-400">
+                    No products found
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Mobile Font Sizing Controls */}
+          <div
+            className="flex items-center gap-1"
+            title={`Text Size: ${currentFontSize}px`}
+          >
+            <span className="text-gray-500 text-[11px] select-none">Text</span>
             <button
               onClick={increaseFont}
-              className="bg-[#0C356A] text-white p-0.5 rounded-xs"
-              title="Increase Font Size"
+              disabled={currentFontSize >= 26}
+              className="bg-[#0C356A] text-white p-0.5 rounded-xs active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+              title={`Increase Font Size (+1px) - Current: ${currentFontSize}px`}
               type="button"
+              aria-label="Increase font size"
             >
               <Plus size={10} strokeWidth={3} />
             </button>
             <button
               onClick={decreaseFont}
-              className="bg-[#0C356A] text-white p-0.5 rounded-xs"
-              title="Decrease Font Size"
+              disabled={currentFontSize <= 12}
+              className="bg-[#0C356A] text-white p-0.5 rounded-xs active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-all"
+              title={`Decrease Font Size (-1px) - Current: ${currentFontSize}px`}
               type="button"
+              aria-label="Decrease font size"
             >
               <Minus size={10} strokeWidth={3} />
             </button>

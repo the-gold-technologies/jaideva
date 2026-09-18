@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -42,18 +42,35 @@ export default function CategoryProductsPage() {
     }
   }, [categorySlug, fetchProducts]);
 
-  // Match brand from BRAND_PRODUCTS data
+  // Handle URL hash anchor navigation (e.g., #subcat-2)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleHash = () => {
+        const hash = window.location.hash;
+        if (hash) {
+          const match = hash.match(/#subcat-(\d+)/);
+          if (match) {
+            const idx = parseInt(match[1], 10);
+            setActiveSection(idx);
+            setTimeout(() => {
+              const el = document.getElementById(`subcat-${idx}`);
+              if (el) {
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            }, 150);
+          }
+        }
+      };
+
+      handleHash();
+      window.addEventListener("hashchange", handleHash);
+      return () => window.removeEventListener("hashchange", handleHash);
+    }
+  }, [categorySlug]);
+
+  // Match brand from BRAND_PRODUCTS data when categorySlug is a brand ID
   const matchedBrand: BrandData | undefined = useMemo(() => {
-    const direct = BRAND_PRODUCTS.find((b) => b.id === categorySlug);
-    if (direct) return direct;
-
-    const byCat = BRAND_PRODUCTS.find((b) =>
-      b.categories.some((c) => c.slug === categorySlug),
-    );
-    if (byCat) return byCat;
-
-    if (categorySlug === "industrial-oils") return BRAND_PRODUCTS[0];
-    return undefined;
+    return BRAND_PRODUCTS.find((b) => b.id === categorySlug);
   }, [categorySlug]);
 
   // Current category from CMS store (fallback)
@@ -70,29 +87,66 @@ export default function CategoryProductsPage() {
     return productCategories.find((c) => c.slug === categorySlug) || null;
   }, [productCategories, categorySlug, matchedBrand]);
 
+  const searchParams = useSearchParams();
+  const searchQuery = (searchParams?.get("search") || "").trim();
+
   // Filter and group products dynamically (from brand if matched, else CMS)
   const subCategoryGroups = useMemo(() => {
+    const q = searchQuery.toLowerCase();
+    const matchFilter = (item: {
+      name?: string;
+      description?: string;
+      specs?: string;
+      subCategoryTitle?: string;
+    }) => {
+      if (!q) return true;
+      const n = (item.name || "").toLowerCase();
+      const d = (item.description || "").toLowerCase();
+      const s = (item.specs || "").toLowerCase();
+      const sub = (item.subCategoryTitle || "").toLowerCase();
+      return n.includes(q) || d.includes(q) || s.includes(q) || sub.includes(q);
+    };
+
     if (matchedBrand) {
-      return matchedBrand.categories.map((cat) => ({
-        title: cat.name,
-        coverImage: cat.coverImage,
-        products: cat.products.map((p) => ({
-          id: p.id,
-          name: p.name,
-          slug: p.slug,
-          categorySlug: categorySlug,
-          subCategoryTitle: cat.name,
-          coverImage: p.coverImage,
-          containerImage: p.coverImage,
-          description: p.description,
-        })) as unknown as CMSProduct[],
-      }));
+      return matchedBrand.categories
+        .map((cat) => {
+          const filteredProds = cat.products.filter((p) =>
+            matchFilter({
+              name: p.name,
+              description: p.description,
+              specs: p.specs,
+              subCategoryTitle: cat.name,
+            }),
+          );
+          return {
+            title: cat.name,
+            coverImage: cat.coverImage,
+            products: filteredProds.map((p) => ({
+              id: p.id,
+              name: p.name,
+              slug: p.slug,
+              categorySlug: categorySlug,
+              subCategoryTitle: cat.name,
+              coverImage: p.coverImage,
+              containerImage: p.coverImage,
+              description: p.description,
+            })) as unknown as CMSProduct[],
+          };
+        })
+        .filter((group) => group.products.length > 0);
     }
 
     if (!products || products.length === 0) return [];
 
     const categoryProducts = products.filter(
-      (p) => !categorySlug || p.categorySlug === categorySlug,
+      (p) =>
+        (!categorySlug || p.categorySlug === categorySlug) &&
+        matchFilter({
+          name: p.name,
+          description: p.description,
+          subCategoryTitle:
+            (p as any).subCategoryTitle || (p as any).subtitle || "",
+        }),
     );
 
     const groupMap = new Map<
@@ -127,7 +181,7 @@ export default function CategoryProductsPage() {
     });
 
     return Array.from(groupMap.values());
-  }, [products, categorySlug, category]);
+  }, [products, categorySlug, category, matchedBrand, searchQuery]);
 
   const handleOpenEnquiry = (productName?: string) => {
     if (productName) setEnquiryProduct(productName);
@@ -348,7 +402,50 @@ export default function CategoryProductsPage() {
 
         {/* ── RIGHT CONTENT AREA ── */}
         <div className="flex-1 min-w-0 flex flex-col gap-8">
-          {subCategoryGroups.length === 0 ? (
+          {/* Search Results Filter Alert Banner */}
+          {searchQuery && (
+            <div className="p-4 sm:p-5 bg-blue-50/80 border border-blue-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+              <div>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#002b5c] bg-white px-2.5 py-0.5 rounded-full border border-blue-100">
+                  Filtered By Search Keyword
+                </span>
+                <p className="text-sm font-semibold text-gray-800 mt-1">
+                  Showing matching results for{" "}
+                  <span className="font-extrabold text-[#C86218]">
+                    &ldquo;{searchQuery}&rdquo;
+                  </span>{" "}
+                  in {categoryName}
+                </p>
+              </div>
+              <Link
+                href={`/products/${categorySlug}`}
+                className="inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-white border border-gray-200 hover:border-orange-300 text-xs font-bold text-[#C86218] hover:bg-orange-50 transition-all uppercase tracking-wider self-start sm:self-auto cursor-pointer"
+              >
+                Clear Search ×
+              </Link>
+            </div>
+          )}
+
+          {/* Empty State if No Products Match Search */}
+          {searchQuery && subCategoryGroups.length === 0 ? (
+            <div className="py-16 px-6 bg-white rounded-2xl border border-gray-200 text-center max-w-md mx-auto my-8 w-full shadow-sm">
+              <h3 className="text-base font-bold text-[#002b5c] uppercase">
+                No matching products found
+              </h3>
+              <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                We couldn&apos;t find any {categoryName} matching &ldquo;
+                {searchQuery}&rdquo;.
+              </p>
+              <div className="mt-5 flex justify-center gap-3">
+                <Link
+                  href={`/products/${categorySlug}`}
+                  className="px-4 py-2 bg-[#C86218] hover:bg-[#a74f10] text-white text-xs font-bold rounded-lg uppercase tracking-wider transition-colors"
+                >
+                  Clear Search
+                </Link>
+              </div>
+            </div>
+          ) : subCategoryGroups.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
               <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-5">
                 <Droplet size={28} className="text-gray-400" />

@@ -40,7 +40,7 @@ export default function ProductsServicesSection({
         key={itemId}
         href={link}
         onClick={() => onSelectCategory && onSelectCategory(itemId)}
-        className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+        className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200/80 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer"
       >
         {/* Icon Ring Panel */}
         <div className="flex aspect-square w-full items-center justify-center bg-[#f8fafc] p-6">
