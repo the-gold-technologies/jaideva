@@ -44,20 +44,21 @@ const COLOR_STYLES = [
 
 export default function WhyJaiDevaSection() {
   const { pages } = useCMSStore();
-  const cmsSection = pages["home"]?.WhyJaiDevaSection;
+  const {
+    title,
+    subtitle,
+    points = [],
+  } = pages["home"]?.WhyJaiDevaSection || {};
 
-  if (!cmsSection) {
+  if (!title && points.length === 0) {
     return null;
   }
 
-  const title = cmsSection.title || "";
-  const subtitle = cmsSection.subtitle || "";
-  const points: any[] = Array.isArray(cmsSection.points)
-    ? cmsSection.points
-    : [];
-
   return (
-    <section id="why-us" className="py-16 sm:py-20 bg-white font-sans text-center">
+    <section
+      id="why-us"
+      className="py-16 sm:py-20 bg-white font-sans text-center"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto">

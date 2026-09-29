@@ -14,17 +14,13 @@ export default function ProductsServicesSection({
 }: ProductsServicesProps) {
   const { pages } = useCMSStore();
 
-  const cmsSection = pages["home"]?.ProductsServicesSection;
+  const {
+    title,
+    subtitle,
+    items = [],
+  } = pages["home"]?.ProductsServicesSection || {};
 
-  if (!cmsSection) {
-    return null;
-  }
-
-  const title = cmsSection.title || "";
-  const subtitle = cmsSection.subtitle || "";
-  const items: any[] = Array.isArray(cmsSection.items) ? cmsSection.items : [];
-
-  if (items.length === 0 && !title) {
+  if (!title && items.length === 0) {
     return null;
   }
 
@@ -104,7 +100,7 @@ export default function ProductsServicesSection({
 
         {/* Catalog Tile Grid */}
         <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6 lg:grid-cols-6">
-          {items.map((item, idx) => renderProductTile(item, idx))}
+          {items.map((item: any, idx: number) => renderProductTile(item, idx))}
         </div>
 
         {/* View All Products Button */}

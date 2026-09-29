@@ -10,77 +10,25 @@ interface HomeHeroProps {
   onOpenDistributor: (type?: string) => void;
 }
 
-const DEFAULT_HERO_POINTS = [
-  "Engine, hydraulic and gear oils",
-  "Grease and specialty lubricants",
-  "Reliable supply and guidance",
-];
-
 export default function HomeHero({
   onOpenEnquiry,
   onOpenDistributor,
 }: HomeHeroProps) {
-  const { pages, products, fetchProducts } = useCMSStore();
+  const { pages } = useCMSStore();
 
-  React.useEffect(() => {
-    fetchProducts().catch(console.error);
-  }, [fetchProducts]);
-
-  // Connect to CMS home sections
-  const homeData = pages["home"] || {};
-  const cmsHero = homeData.HomeHero || {};
-  const cmsAbout = homeData.AboutSection || {};
-  const cmsSlider = homeData.HeroSlider || {};
-  const firstSlide = Array.isArray(cmsSlider.slides)
-    ? cmsSlider.slides[0]
-    : null;
-
-  // Dynamic CMS fields with robust brand fallbacks
-  const badge =
-    cmsHero.badge ||
-    cmsAbout.title ||
-    firstSlide?.title ||
-    "Multi-brand lubricant solutions";
-  const heading =
-    cmsHero.heading ||
-    cmsAbout.subtitle2 ||
-    cmsAbout.subtitle1 ||
-    "Reliable lubrication for every industry and application.";
-  const description =
-    cmsHero.description ||
-    cmsAbout.paragraph1 ||
-    cmsAbout.paragraph2 ||
-    firstSlide?.description ||
-    "Jai Deva Oil Co. is a trusted multi-brand industrial and automotive lubricant distributor, helping businesses choose quality products from leading brands with confidence.";
-
-  const primaryBtnLabel =
-    cmsHero.primaryBtnLabel || cmsAbout.primaryBtnLabel || "Explore products";
-  const primaryBtnUrl =
-    cmsHero.primaryBtnUrl || cmsAbout.primaryBtnUrl || "#products";
-
-  const secondaryBtnLabel =
-    cmsHero.secondaryBtnLabel || cmsAbout.secondaryBtnLabel || "Become a partner";
-  const secondaryBtnUrl =
-    cmsHero.secondaryBtnUrl || cmsAbout.secondaryBtnUrl || "#contact";
-
-  const heroPoints: string[] =
-    Array.isArray(cmsHero.points) && cmsHero.points.length > 0
-      ? cmsHero.points
-      : DEFAULT_HERO_POINTS;
-
-  const featuredProduct = products?.[0];
-  const productImage =
-    cmsHero.productImage ||
-    (featuredProduct
-      ? (featuredProduct as any).containerImage ||
-        featuredProduct.coverImage ||
-        featuredProduct.productImages?.[0]
-      : null);
-
-  const bgImage =
-    cmsHero.bgImage ||
-    firstSlide?.img ||
-    "https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=2200&q=85";
+  // 1-to-1 direct mapping from CMS HomeHero API
+  const {
+    badge,
+    heading,
+    description,
+    primaryBtnLabel,
+    primaryBtnUrl,
+    secondaryBtnLabel,
+    secondaryBtnUrl,
+    points: heroPoints = [],
+    productImage,
+    bgImage,
+  } = pages["home"]?.HomeHero || {};
 
   const handlePrimaryClick = () => {
     if (primaryBtnUrl && primaryBtnUrl.startsWith("#")) {
@@ -93,7 +41,7 @@ export default function HomeHero({
       window.location.href = primaryBtnUrl;
       return;
     }
-    onOpenEnquiry(primaryBtnLabel);
+    onOpenEnquiry(primaryBtnLabel || "General Lubricant Enquiry");
   };
 
   const handleSecondaryClick = () => {
@@ -112,11 +60,13 @@ export default function HomeHero({
 
   return (
     <section className="relative isolate overflow-hidden bg-[#071f3b] text-white">
-      <img
-        src={bgImage}
-        alt="Oil industry processing plant with industrial pipes and equipment"
-        className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
-      />
+      {bgImage && (
+        <img
+          src={bgImage}
+          alt="Hero Background"
+          className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
+        />
+      )}
       <div className="absolute inset-0 -z-10 bg-[#071f3b]/70" />
       <div className="absolute inset-y-0 right-0 -z-10 w-full bg-[#071f3b]/30 lg:w-3/5" />
 
@@ -129,45 +79,57 @@ export default function HomeHero({
             </div>
           )}
 
-          <h1 className="text-3xl font-black uppercase leading-[1.05] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.6rem]">
-            <FormattedText text={heading} />
-          </h1>
+          {heading && (
+            <h1 className="text-3xl font-black uppercase leading-[1.05] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.6rem]">
+              <FormattedText text={heading} />
+            </h1>
+          )}
 
-          <p className="mt-6 max-w-xl text-base leading-7 text-slate-200 sm:text-lg">
-            <FormattedText text={description} />
-          </p>
+          {description && (
+            <p className="mt-6 max-w-xl text-base leading-7 text-slate-200 sm:text-lg">
+              <FormattedText text={description} />
+            </p>
+          )}
 
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              onClick={handlePrimaryClick}
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-sm font-extrabold uppercase tracking-wide text-white transition hover:bg-[#A74D0E] cursor-pointer"
-            >
-              <span>{primaryBtnLabel}</span> <ArrowRight size={17} />
-            </button>
-            <button
-              type="button"
-              onClick={handleSecondaryClick}
-              className="inline-flex items-center justify-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-sm font-extrabold uppercase tracking-wide text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b] cursor-pointer"
-            >
-              <Truck size={17} /> <span>{secondaryBtnLabel}</span>
-            </button>
-          </div>
+          {(primaryBtnLabel || secondaryBtnLabel) && (
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              {primaryBtnLabel && (
+                <button
+                  type="button"
+                  onClick={handlePrimaryClick}
+                  className="inline-flex items-center justify-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-sm font-extrabold uppercase tracking-wide text-white transition hover:bg-[#A74D0E] cursor-pointer"
+                >
+                  <span>{primaryBtnLabel}</span> <ArrowRight size={17} />
+                </button>
+              )}
+              {secondaryBtnLabel && (
+                <button
+                  type="button"
+                  onClick={handleSecondaryClick}
+                  className="inline-flex items-center justify-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-sm font-extrabold uppercase tracking-wide text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b] cursor-pointer"
+                >
+                  <Truck size={17} /> <span>{secondaryBtnLabel}</span>
+                </button>
+              )}
+            </div>
+          )}
 
-          <div className="mt-10 grid gap-3 border-t border-white/20 pt-5 sm:grid-cols-3">
-            {heroPoints.map((point, idx) => (
-              <div
-                key={`${point}-${idx}`}
-                className="flex items-start gap-2 text-xs leading-5 text-slate-200"
-              >
-                <CheckCircle2
-                  size={16}
-                  className="mt-0.5 shrink-0 text-[#F4B24D]"
-                />
-                <span>{point}</span>
-              </div>
-            ))}
-          </div>
+          {heroPoints.length > 0 && (
+            <div className="mt-10 grid gap-3 border-t border-white/20 pt-5 sm:grid-cols-3">
+              {heroPoints.map((point: string, idx: number) => (
+                <div
+                  key={`${point}-${idx}`}
+                  className="flex items-start gap-2 text-xs leading-5 text-slate-200"
+                >
+                  <CheckCircle2
+                    size={16}
+                    className="mt-0.5 shrink-0 text-[#F4B24D]"
+                  />
+                  <span>{point}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="hidden lg:block">

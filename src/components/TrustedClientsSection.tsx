@@ -9,80 +9,30 @@ export interface BrandItem {
   logo: string;
 }
 
-export const OFFICIAL_BRANDS: BrandItem[] = [
-  {
-    id: "hp-lubricants",
-    name: "HP Lubricants",
-    logo: "/brands/hp-lubricants.png",
-  },
-  {
-    id: "caltex",
-    name: "Caltex",
-    logo: "/brands/caltex.svg",
-  },
-
-  {
-    id: "motultech",
-    name: "MotulTech",
-    logo: "/brands/motultech.png",
-  },
-  {
-    id: "itw-chemin",
-    name: "ITW Chemin",
-    logo: "/brands/itw-chemin.png",
-  },
-  {
-    id: "valvoline",
-    name: "Valvoline",
-    logo: "/brands/valvoline.png",
-  },
-  {
-    id: "lubricon",
-    name: "Lubricon",
-    logo: "/brands/lubricon.png",
-  },
-  {
-    id: "gs-caltex",
-    name: "GS Caltex",
-    logo: "/brands/gs-caltex.png",
-  },
-  {
-    id: "idemitsu",
-    name: "Idemitsu",
-    logo: "/brands/idemitsu.png",
-  },
-  {
-    id: "deep-pneumatics",
-    name: "Deep Pneumatics",
-    logo: "/brands/deep-pneumatics.png",
-  },
-  {
-    id: "filtermist",
-    name: "Filtermist",
-    logo: "/brands/filtermist.svg",
-  },
-];
-
 export default function TrustedClientsSection() {
   const { pages } = useCMSStore();
-  const cmsClientsSection = pages["home"]?.TrustedClientsSection;
+  const {
+    title,
+    subtitle,
+    clients = [],
+  } = pages["home"]?.TrustedClientsSection || {};
 
-  const title = cmsClientsSection?.title || "OUR BRANDS";
-  const subtitle =
-    cmsClientsSection?.subtitle ||
-    cmsClientsSection?.description ||
-    "Leading Brands for Reliable Lubrication Solutions";
+  if (!Array.isArray(clients) || clients.length === 0) {
+    return null;
+  }
 
-  // Use CMS clients if available, otherwise use verified official local SVG/PNG logos
-  const brandsSource =
-    Array.isArray(cmsClientsSection?.clients) &&
-    cmsClientsSection.clients.length > 0
-      ? cmsClientsSection.clients.map((c: any) => ({
-          id: c.id || c.slug || c.name,
-          name: c.name,
-          logo: c.logo || "/brands/hp-lubricants.png",
-        }))
-      : OFFICIAL_BRANDS;
+  // Data comes strictly from CMS
+  const brandsSource: BrandItem[] = clients
+    .filter((c: any) => c && c.logo)
+    .map((c: any) => ({
+      id: c.id || c.slug || c.name,
+      name: c.name || "",
+      logo: c.logo,
+    }));
+
+  if (brandsSource.length === 0) {
+    return null;
+  }
 
   // Quadruple clone for a completely seamless infinite loop
   const marqueeBrands = [

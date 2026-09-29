@@ -35,24 +35,25 @@ export default function IndustriesWeServeSection({
   onOpenEnquiry,
 }: IndustriesWeServeSectionProps) {
   const { pages } = useCMSStore();
-  const cmsSection = pages["home"]?.IndustriesWeServeSection;
+  const {
+    title,
+    subtitle,
+    leadText,
+    description,
+    btnLabel,
+    btnUrl = "#industries",
+    industries = [],
+  } = pages["home"]?.IndustriesWeServeSection || {};
 
-  if (!cmsSection) {
+  if (!title && industries.length === 0) {
     return null;
   }
 
-  const title = cmsSection.title || "";
-  const subtitle = cmsSection.subtitle || "";
-  const leadText = cmsSection.leadText || "";
-  const description = cmsSection.description || "";
-  const btnLabel = cmsSection.btnLabel || "";
-  const btnUrl = cmsSection.btnUrl || "#industries";
-  const industries: any[] = Array.isArray(cmsSection.industries)
-    ? cmsSection.industries
-    : [];
-
   return (
-    <section id="industries" className="py-14 sm:py-16 bg-[#f8fafc] text-center font-sans">
+    <section
+      id="industries"
+      className="py-14 sm:py-16 bg-[#f8fafc] text-center font-sans"
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Heading with Underline */}
         {title && (
@@ -88,7 +89,8 @@ export default function IndustriesWeServeSection({
                 <div
                   key={ind.name || idx}
                   onClick={() =>
-                    onOpenEnquiry && onOpenEnquiry(`${ind.name} Industry Lubricants`)
+                    onOpenEnquiry &&
+                    onOpenEnquiry(`${ind.name} Industry Lubricants`)
                   }
                   className="bg-white border border-slate-200/90 hover:border-[#C86218] rounded-xl p-4 sm:p-5 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-1 shadow-2xs hover:shadow-md cursor-pointer group"
                 >

@@ -27,20 +27,20 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 export default function MultiBrandSolutionsSection() {
   const { pages } = useCMSStore();
-  const cmsSection = pages["home"]?.MultiBrandSolutionsSection;
+  const {
+    badge,
+    title,
+    titleHighlight,
+    paragraph1,
+    paragraph2,
+    btnLabel,
+    btnUrl = "#brands",
+    steps = [],
+  } = pages["home"]?.MultiBrandSolutionsSection || {};
 
-  if (!cmsSection) {
+  if (!title && steps.length === 0) {
     return null;
   }
-
-  const badge = cmsSection.badge || "";
-  const title = cmsSection.title || "";
-  const titleHighlight = cmsSection.titleHighlight || "";
-  const paragraph1 = cmsSection.paragraph1 || "";
-  const paragraph2 = cmsSection.paragraph2 || "";
-  const btnLabel = cmsSection.btnLabel || "";
-  const btnUrl = cmsSection.btnUrl || "#brands";
-  const steps: any[] = Array.isArray(cmsSection.steps) ? cmsSection.steps : [];
 
   return (
     <section
@@ -92,7 +92,7 @@ export default function MultiBrandSolutionsSection() {
             {/* Inline Process Tag */}
             {steps.length > 0 && (
               <div className="mt-6 flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0C356A] flex-wrap">
-                {steps.map((st, idx) => (
+                {steps.map((st: any, idx: number) => (
                   <React.Fragment key={st.name || idx}>
                     <span className="bg-white px-3 py-1 rounded border border-slate-200 shadow-2xs">
                       {st.name}
@@ -123,7 +123,7 @@ export default function MultiBrandSolutionsSection() {
           {steps.length > 0 && (
             <div className="lg:col-span-6">
               <div className="space-y-3.5">
-                {steps.map((step, idx) => {
+                {steps.map((step: any, idx: number) => {
                   const Icon =
                     (typeof step.icon === "string" && ICON_MAP[step.icon]) ||
                     (typeof step.icon === "function" && step.icon) ||

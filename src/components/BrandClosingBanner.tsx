@@ -10,22 +10,22 @@ interface BrandClosingBannerProps {
   onOpenEnquiry?: (subject?: string) => void;
 }
 
-export default function BrandClosingBanner({ onOpenEnquiry }: BrandClosingBannerProps) {
+export default function BrandClosingBanner({
+  onOpenEnquiry,
+}: BrandClosingBannerProps) {
   const { pages } = useCMSStore();
-  const cmsSection = pages["home"]?.BrandClosingBannerSection;
+  const {
+    badge,
+    title,
+    description,
+    btnLabel,
+    btnUrl = "/contact-us",
+    highlights = [],
+  } = pages["home"]?.BrandClosingBannerSection || {};
 
-  if (!cmsSection) {
+  if (!title && !badge) {
     return null;
   }
-
-  const badge = cmsSection.badge || "";
-  const title = cmsSection.title || "";
-  const description = cmsSection.description || "";
-  const btnLabel = cmsSection.btnLabel || "";
-  const btnUrl = cmsSection.btnUrl || "/contact-us";
-  const highlights: string[] = Array.isArray(cmsSection.highlights)
-    ? cmsSection.highlights
-    : [];
 
   return (
     <section className="bg-white py-16 border-t border-b border-slate-100 relative overflow-hidden font-sans">
@@ -59,7 +59,7 @@ export default function BrandClosingBanner({ onOpenEnquiry }: BrandClosingBanner
         {/* Highlights / Pillars Badges */}
         {highlights.length > 0 && (
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            {highlights.map((p, idx) => (
+            {highlights.map((p: any, idx: number) => (
               <div
                 key={idx}
                 className="bg-white border border-slate-200/80 shadow-2xs px-4 py-2 rounded-lg flex items-center gap-2 text-xs sm:text-sm font-bold text-[#0C356A]"
