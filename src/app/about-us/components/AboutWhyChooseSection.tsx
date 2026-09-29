@@ -8,6 +8,9 @@ import {
   ShieldCheck,
   Users,
   Clock,
+  Truck,
+  Factory,
+  Award,
   CheckCircle2,
 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
@@ -27,6 +30,12 @@ const ICON_MAP: Record<string, React.ElementType> = {
   users: Users,
   Clock,
   clock: Clock,
+  Truck,
+  truck: Truck,
+  Factory,
+  factory: Factory,
+  Award,
+  award: Award,
   CheckCircle2,
 };
 
@@ -43,20 +52,18 @@ function resolveIcon(iconKey: unknown): React.ElementType {
 
 export default function AboutWhyChooseSection() {
   const { pages } = useCMSStore();
-  const cmsStory = pages["about-us"]?.AboutJaiDevaContent || {};
+  const sectionData =
+    pages["about-us"]?.AboutWhyChooseSection ||
+    pages["about-us"]?.AboutWhyChoose ||
+    pages["about-us"]?.AboutJaiDevaContent ||
+    {};
 
-  const whyChooseTitle =
-    cmsStory.whyChooseTitle || "Why Choose Jai Deva Oil Co.?";
-  const whyChooseSubtitle =
-    cmsStory.whyChooseSubtitle ||
-    "Dependable multi-brand lubricant supply, proven since 2008";
-  const whyChooseItems: any[] = Array.isArray(cmsStory.whyChooseItems)
-    ? cmsStory.whyChooseItems
-    : [];
+  const whyChooseTitle = sectionData.whyChooseTitle || sectionData.title;
+  const whyChooseSubtitle = sectionData.whyChooseSubtitle || sectionData.subtitle;
+  const whyChooseItems = sectionData.whyChooseItems || sectionData.items || [];
 
-  if (!whyChooseTitle && !whyChooseSubtitle && whyChooseItems.length === 0) {
+  if (!whyChooseTitle && (!Array.isArray(whyChooseItems) || whyChooseItems.length === 0))
     return null;
-  }
 
   return (
     <section
@@ -75,8 +82,7 @@ export default function AboutWhyChooseSection() {
           </p>
         )}
 
-        {/* Feature Grid */}
-        {whyChooseItems.length > 0 && (
+        {Array.isArray(whyChooseItems) && whyChooseItems.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChooseItems.map((item: any, index: number) => {
               const IconComp = resolveIcon(item.icon);

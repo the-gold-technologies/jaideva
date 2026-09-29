@@ -43,14 +43,14 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "India's Premier Lubricant Solutions & Direct Refinery Supply Authority",
     about:
       "HP Lubricants is India's largest lubricant brand, offering an exhaustive spectrum of high-performance automotive and heavy industrial oils. Backed by state-of-the-art refinery testing, direct pipeline infrastructure, and ISO-certified batch blending, HP Lubricants ensures maximum machine longevity, thermal stability, and operational efficiency across critical power, steel, manufacturing, and transport infrastructure.",
-    heroImage: "/oil-drums-warehouse.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
     categories: [
       {
         name: "Engine Oils",
         slug: "engine-oils",
         description:
           "Advanced synthetic and multi-grade engine fluids for commercial transport, heavy haulage, and passenger vehicles.",
-        coverImage: "/engine-oil-bottles.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
         products: [
           {
             id: "hp-racer-4t-20w40",
@@ -61,7 +61,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Premium four-stroke motorcycle and scooter engine oil with high friction stability and clutch anti-slippage.",
             packaging: ["900ml", "1L", "50L", "210L Drum"],
             applications: ["Two-Wheelers", "Four-Stroke Motorcycles", "Scooters"],
-            coverImage: "/engine-oil-bottles.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
           },
           {
             id: "hp-milcy-turbo-15w40",
@@ -72,7 +72,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Severe-duty turbo-charged diesel engine oil engineered for extended drain intervals, soot dispersion, and bore protection.",
             packaging: ["7.5L", "10L", "20L Bucket", "210L Drum"],
             applications: ["Heavy Commercial Vehicles", "Earthmovers", "Diesel Gensets"],
-            coverImage: "/engine-oil-hero.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
           },
           {
             id: "hp-neosynth-5w30",
@@ -83,7 +83,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "100% full synthetic motor oil delivering maximum fuel efficiency and cold-cranking protection for modern petrol/diesel cars.",
             packaging: ["1L", "3.5L", "4L Canister", "210L Drum"],
             applications: ["Modern Turbocharged Cars", "SUVs", "Hybrid Powertrains"],
-            coverImage: "/engine-oil-bottles.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
           },
         ],
       },
@@ -92,7 +92,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         slug: "gear-oils",
         description:
           "High extreme-pressure (EP) industrial enclosed gear oils and automotive differential fluids.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "hp-gear-oil-ep-90",
@@ -103,7 +103,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Multi-purpose extreme pressure gear lubricant formulated for hypoid, spiral bevel, and synchromesh gearboxes.",
             packaging: ["1L", "5L", "20L Bucket", "210L Drum"],
             applications: ["Manual Transmissions", "Hypoid Differentials", "Steering Gears"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
           {
             id: "hp-parthan-ep-220",
@@ -114,7 +114,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Premium lead-free extreme pressure industrial gear oil with excellent demulsibility and anti-micropitting defense.",
             packaging: ["20L Bucket", "210L Refinery Barrel", "Bulk Road Tanker"],
             applications: ["Steel Rolling Mills", "Cement Ball Mills", "Paper Machine Drives"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
           {
             id: "hp-parthan-ep-320",
@@ -125,7 +125,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Heavy-duty industrial enclosed gear lubricant built to withstand continuous heavy shock loading and high temperatures.",
             packaging: ["20L", "210L Drum", "Tanker Delivery"],
             applications: ["Crusher Gearboxes", "Extruders", "Heavy Mining Conveyors"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -134,7 +134,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         slug: "hydraulic-oils",
         description:
           "Anti-wear hydraulic fluids engineered for high-pressure industrial hydraulic pumps and machine tools.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "hp-enklo-68",
@@ -145,7 +145,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "High performance anti-wear hydraulic oil providing oxidation stability, anti-foam, and rapid water separation.",
             packaging: ["20L Bucket", "210L Refinery Barrel", "Bulk Road Tanker"],
             applications: ["Plastic Injection Molding", "CNC Hydraulic Packs", "Hydraulic Presses"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
           {
             id: "hp-enklo-46",
@@ -156,7 +156,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Premium anti-wear hydraulic oil formulated for rotary vane, piston, and gear type hydraulic pumps under severe duty.",
             packaging: ["20L", "210L Drum", "Bulk Tanker"],
             applications: ["Mobile Construction Equipment", "Machine Tool Hydraulics", "Forklifts"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
           {
             id: "hp-enklo-32",
@@ -167,7 +167,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Light viscosity anti-wear fluid designed for tight-clearance servo valves and high-cycle industrial automation.",
             packaging: ["20L Bucket", "210L Drum"],
             applications: ["Servo-Controlled Machine Tools", "Precision Robotics", "Low Temp Hydraulics"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -176,7 +176,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         slug: "greases",
         description:
           "Heavy lithium and specialty complex greases for bearings, chassis, high-temp kilns, and multi-purpose lubrication.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "hp-lithon-2",
@@ -187,7 +187,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Premium multi-purpose lithium grease with high mechanical shear stability, anti-rust, and water resistance.",
             packaging: ["1kg", "5kg", "18kg Pail", "180kg Barrel"],
             applications: ["Electric Motor Bearings", "Industrial Rollers", "General Plant Lubrication"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
           {
             id: "hp-ap3-grease",
@@ -198,7 +198,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "High shear resistance grease designed specifically for automotive wheel bearings and heavy industrial shaft collars.",
             packaging: ["500g", "1kg", "3kg", "18kg Pail", "180kg Drum"],
             applications: ["Commercial Truck Wheel Bearings", "Textile Machinery", "Farm Equipment"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
           {
             id: "hp-high-temp-grease",
@@ -209,7 +209,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "High drop point extreme-pressure grease formulated for continuous operation in furnace cars, asphalt dryers, and steel plants.",
             packaging: ["18kg Pail", "180kg Drum"],
             applications: ["Furnace Rollers", "Cement Kiln Exhaust Fans", "Continuous Casters"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -218,7 +218,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         slug: "industrial-oils",
         description:
           "Turbine oils, circulating lubricants, and heavy machinery oils for continuous 24/7 manufacturing plants.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "hp-turbinol-46",
@@ -229,7 +229,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Inhibited steam and gas turbine oil offering exceptional oxidation resistance and rapid air release.",
             packaging: ["210L Refinery Barrel", "Bulk Tanker"],
             applications: ["Power Plant Turbines", "Centrifugal Compressors", "Heavy Hydro Plants"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
           {
             id: "hp-compressor-68",
@@ -240,7 +240,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Severe duty reciprocating and screw air compressor oil designed to prevent carbon valve build-up.",
             packaging: ["20L Bucket", "210L Drum"],
             applications: ["Reciprocating Air Compressors", "Rotary Screw Compressors"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -249,7 +249,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         slug: "specialty-products",
         description:
           "Transformer dielectric fluids, heat transfer oils, and industrial rust preventives.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "hp-transformer-oil-60",
@@ -260,7 +260,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Uninhibited mineral insulating electrical oil with superior cooling properties and low dielectric dissipation factor.",
             packaging: ["210L Sealed Refinery Drum", "Dedicated Tanker Delivery"],
             applications: ["High Voltage Transformers", "Switchgear", "Circuit Breakers"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
           {
             id: "hp-thermic-fluid-32",
@@ -271,7 +271,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
               "Mineral based circulating heat transfer fluid designed to resist cracking and thermal sludge formation in closed heat systems.",
             packaging: ["210L Drum", "Bulk Delivery"],
             applications: ["Textile Processing", "Chemical Reactors", "Plywood Presses"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -288,13 +288,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "Over 150 Years of Severe-Duty Fleet Innovation & Extended Drain Chemistry",
     about:
       "Valvoline has pioneered heavy fleet lubrication since 1866. Engineered specifically for severe-duty commercial transport, mining haulers, and high-hour industrial equipment, Valvoline's patented chemistry ensures maximum thermal breakdown defense, soot dispersion, and extended drain intervals.",
-    heroImage: "/engine-oil-hero.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
     categories: [
       {
         name: "Automotive Lubricants",
         slug: "automotive-lubricants",
         description: "Full synthetic motor oils and premium passenger vehicle lubricants.",
-        coverImage: "/engine-oil-bottles.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
         products: [
           {
             id: "valvoline-synpower-5w40",
@@ -304,7 +304,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Advanced full synthetic passenger car engine oil delivering maximum thermal breakdown protection.",
             packaging: ["1L", "4L", "210L Drum"],
             applications: ["Turbocharged Gasoline Engines", "European Passenger Cars"],
-            coverImage: "/engine-oil-bottles.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
           },
           {
             id: "valvoline-all-climate-20w50",
@@ -314,7 +314,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "High viscosity mineral engine oil providing thick protective film under high ambient heat.",
             packaging: ["1L", "5L", "50L", "210L Drum"],
             applications: ["Commercial Taxis", "Heavy Duty Utility Vehicles"],
-            coverImage: "/engine-oil-hero.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
           },
         ],
       },
@@ -322,7 +322,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Commercial Vehicle Lubricants",
         slug: "commercial-vehicle-lubricants",
         description: "Cummins endorsed heavy diesel engine oils for long-haul trucking fleets.",
-        coverImage: "/engine-oil-hero.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
         products: [
           {
             id: "valvoline-premium-blue-15w40",
@@ -332,7 +332,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Exclusively endorsed by Cummins, offering extended drain intervals and superior oxidation resistance.",
             packaging: ["7.5L", "15L", "50L", "210L Drum"],
             applications: ["Cummins Diesel Engines", "Highway Fleets", "Mining Haulers"],
-            coverImage: "/engine-oil-hero.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
           },
           {
             id: "valvoline-all-fleet-extra",
@@ -342,7 +342,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Engineered for high-mileage heavy commercial vehicles operating in severe road conditions.",
             packaging: ["10L", "20L", "210L Drum"],
             applications: ["Heavy Buses", "Multi-Axle Trucks", "Excavators"],
-            coverImage: "/engine-oil-bottles.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
           },
         ],
       },
@@ -350,7 +350,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Industrial Lubricants",
         slug: "industrial-lubricants",
         description: "Stationary gas engine oils, heavy gear fluids, and circulating oils.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "valvoline-geo-40",
@@ -360,7 +360,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Formulated for high-output natural gas and biogas stationary industrial engines.",
             packaging: ["208L Drum", "Bulk Tanker"],
             applications: ["Power Cogeneration Plants", "Landfill Gas Gensets"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -368,7 +368,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Greases",
         slug: "greases",
         description: "Severe shock-load mining and multi-purpose industrial greases.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "valvoline-crimson-ep2",
@@ -378,7 +378,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Tacky extreme-pressure grease engineered for severe wash-off conditions and vibrating screens.",
             packaging: ["18kg Pail", "180kg Drum"],
             applications: ["Mining Conveyors", "Excavator Pivot Pins", "Marine Terminals"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -386,7 +386,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Specialty Products",
         slug: "specialty-products",
         description: "Heavy duty coolants, brake fluids, and transmission fluids.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "valvoline-zerex-hd-coolant",
@@ -396,7 +396,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Protects heavy diesel engine cylinder liners against cavitation and pitting for up to 1,000,000 km.",
             packaging: ["5L", "20L", "210L Drum"],
             applications: ["Heavy Diesel Cooling Systems", "Industrial Gensets"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -413,13 +413,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "World-Class Kixx Group II/III Synthetic Base Oil Technology",
     about:
       "GS Caltex operates one of the world's largest single-site petroleum refineries and base oil manufacturing facilities. Its flagship Kixx lubricant portfolio leverages ultra-pure Group II and Group III synthetic base oils, ensuring superior oxidation resistance, reduced friction, and exceptional fuel economy under severe loads.",
-    heroImage: "/engine-oil-bottles.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
     categories: [
       {
         name: "Automotive Lubricants",
         slug: "automotive-lubricants",
         description: "Kixx PAO synthetic engine oils and high-performance motor formulations.",
-        coverImage: "/engine-oil-bottles.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
         products: [
           {
             id: "kixx-pao-1-0w30",
@@ -429,7 +429,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Top-tier polyalphaolefin synthetic oil for ultra-low friction and high thermal stability.",
             packaging: ["1L", "4L Can", "200L Drum"],
             applications: ["High-End Performance Vehicles", "Direct Injection Engines"],
-            coverImage: "/engine-oil-bottles.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
           },
           {
             id: "kixx-hdx-ck4",
@@ -439,7 +439,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Low-SAPS heavy duty diesel engine oil preserving particulate filters (DPF).",
             packaging: ["15L", "20L", "200L Drum"],
             applications: ["Euro VI Fleets", "Heavy Construction Equipment"],
-            coverImage: "/engine-oil-hero.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
           },
         ],
       },
@@ -447,7 +447,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Industrial Lubricants",
         slug: "industrial-lubricants",
         description: "GS Hydro anti-wear hydraulic fluids and industrial gear oils.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "gs-hydro-hd-68",
@@ -457,7 +457,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "High anti-wear hydraulic oil providing rapid air release and exceptional thermal stability.",
             packaging: ["20L", "200L Drum"],
             applications: ["Industrial Hydraulic Systems", "Precision Presses"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -465,7 +465,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Greases",
         slug: "greases",
         description: "GS Golden Pearl lithium complex greases.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "gs-golden-pearl-ep2",
@@ -475,7 +475,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Heavy multi-purpose grease offering high shear endurance and anti-rust protection.",
             packaging: ["18kg Pail", "180kg Drum"],
             applications: ["Heavy Industrial Bearings", "Truck Chassis"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -483,7 +483,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Specialty Lubricants",
         slug: "specialty-lubricants",
         description: "GS Thermic heat transfer fluids and compressor oils.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "gs-thermic-32",
@@ -493,7 +493,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Synthetic based heat transfer fluid preventing carbon fouling in thermal boiler circuits.",
             packaging: ["200L Drum", "Bulk Tanker"],
             applications: ["Industrial Heaters", "Chemical Reactors"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -510,13 +510,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "Tight-Tolerance Japanese OEM Precision Fluids & Machine Tool Chemistry",
     about:
       "Idemitsu is Japan's premier OEM lubricant partner, formulating factory-fill fluids for world-leading Japanese automotive and machinery manufacturers. Its specialized Daphne product line is engineered for high-speed spindles, EDM dielectric spark erosion, and ultra-tight tolerance CNC machine tools.",
-    heroImage: "/industrial-gear-oil.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
     categories: [
       {
         name: "Automotive Lubricants",
         slug: "automotive-lubricants",
         description: "Precision Japanese OEM motor oils and nano-synthetic fluids.",
-        coverImage: "/engine-oil-bottles.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
         products: [
           {
             id: "idemitsu-ifg7-0w20",
@@ -526,7 +526,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Ultra-low viscosity Japanese OEM synthetic motor oil delivering high thermal response.",
             packaging: ["1L", "3.5L", "200L Drum"],
             applications: ["Japanese OEM Cars", "Hybrid Vehicles"],
-            coverImage: "/engine-oil-bottles.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
           },
         ],
       },
@@ -534,7 +534,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Industrial Lubricants",
         slug: "industrial-lubricants",
         description: "Daphne precision high-speed spindle oils and slideway fluids.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "daphne-super-spindle-2",
@@ -544,7 +544,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Formulated for ultra-high-speed CNC grinding and milling spindles exceeding 30,000 RPM.",
             packaging: ["20L Can", "200L Drum"],
             applications: ["High-Speed CNC Spindles", "Precision Internal Grinders"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -552,7 +552,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Gear Oils",
         slug: "gear-oils",
         description: "Daphne Super Gear oils for precision closed gearboxes.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "daphne-super-gear-220",
@@ -562,7 +562,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Precision Japanese industrial gear oil preventing micro-pitting under repetitive reverse torque.",
             packaging: ["20L", "200L Drum"],
             applications: ["Machine Tool Gearboxes", "Robotic Drive Joints"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -570,7 +570,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Hydraulic Oils",
         slug: "hydraulic-oils",
         description: "Non-zinc ashless hydraulic fluids for tight-clearance servo valves.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "daphne-super-hydro-46a",
@@ -580,7 +580,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Eliminates copper corrosion and valve sticking in electro-hydraulic servo machine tools.",
             packaging: ["20L", "200L Drum"],
             applications: ["Electro-Hydraulic Servo Systems", "Plastic Injection Machines"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -588,7 +588,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Greases",
         slug: "greases",
         description: "Daphne Eponex high-temperature polyurea greases.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "daphne-eponex-ep2",
@@ -598,7 +598,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "High-speed precision bearing grease with 3x longer life than conventional lithium soaps.",
             packaging: ["16kg Pail", "180kg Drum"],
             applications: ["Precision Machine Tool Bearings", "Robotic Linear Guides"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -606,7 +606,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Specialty Products",
         slug: "specialty-products",
         description: "Daphne Dielectric EDM machining fluids and thin-film anti-rust oils.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "daphne-dielectric-cut-68",
@@ -616,7 +616,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Specialized dielectric fluid for spark erosion electrical discharge machines.",
             packaging: ["20L", "200L Drum"],
             applications: ["CNC Sinker EDM Machines", "Die & Mold Spark Erosion"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -633,13 +633,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "Engineered Specialty High-Temp Greases, Pastes & Extreme Tribology",
     about:
       "Molygraph is India's leading manufacturer of engineered specialty greases, anti-seize pastes, and high-temperature tribological lubricants. Built specifically for cement kilns, steel mills, continuous casters, and heavy forging plants where conventional lubricants melt or wash off under extreme pressure.",
-    heroImage: "/oil-drums-warehouse.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
     categories: [
       {
         name: "Industrial Lubricants",
         slug: "industrial-lubricants",
         description: "High temperature conveyor chain fluids and slideway oils.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "molylube-chain-oil-280",
@@ -649,7 +649,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Synthetic ester chain lubricant that does not produce carbon varnishing in paint ovens and stenters.",
             packaging: ["20L Bucket", "210L Drum"],
             applications: ["Paint Shop Conveyors", "Textile Stenter Chains", "Glass Annealing"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -657,7 +657,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Specialty Lubricants",
         slug: "specialty-lubricants",
         description: "Open gear compounds and high vacuum silicone fluids.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "molylube-open-gear-1000",
@@ -667,7 +667,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Sprayable open girth gear lubricant for rotary cement kilns and ball mills.",
             packaging: ["18kg Pail", "180kg Drum"],
             applications: ["Cement Kiln Girth Gears", "Sugar Mill Drives"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -675,7 +675,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Greases",
         slug: "greases",
         description: "Calcium sulfonate complex and bentone non-melting greases.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "molygraph-superlube-2000",
@@ -685,7 +685,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Resists extreme shock loading, chemical exposure, and water flooding in rolling mills.",
             packaging: ["18kg Pail", "180kg Drum"],
             applications: ["Steel Rolling Mills", "Continuous Casters", "Mining Wash Plants"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -693,7 +693,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Metalworking Fluids",
         slug: "metalworking-fluids",
         description: "Heavy duty stamping, deep drawing, and fine blanking lubricants.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "molygraph-formchem-50",
@@ -703,7 +703,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Prevents die scoring and galling in severe deep drawing and heavy gauge sheet stamping.",
             packaging: ["20L", "210L Drum"],
             applications: ["Automotive Body Panel Stamping", "Deep Drawing Presses"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -711,7 +711,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Assembly & Maintenance Products",
         slug: "assembly-maintenance-products",
         description: "Anti-seize copper pastes, moly assembly sprays, and wire rope compounds.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "molygraph-kopal-1000",
@@ -721,7 +721,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Prevents thread galling, welding, and corrosion on high-heat turbine bolts and exhaust studs.",
             packaging: ["500g Tin", "1kg", "5kg", "20kg Pail"],
             applications: ["Turbine Casing Studs", "Furnace Flanges", "Exhaust Manifolds"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -738,13 +738,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "French Industrial Fluid Technology & Metal Transformation Chemistry",
     about:
       "MotulTech is the dedicated heavy industrial division of France's Motul Group. Specializing in high-performance CNC metalworking coolants, neat cutting oils, dielectric spark erosion fluids, and accelerated quench oils, MotulTech products optimize tool life, machine uptime, and metal transformation quality.",
-    heroImage: "/oil-lab-quality.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
     categories: [
       {
         name: "Metalworking Fluids",
         slug: "metalworking-fluids",
         description: "Supracool biostable water soluble cutting and grinding emulsions.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "supracool-9620",
@@ -754,7 +754,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Long-life machining emulsion delivering high tool lubricity on titanium, inconel, and stainless alloys.",
             packaging: ["20L", "208L Drum"],
             applications: ["Aerospace Multi-Axis CNC", "High Pressure Through-Spindle Machining"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -762,7 +762,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Industrial Lubricants",
         slug: "industrial-lubricants",
         description: "High temperature quench fluids and slideway machine tool oils.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "motultech-thermocool-32",
@@ -772,7 +772,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Resists thermal cracking and deposit formation in high-heat industrial circulation boilers.",
             packaging: ["208L Drum", "Bulk Tanker"],
             applications: ["Plastic Molding Heaters", "Chemical Reactors"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -780,7 +780,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Greases",
         slug: "greases",
         description: "High temperature and heavy mechanical load greases.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "motultech-thermogrease-300",
@@ -790,7 +790,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Engineered for high-temperature furnace exhaust bearings and drying fans.",
             packaging: ["18kg Pail", "180kg Drum"],
             applications: ["Furnace Fans", "Asphalt Processing"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -798,7 +798,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Specialty Products",
         slug: "specialty-products",
         description: "Accelerated metal quenching oils and rust inhibitors.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "motultech-thermocut-quench",
@@ -808,7 +808,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Delivers maximum surface hardness without distortion during steel heat treatment.",
             packaging: ["208L Drum"],
             applications: ["Gear Tooth Hardening", "Bearing Ring Quenching"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -816,7 +816,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Maintenance Solutions",
         slug: "maintenance-solutions",
         description: "Machine sump cleaners and degreasing agents.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "safco-clean-degreaser",
@@ -826,7 +826,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Quick-drying degreasing solvent for machine tools and metal parts before painting.",
             packaging: ["20L Canister", "208L Drum"],
             applications: ["Machine Shop Maintenance", "Pre-Assembly Cleaning"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -843,13 +843,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "Industrial Rotary Screw Compressors, Clean Air Treatment & Specialized Fluids",
     about:
       "Deep Pneumatics is an industrial leader providing high-efficiency rotary screw compressors, air treatment dryers, pneumatic filtration units, and custom synthetic compressor fluids. Engineered to provide continuous, carbon-free compressed air for critical automation, pneumatic machinery, and heavy industrial facilities.",
-    heroImage: "/industrial-gear-oil.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
     categories: [
       {
         name: "Air Compressors",
         slug: "air-compressors",
         description: "Rotary screw air compressors and heavy industrial power units.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "deep-screw-compressor-37kw",
@@ -859,7 +859,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Continuous duty direct-coupled industrial screw compressor with smart micro-processor control.",
             packaging: ["Complete Unit"],
             applications: ["Manufacturing Plants", "Textile Automation", "Automotive Assembly"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -867,7 +867,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Pneumatic Products",
         slug: "pneumatic-products",
         description: "FRL filter-regulator-lubricator units and high-speed directional solenoid valves.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "deep-frl-trio",
@@ -877,7 +877,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Clean moisture separation, precise pressure regulation, and micro-fog lubrication for air tools.",
             packaging: ["Box Unit"],
             applications: ["Pneumatic Tool Lines", "Machine Tool Air Prep"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -885,7 +885,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Air Treatment Solutions",
         slug: "air-treatment-solutions",
         description: "Refrigerated compressed air dryers and coalescing particulate micro filters.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "deep-ref-dryer-150",
@@ -895,7 +895,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Eliminates pipe condensation, rust, and water damage across factory air lines.",
             packaging: ["Self-Contained Cabinet"],
             applications: ["CNC Machine Air Lines", "Spray Painting Booths"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -903,7 +903,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Industrial Equipment",
         slug: "industrial-equipment",
         description: "Vertical air receiver pressure vessels and condensate oil-water separators.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "deep-air-receiver-1000l",
@@ -913,7 +913,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Dampens compressor pulsations and acts as a surge storage tank for high-demand bursts.",
             packaging: ["Vertical Vessel"],
             applications: ["Centralized Compressed Air Utility"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -921,7 +921,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Compressor Lubricants",
         slug: "compressor-lubricants",
         description: "Extended drain synthetic screw and reciprocating compressor oils.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "deep-synthec-8000h",
@@ -931,7 +931,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Prevents varnish and carbon sludge in high-temperature rotary screw compressors.",
             packaging: ["20L Bucket", "210L Drum"],
             applications: ["Rotary Screw Air Compressors", "Continuous Duty Vane Units"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -948,13 +948,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "Custom Industrial Blends, Severe-Duty Circulating & Plant-Specific Fluids",
     about:
       "Lubricon delivers customized industrial lubricant blends, precision slideway fluids, and plant-specific process oils formulated to match machinery configurations. Designed for continuous manufacturing lines, severe circulating sumps, heavy machine tools, and specialized industrial gear drives.",
-    heroImage: "/oil-drums-warehouse.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
     categories: [
       {
         name: "Engine Oils",
         slug: "engine-oils",
         description: "Heavy fleet multi-grade diesel engine oils.",
-        coverImage: "/engine-oil-bottles.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
         products: [
           {
             id: "lubricon-fleet-15w40",
@@ -964,7 +964,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Multi-grade commercial diesel fluid designed for heavy transport and off-road engines.",
             packaging: ["20L", "210L Drum"],
             applications: ["Commercial Fleet Vehicles", "Industrial Tractors"],
-            coverImage: "/engine-oil-bottles.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675213/jaideva/products/engine-oil-bottles.jpg",
           },
         ],
       },
@@ -972,7 +972,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Gear Oils",
         slug: "gear-oils",
         description: "Severe duty enclosed industrial gear oils ISO 150 to 460.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "lubricon-gear-ep-220",
@@ -982,7 +982,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Heavy anti-scuff industrial gear fluid for enclosed helical and bevel gearboxes.",
             packaging: ["20L", "210L Drum"],
             applications: ["Industrial Gearboxes", "Crusher Drives"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -990,7 +990,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Hydraulic Oils",
         slug: "hydraulic-oils",
         description: "Anti-wear hydraulic fluids with thermal stability.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "lubricon-hydro-68",
@@ -1000,7 +1000,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "High anti-wear hydraulic oil for heavy duty industrial pumps and presses.",
             packaging: ["20L", "210L Drum"],
             applications: ["Hydraulic Machinery", "Die Casting Machines"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -1008,7 +1008,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Greases",
         slug: "greases",
         description: "Lithium complex extreme pressure multi-purpose greases.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "lubricon-lithoplex-2",
@@ -1018,7 +1018,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "General plant multi-purpose grease offering high shear endurance under heavy vibration.",
             packaging: ["18kg Pail", "180kg Drum"],
             applications: ["Conveyor Bearings", "Industrial Rollers"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -1026,7 +1026,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Specialty Lubricants",
         slug: "specialty-lubricants",
         description: "Heat transfer thermal fluids and rubber process extender oils.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "lubricon-thermol-300",
@@ -1036,7 +1036,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Mineral circulating heat transfer oil with high resistance to thermal degradation.",
             packaging: ["210L Drum", "Bulk Tanker"],
             applications: ["Industrial Process Heaters", "Plywood Hot Presses"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -1044,7 +1044,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Industrial Lubricants",
         slug: "industrial-lubricants",
         description: "Slideway ISO 68/220 machine tool lubricants and spindle oils.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "lubricon-waylube-68",
@@ -1054,7 +1054,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Eliminates jerky stick-slip motion on horizontal CNC machine tool ways and slides.",
             packaging: ["20L Bucket", "210L Drum"],
             applications: ["Horizontal CNC Lathes", "Milling Machine Slideways"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },
@@ -1071,13 +1071,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "European Precision Metalworking Chemistry, CNC Coolants & Rust Defense",
     about:
       "TW Chemin represents German precision chemical formulations for multi-axis CNC metal cutting, surface preparation, and long-term corrosion prevention. Formulated with bio-stable biocides, zero-chlorine lubricity boosters, and thin-film dewatering anti-corrosion barriers.",
-    heroImage: "/oil-lab-quality.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
     categories: [
       {
         name: "Industrial Chemicals",
         slug: "industrial-chemicals",
         description: "Precision degreasers, ultrasonic cleaners, and machine sump conditioners.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "tw-solvclean-100",
@@ -1087,7 +1087,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Removes stubborn machining oils, greases, and carbon deposits from metal parts.",
             packaging: ["20L Can", "200L Drum"],
             applications: ["Ultrasonic Wash Tanks", "Pre-Assembly Cleaning"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -1095,7 +1095,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Lubrication Solutions",
         slug: "lubrication-solutions",
         description: "Bio-stable semi-synthetic CNC coolants and neat cutting oils.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "tw-coolpro-500",
@@ -1105,7 +1105,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "High performance cutting fluid designed for steel, cast iron, and aluminum alloys.",
             packaging: ["20L", "200L Drum"],
             applications: ["CNC Milling & Turning", "High Pressure Drilling"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -1113,7 +1113,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Specialty Chemicals",
         slug: "specialty-chemicals",
         description: "Dewatering rust preventives and thin-film corrosion inhibitors.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "tw-rustguard-200",
@@ -1123,7 +1123,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Displaces water instantly from wet machined parts, leaving an anti-corrosion barrier.",
             packaging: ["20L", "200L Drum"],
             applications: ["Export Packaging", "Intermediate Storage Parts"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -1131,7 +1131,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Maintenance Products",
         slug: "maintenance-products",
         description: "Machine tool slide fluids and multi-purpose penetrating sprays.",
-        coverImage: "/oil-drums-warehouse.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
         products: [
           {
             id: "tw-moisture-displacer",
@@ -1141,7 +1141,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Frees rusted bolts, displaces moisture from electrical circuits, and stops squeaks.",
             packaging: ["500ml Aerosol", "5L Can", "20L Can"],
             applications: ["Maintenance Toolkits", "Electrical Switchgear Maintenance"],
-            coverImage: "/oil-drums-warehouse.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790674698/jaideva/about/oil-drums-warehouse.jpg",
           },
         ],
       },
@@ -1158,13 +1158,13 @@ export const BRAND_PRODUCTS: BrandData[] = [
     tagline: "UK World Leaders in Centrifugal Oil Mist Extraction & Machine Shop Clean Air",
     about:
       "Filtermist is the international standard in oil mist collectors, centrifugal smoke eliminators, and workshop air filtration units since 1969. Engineered to capture hazardous oil mist directly at the CNC machine source, recover valuable coolants, and protect workers' health.",
-    heroImage: "/engine-oil-hero.jpg",
+    heroImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
     categories: [
       {
         name: "Oil Mist Collectors",
         slug: "oil-mist-collectors",
         description: "Centrifugal oil mist collectors mounted directly on CNC machine enclosures.",
-        coverImage: "/engine-oil-hero.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
         products: [
           {
             id: "filtermist-fx4002",
@@ -1174,7 +1174,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Direct-drive centrifugal unit removing oil mist and returning condensed coolant into the sump.",
             packaging: ["Complete Collector Unit"],
             applications: ["CNC Turning Centers", "Milling Enclosures"],
-            coverImage: "/engine-oil-hero.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
           },
           {
             id: "filtermist-fx5002",
@@ -1184,7 +1184,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Higher throughput extraction unit for high-pressure through-spindle coolant CNC centers.",
             packaging: ["Complete Collector Unit"],
             applications: ["High-Pressure Machining Centers", "Large Enclosures"],
-            coverImage: "/engine-oil-hero.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675216/jaideva/products/engine-oil-hero.jpg",
           },
         ],
       },
@@ -1192,7 +1192,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Filtration Systems",
         slug: "filtration-systems",
         description: "High-efficiency HEPA afterfilters and activated carbon packs for smoke and odor.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "filtermist-hepa-afterfilter",
@@ -1202,7 +1202,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Mounted on top of the Filtermist collector to eliminate dry smoke and sub-micron oil particulate.",
             packaging: ["Filter Pack"],
             applications: ["Neat Oil Machining", "High Speed Grinding Smoke"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -1210,7 +1210,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Industrial Air Filtration",
         slug: "industrial-air-filtration",
         description: "Workshop ambient air purifiers and centralized ducting extraction systems.",
-        coverImage: "/oil-lab-quality.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
         products: [
           {
             id: "filtermist-smoke-eliminator",
@@ -1220,7 +1220,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Captures dense smoke generated by heat treatment and severe high-speed machining.",
             packaging: ["Filtration Unit"],
             applications: ["Heat Treatment Shops", "Heavy Machining Plants"],
-            coverImage: "/oil-lab-quality.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675162/jaideva/about/oil-lab-quality.jpg",
           },
         ],
       },
@@ -1228,7 +1228,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
         name: "Extraction Solutions",
         slug: "extraction-solutions",
         description: "Mounting stands, flexible ducting kits, and digital airflow monitor sensors.",
-        coverImage: "/industrial-gear-oil.jpg",
+        coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
         products: [
           {
             id: "filtermist-f-monitor",
@@ -1238,7 +1238,7 @@ export const BRAND_PRODUCTS: BrandData[] = [
             description: "Monitors airflow volume and alerts machine operators when afterfilters require maintenance.",
             packaging: ["Sensor Gauge Kit"],
             applications: ["Continuous Airflow Monitoring", "Preventive Maintenance"],
-            coverImage: "/industrial-gear-oil.jpg",
+            coverImage: "https://res.cloudinary.com/dpa93copz/image/upload/v1790675219/jaideva/products/industrial-gear-oil.jpg",
           },
         ],
       },

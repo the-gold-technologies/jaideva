@@ -11,22 +11,21 @@ interface AboutHeroProps {
 
 export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
   const { pages } = useCMSStore();
-  const cmsHero = pages["about-us"]?.AboutHero;
+  const {
+    heading,
+    tagline,
+    description,
+    altText,
+    bannerImage,
+  } = pages["about-us"]?.AboutHero || {};
 
-  const heroImage = "/oil-drums-warehouse.jpg";
-  const heading = cmsHero?.heading || "Built on Trust Since 2007";
-  const tagline = cmsHero?.tagline || "Less You Burn, the More You Earn";
-  const description =
-    cmsHero?.description ||
-    "Jai Deva Oil Co. is a multi-brand industrial and automotive lubricant distributor. We source, stock, and supply genuine oils, greases, and specialty fluids for plants, fleets, and workshops — with quality checks and dependable regional delivery.";
+  if (!heading && !bannerImage) return null;
 
   return (
     <section className="relative isolate overflow-hidden bg-[#071f3b] text-white">
       <img
-        src={heroImage}
-        alt={
-          cmsHero?.altText || "Jai Deva Oil Co. lubricant warehouse and supply"
-        }
+        src={bannerImage || "/oil-drums-warehouse.jpg"}
+        alt={altText || "Jai Deva Oil Co. lubricant warehouse and supply"}
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#071f3b]/90 via-[#071f3b]/80 to-[#071f3b]/70" />
@@ -37,17 +36,23 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
             About Jai Deva Oil Co.
           </div>
 
-          <h1 className="text-3xl font-black uppercase leading-[1.08] tracking-tight sm:text-4xl md:text-5xl">
-            {heading}
-          </h1>
+          {heading && (
+            <h1 className="text-3xl font-black uppercase leading-[1.08] tracking-tight sm:text-4xl md:text-5xl">
+              {heading}
+            </h1>
+          )}
 
-          <p className="mt-3 text-base font-semibold text-[#F4B24D] sm:text-lg">
-            {tagline}
-          </p>
+          {tagline && (
+            <p className="mt-3 text-base font-semibold text-[#F4B24D] sm:text-lg">
+              {tagline}
+            </p>
+          )}
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">
-            {description}
-          </p>
+          {description && (
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">
+              {description}
+            </p>
+          )}
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             <a
@@ -61,7 +66,6 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
               className="inline-flex items-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-[#C86218]/25 transition hover:bg-[#A74D0E]"
             >
               Read our story <ArrowRight size={14} />
-              12256
             </a>
             {onOpenEnquiry ? (
               <button
