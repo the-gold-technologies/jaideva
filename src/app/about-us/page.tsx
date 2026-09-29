@@ -4,8 +4,10 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import AboutHero from "@/app/about-us/components/AboutHero";
 import AboutBreadcrumb from "@/app/about-us/components/AboutBreadcrumb";
-import AboutLeadershipImageSection from "@/app/about-us/components/AboutLeadershipImageSection";
 import AboutJaiDevaContent from "@/app/about-us/components/AboutJaiDevaContent";
+import OurTeamStructureSection from "@/app/about-us/components/OurTeamStructureSection";
+import OurJourneySection from "@/app/about-us/components/OurJourneySection";
+import AboutWhyChooseSection from "@/app/about-us/components/AboutWhyChooseSection";
 import AboutImageGallerySection from "@/app/about-us/components/AboutImageGallerySection";
 import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
@@ -54,10 +56,19 @@ export default function AboutUsPage() {
       {/* Breadcrumb Bar */}
       <AboutBreadcrumb currentPage="About Us" />
 
-      {/* 1. Jai Deva Oil Co. Story, Journey Timeline & Why Choose Us Section */}
+      {/* 1. Jai Deva Oil Co. Story & Mentor Profile */}
       <AboutJaiDevaContent />
 
-      {/* Infrastructure, Warehousing & Fleet Image Gallery Section */}
+      {/* 2. Our Team Structure Section (Placed just before Our Journey) */}
+      <OurTeamStructureSection onOpenEnquiry={handleOpenEnquiry} />
+
+      {/* 3. Our Journey (Separate Section) */}
+      <OurJourneySection />
+
+      {/* 4. Why Choose Jai Deva Oil Co. Section */}
+      <AboutWhyChooseSection />
+
+      {/* 5. Infrastructure, Warehousing & Fleet Image Gallery Section */}
       <AboutImageGallerySection onOpenEnquiry={handleOpenEnquiry} />
 
       {/* Footer & Enquiry Modal */}
