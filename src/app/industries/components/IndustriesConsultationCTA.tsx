@@ -8,35 +8,69 @@ import {
   PhoneCall,
   Clock,
   Send,
-  CheckCircle2,
   Headphones,
+  Award,
+  CheckCircle2,
 } from "lucide-react";
+import { useCMSStore } from "@/store/useCMSStore";
+import { FormattedText } from "@/components/FormattedText";
+
+const TRUST_ICON_MAP: Record<string, React.ElementType> = {
+  Clock,
+  clock: Clock,
+  ShieldCheck,
+  shieldcheck: ShieldCheck,
+  Headphones,
+  headphones: Headphones,
+  Send,
+  send: Send,
+  Award,
+  award: Award,
+  CheckCircle2,
+  checkcircle2: CheckCircle2,
+};
+
+function resolveTrustIcon(iconKey: unknown): React.ElementType {
+  const key = typeof iconKey === "string" ? iconKey.trim() : "";
+  return TRUST_ICON_MAP[key] || TRUST_ICON_MAP[key.toLowerCase()] || Clock;
+}
 
 interface IndustriesConsultationCTAProps {
   onOpenEnquiry: (productName?: string) => void;
 }
 
-const SECTOR_OPTIONS = [
-  "Steel & Hot Rolling Mills",
-  "Cement & Heavy Mining",
-  "Power Generation & Turbines",
-  "Automotive & Component Stamping",
-  "Food & Beverage NSF H1 Safe",
-  "Pharmaceuticals & Cleanrooms",
-  "Textile High-Speed Spinning",
-  "Plastics & Injection Molding",
-  "Paper Machine Circulating Systems",
-  "General Precision CNC Machining",
-];
-
 export default function IndustriesConsultationCTA({
   onOpenEnquiry,
 }: IndustriesConsultationCTAProps) {
-  const [chosenSector, setChosenSector] = useState(SECTOR_OPTIONS[0]);
+  const { pages } = useCMSStore();
+  const {
+    badge,
+    heading,
+    description,
+    formTitle,
+    formSubtitle,
+    dropdownLabel,
+    buttonText,
+    phoneText,
+    phoneNumber,
+    trustIndicators = [],
+    sectorOptions = [],
+  } = pages["industries"]?.IndustriesConsultationCTA || {};
+
+  const options = Array.isArray(sectorOptions) ? sectorOptions : [];
+  const [chosenSector, setChosenSector] = useState("");
+
+  if (!heading && options.length === 0) return null;
+
+  const currentSector = chosenSector || options[0] || "";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onOpenEnquiry(`${chosenSector} - Technical Assessment & Supply Quote`);
+    onOpenEnquiry(
+      currentSector
+        ? `${currentSector} - ${buttonText || "Technical Enquiry"}`
+        : buttonText || "Technical Enquiry",
+    );
   };
 
   return (
@@ -46,34 +80,52 @@ export default function IndustriesConsultationCTA({
           <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
             {/* Left 7 Cols */}
             <div className="lg:col-span-7">
-              <div className="inline-flex items-center gap-2 border-l-4 border-[#C86218] pl-3 text-xs font-black uppercase tracking-[0.2em] text-[#C86218] mb-4">
-                Zero-Cost Technical Assessment
-              </div>
+              {badge && (
+                <div className="inline-flex items-center gap-2 border-l-4 border-[#C86218] pl-3 text-xs font-black uppercase tracking-[0.2em] text-[#C86218] mb-4">
+                  <FormattedText text={badge} />
+                </div>
+              )}
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-[#0C356A] leading-[1.08]">
-                Optimize Your Plant's Lubrication Performance Today
-              </h2>
+              {heading && (
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black uppercase tracking-tight text-[#0C356A] leading-[1.08]">
+                  <FormattedText text={heading} />
+                </h2>
+              )}
 
-              <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">
-                Whether you need urgent barrel dispatch, cross-referencing for an imported machine,
-                or a full plant SKU consolidation audit, our lubrication specialists are ready to support your facility.
-              </p>
+              {description && (
+                <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">
+                  <FormattedText text={description} />
+                </p>
+              )}
 
               {/* Trust Indicators */}
-              <div className="mt-8 flex flex-wrap gap-4 border-t border-slate-200/80 pt-6">
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-lg border border-slate-200/80 shadow-2xs">
-                  <Clock size={16} className="text-[#C86218]" />
-                  <span>24-Hour Quotation Turnaround</span>
+              {Array.isArray(trustIndicators) && trustIndicators.length > 0 && (
+                <div className="mt-8 flex flex-wrap gap-4 border-t border-slate-200/80 pt-6">
+                  {trustIndicators.map((item: any, i: number) => {
+                    const ItemIcon = resolveTrustIcon(item.icon);
+                    return (
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-lg border border-slate-200/80 shadow-2xs"
+                      >
+                        <ItemIcon
+                          size={16}
+                          className={
+                            i === 0
+                              ? "text-[#C86218]"
+                              : i === 1
+                                ? "text-emerald-600"
+                                : "text-[#0C356A]"
+                          }
+                        />
+                        <span>
+                          <FormattedText text={item.text || item.label} />
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-lg border border-slate-200/80 shadow-2xs">
-                  <ShieldCheck size={16} className="text-emerald-600" />
-                  <span>100% Genuine Batch CoAs</span>
-                </div>
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-700 bg-white px-3.5 py-2 rounded-lg border border-slate-200/80 shadow-2xs">
-                  <Headphones size={16} className="text-[#0C356A]" />
-                  <span>Dedicated Plant Support</span>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* Right 5 Cols: Interactive Clean Form Card */}
@@ -82,47 +134,80 @@ export default function IndustriesConsultationCTA({
                 onSubmit={handleSubmit}
                 className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-lg"
               >
-                <h3 className="text-lg font-black text-[#0C356A] uppercase tracking-tight mb-1">
-                  Request Sector Specification
-                </h3>
-                <p className="text-xs text-slate-500 mb-5 leading-relaxed">
-                  Select your primary operating vertical to launch a tailored technical enquiry:
-                </p>
+                {formTitle && (
+                  <h3 className="text-lg font-black text-[#0C356A] uppercase tracking-tight mb-1">
+                    <FormattedText text={formTitle} />
+                  </h3>
+                )}
+                {formSubtitle && (
+                  <p className="text-xs text-slate-500 mb-5 leading-relaxed">
+                    <FormattedText text={formSubtitle} />
+                  </p>
+                )}
 
-                <div className="mb-5">
-                  <label className="block text-[11px] font-black uppercase tracking-wider text-[#0C356A] mb-2">
-                    Industry / Machinery Application:
-                  </label>
-                  <select
-                    value={chosenSector}
-                    onChange={(e) => setChosenSector(e.target.value)}
-                    className="w-full rounded-xl bg-slate-50 border border-slate-300 px-4 py-3 text-sm text-slate-800 font-medium focus:outline-none focus:border-[#C86218] focus:bg-white transition-colors cursor-pointer shadow-2xs"
+                {options.length > 0 && (
+                  <div className="mb-5">
+                    {dropdownLabel && (
+                      <label className="block text-[11px] font-black uppercase tracking-wider text-[#0C356A] mb-2">
+                        <FormattedText text={dropdownLabel} />
+                      </label>
+                    )}
+                    <select
+                      value={currentSector}
+                      onChange={(e) => setChosenSector(e.target.value)}
+                      className="w-full rounded-xl bg-slate-50 border border-slate-300 px-4 py-3 text-sm text-slate-800 font-medium focus:outline-none focus:border-[#C86218] focus:bg-white transition-colors cursor-pointer shadow-2xs"
+                    >
+                      {options.map((opt: string, i: number) => (
+                        <option key={i} value={opt} className="text-slate-800">
+                          {opt}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {buttonText && (
+                  <button
+                    type="submit"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#C86218] hover:bg-[#A74D0E] py-3.5 text-xs font-black uppercase tracking-wider text-white transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg active:translate-y-0 hover:-translate-y-0.5"
                   >
-                    {SECTOR_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt} className="text-slate-800">
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                    <Send size={15} />
+                    <span>
+                      <FormattedText text={buttonText} />
+                    </span>
+                  </button>
+                )}
 
-                <button
-                  type="submit"
-                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#C86218] hover:bg-[#A74D0E] py-3.5 text-xs font-black uppercase tracking-wider text-white transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg active:translate-y-0 hover:-translate-y-0.5"
-                >
-                  <Send size={15} />
-                  <span>Get Technical Recommendation & Pricing</span>
-                </button>
-
-                <div className="mt-4 text-center">
-                  <Link
-                    href="/contact-us"
-                    className="text-xs text-slate-500 hover:text-[#C86218] transition-colors inline-flex items-center gap-1.5 font-medium"
-                  >
-                    <PhoneCall size={13} />
-                    <span>Or visit our contact page for direct depot locations</span>
-                  </Link>
-                </div>
+                {(phoneNumber || phoneText) && (
+                  <div className="mt-4 text-center">
+                    {phoneNumber ? (
+                      <a
+                        href={`tel:${phoneNumber.replace(/\s+/g, "")}`}
+                        className="text-xs text-slate-500 hover:text-[#C86218] transition-colors inline-flex items-center gap-1.5 font-medium"
+                      >
+                        <PhoneCall size={13} />
+                        <span>
+                          {phoneText && (
+                            <>
+                              <FormattedText text={phoneText} />:{" "}
+                            </>
+                          )}
+                          {phoneNumber}
+                        </span>
+                      </a>
+                    ) : (
+                      <Link
+                        href="/contact-us"
+                        className="text-xs text-slate-500 hover:text-[#C86218] transition-colors inline-flex items-center gap-1.5 font-medium"
+                      >
+                        <PhoneCall size={13} />
+                        <span>
+                          <FormattedText text={phoneText} />
+                        </span>
+                      </Link>
+                    )}
+                  </div>
+                )}
               </form>
             </div>
           </div>
