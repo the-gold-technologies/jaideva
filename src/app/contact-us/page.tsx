@@ -8,6 +8,7 @@ import DistributorModal from "@/components/DistributorModal";
 import ContactHero from "@/app/contact-us/components/ContactHero";
 import ContactBreadcrumb from "@/app/contact-us/components/ContactBreadcrumb";
 import ContactFormSection from "@/app/contact-us/components/ContactFormSection";
+import ExistingBusinessNetworkSection from "@/app/contact-us/components/ExistingBusinessNetworkSection";
 import SEOMeta from "@/components/SEOMeta";
 import { useCMSStore } from "@/store/useCMSStore";
 
@@ -19,7 +20,9 @@ export default function ContactUsPage() {
   const [enquiryProduct, setEnquiryProduct] = useState("");
 
   const [isDistributorOpen, setIsDistributorOpen] = useState(false);
-  const [distributorType, setDistributorType] = useState("Industrial Lube Distributor (ILD)");
+  const [distributorType, setDistributorType] = useState(
+    "Industrial Lube Distributor (ILD)",
+  );
 
   const { fetchContactUs, fetchPage } = useCMSStore();
 
@@ -64,6 +67,9 @@ export default function ContactUsPage() {
 
       {/* Main Content & Contact Form */}
       <ContactFormSection />
+
+      {/* Existing Business Network & Regional Map Section */}
+      <ExistingBusinessNetworkSection />
 
       {/* Footer & Enquiry Modal */}
       <Footer onOpenEnquiry={handleOpenEnquiry} />

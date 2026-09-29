@@ -14,7 +14,7 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
   const cmsHero = pages["about-us"]?.AboutHero;
 
   const heroImage = "/oil-drums-warehouse.jpg";
-  const heading = cmsHero?.heading || "Built on Trust Since 2008";
+  const heading = cmsHero?.heading || "Built on Trust Since 2007";
   const tagline = cmsHero?.tagline || "Less You Burn, the More You Earn";
   const description =
     cmsHero?.description ||
@@ -61,6 +61,7 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
               className="inline-flex items-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-[#C86218]/25 transition hover:bg-[#A74D0E]"
             >
               Read our story <ArrowRight size={14} />
+              12256
             </a>
             {onOpenEnquiry ? (
               <button

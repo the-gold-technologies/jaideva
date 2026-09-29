@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import HomeHero from "@/components/HomeHero";
-// import AboutSection from "@/components/AboutSection";
 import ProductsServicesSection from "@/components/ProductsServicesSection";
 import MultiBrandSolutionsSection from "@/components/MultiBrandSolutionsSection";
 import IndustriesWeServeSection from "@/components/IndustriesWeServeSection";
@@ -26,7 +25,7 @@ export default function Home() {
 
   const [isDistributorOpen, setIsDistributorOpen] = useState(false);
   const [distributorType, setDistributorType] = useState(
-    "Industrial Lube Distributor (ILD)",
+    "Industrial Lube Distributor (ILD)"
   );
 
   const { fetchPage } = useCMSStore();
@@ -68,9 +67,6 @@ export default function Home() {
         onOpenEnquiry={handleOpenEnquiry}
         onOpenDistributor={handleOpenDistributor}
       />
-
-      {/* 3. About Section - content moved into the homepage hero */}
-      {/* <AboutSection /> */}
 
       {/* 4. OUR PRODUCT RANGE (Original Circular Icon UI Design) */}
       <ProductsServicesSection />

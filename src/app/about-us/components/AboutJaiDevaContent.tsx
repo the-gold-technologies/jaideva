@@ -9,7 +9,7 @@ const DEFAULT_TITLE = "About Jai Deva Oil Co.";
 const DEFAULT_SUBTITLE =
   "Mr. Mayank Goyal – Mentor & Proprietor, Jai Deva Oil Co.";
 const DEFAULT_PARAGRAPHS = [
-  "Established in the year 2008, Jai Deva Oil Co. is a leading and prominent wholesaler, distributor, and trader of lubricant oil, engine oil, automotive grease, hydraulic oil, cutting oil, gear oil, rust preventive oil and much more. Made using the finest quality inputs alongside superior machinery, our products are highly admired and recommended, and each is tested carefully before delivery to our customers. Available in a range of sizes and packing, they can be purchased from us at affordable costs.",
+  "Established in the year 2007, Jai Deva Oil Co. is a leading and prominent wholesaler, distributor, and trader of lubricant oil, engine oil, automotive grease, hydraulic oil, cutting oil, gear oil, rust preventive oil and much more. Made using the finest quality inputs alongside superior machinery, our products are highly admired and recommended, and each is tested carefully before delivery to our customers. Available in a range of sizes and packing, they can be purchased from us at affordable costs.",
   "Our team of professionals keeps a close watch on clients' evolving requirements, helping us meet them within a defined period of time. Owing to our quality-centric approach, we have been highly proficient in meeting the needs of clients across the marketplace, backed by a team of skilled and dexterous professionals with years of expertise in this business.",
   "We are headed by our mentor Mr. Mayank Goyal, who brings extensive knowledge and experience to the field. Owing to his balanced business plans and policies, we have attained a noteworthy position in the industry.",
 ];

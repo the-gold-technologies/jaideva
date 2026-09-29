@@ -3,45 +3,101 @@
 import React from "react";
 import { useCMSStore } from "@/store/useCMSStore";
 
-export interface TrustedClientItem {
-  id?: string | number;
+export interface BrandItem {
+  id: string;
   name: string;
-  category?: string;
   logo: string;
 }
+
+export const OFFICIAL_BRANDS: BrandItem[] = [
+  {
+    id: "hp-lubricants",
+    name: "HP Lubricants",
+    logo: "/brands/hp-lubricants.png",
+  },
+  {
+    id: "caltex",
+    name: "Caltex",
+    logo: "/brands/caltex.svg",
+  },
+
+  {
+    id: "motultech",
+    name: "MotulTech",
+    logo: "/brands/motultech.png",
+  },
+  {
+    id: "itw-chemin",
+    name: "ITW Chemin",
+    logo: "/brands/itw-chemin.png",
+  },
+  {
+    id: "valvoline",
+    name: "Valvoline",
+    logo: "/brands/valvoline.png",
+  },
+  {
+    id: "lubricon",
+    name: "Lubricon",
+    logo: "/brands/lubricon.png",
+  },
+  {
+    id: "gs-caltex",
+    name: "GS Caltex",
+    logo: "/brands/gs-caltex.png",
+  },
+  {
+    id: "idemitsu",
+    name: "Idemitsu",
+    logo: "/brands/idemitsu.png",
+  },
+  {
+    id: "deep-pneumatics",
+    name: "Deep Pneumatics",
+    logo: "/brands/deep-pneumatics.png",
+  },
+  {
+    id: "filtermist",
+    name: "Filtermist",
+    logo: "/brands/filtermist.svg",
+  },
+];
 
 export default function TrustedClientsSection() {
   const { pages } = useCMSStore();
   const cmsClientsSection = pages["home"]?.TrustedClientsSection;
 
-  if (!cmsClientsSection) {
-    return null;
-  }
-
-  const rawClients: TrustedClientItem[] = cmsClientsSection.clients || [];
-
-  if (rawClients.length === 0) {
-    return null;
-  }
-
-  const title = cmsClientsSection.title || "";
+  const title = cmsClientsSection?.title || "OUR BRANDS";
   const subtitle =
-    cmsClientsSection.subtitle || cmsClientsSection.description || "";
+    cmsClientsSection?.subtitle ||
+    cmsClientsSection?.description ||
+    "Leading Brands for Reliable Lubrication Solutions";
 
-  // Multiple clones for seamless infinite looping
-  const marqueeClients = [
-    ...rawClients,
-    ...rawClients,
-    ...rawClients,
-    ...rawClients,
+  // Use CMS clients if available, otherwise use verified official local SVG/PNG logos
+  const brandsSource =
+    Array.isArray(cmsClientsSection?.clients) &&
+    cmsClientsSection.clients.length > 0
+      ? cmsClientsSection.clients.map((c: any) => ({
+          id: c.id || c.slug || c.name,
+          name: c.name,
+          logo: c.logo || "/brands/hp-lubricants.png",
+        }))
+      : OFFICIAL_BRANDS;
+
+  // Quadruple clone for a completely seamless infinite loop
+  const marqueeBrands = [
+    ...brandsSource,
+    ...brandsSource,
+    ...brandsSource,
+    ...brandsSource,
   ];
 
   return (
     <section
       id="trusted-clients"
-      className="py-14 bg-[#f8fafc] text-center font-sans overflow-hidden border-t border-b border-gray-200/80"
+      className="py-14 sm:py-16 bg-[#f8fafc] text-center font-sans overflow-hidden border-t border-b border-gray-200/80"
     >
-      <div className="max-w-7xl mx-auto px-4 mb-10">
+      <div className="max-w-7xl mx-auto px-4 mb-8 sm:mb-10">
         {/* Section Heading */}
         {title && (
           <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] uppercase tracking-wide section-underline">
@@ -56,34 +112,25 @@ export default function TrustedClientsSection() {
         )}
       </div>
 
-      {/* Infinite Horizontal Logo Marquee Container */}
-      <div className="relative w-full overflow-hidden py-2 flex select-none group">
+      {/* Seamless Borderless Marquee (No Boxes, No Bottom Names) */}
+      <div className="relative w-full overflow-hidden py-6 flex select-none group bg-white border-y border-slate-200/70 shadow-2xs">
         {/* Left & Right Gradient Fades */}
-        <div className="absolute top-0 bottom-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-[#f8fafc] to-transparent z-10 pointer-events-none" />
-        <div className="absolute top-0 bottom-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-[#f8fafc] to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 bottom-0 left-0 w-20 sm:w-36 bg-gradient-to-r from-white via-white/90 to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 bottom-0 right-0 w-20 sm:w-36 bg-gradient-to-l from-white via-white/90 to-transparent z-10 pointer-events-none" />
 
         {/* Scrolling Flex Track */}
-        <div className="flex gap-5 sm:gap-6 items-stretch animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
-          {marqueeClients.map((client, idx) => (
+        <div className="flex gap-12 sm:gap-16 items-center animate-marquee whitespace-nowrap group-hover:[animation-play-state:paused]">
+          {marqueeBrands.map((brand, idx) => (
             <div
-              key={`${client.id || idx}-${idx}`}
-              className="group/card shrink-0 bg-white border border-gray-200/90 rounded-xl shadow-xs hover:shadow-lg hover:-translate-y-0.5 hover:border-[#C86218]/40 transition-all duration-300 flex flex-col items-center justify-center gap-3 w-[184px] sm:w-[208px] h-28 px-4"
+              key={`${brand.id}-${idx}`}
+              className="shrink-0 flex items-center justify-center px-4 py-2 hover:scale-110 transition-transform duration-300 cursor-pointer"
             >
-              {/* Client Logo */}
-              {client.logo && (
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-slate-50 ring-1 ring-slate-200 p-2 transition-all duration-300 group-hover/card:ring-[#C86218]/50">
-                  <img
-                    src={client.logo}
-                    alt={client.name}
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-              )}
-
-              {/* Client Name */}
-              <p className="text-sm font-extrabold text-[#002b5c] tracking-tight leading-tight">
-                {client.name}
-              </p>
+              <img
+                src={brand.logo}
+                alt={brand.name}
+                className="h-10 sm:h-12 max-w-[160px] sm:max-w-[200px] w-auto object-contain"
+                loading="lazy"
+              />
             </div>
           ))}
         </div>
@@ -102,7 +149,7 @@ export default function TrustedClientsSection() {
         .animate-marquee {
           display: flex;
           width: max-content;
-          animation: marquee 30s linear infinite;
+          animation: marquee 35s linear infinite;
         }
       `}</style>
     </section>

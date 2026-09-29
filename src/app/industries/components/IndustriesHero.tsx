@@ -62,39 +62,39 @@ export default function IndustriesHero({ onOpenEnquiry }: IndustriesHeroProps) {
         </div>
       </section>
       {/* ── QUICK METRICS BAND ── */}
-      <section className="bg-white border-b border-slate-200 py-6">
+      <section className="bg-white border-b border-slate-200 py-6 sm:py-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center divide-y sm:divide-y-0 md:divide-x divide-slate-200/80">
             <div className="p-3">
-              <div className="text-xl sm:text-2xl font-black text-[#0C356A]">
-                11+ Sectors
+              <div className="text-3xl sm:text-4xl font-black text-[#0C356A] tracking-tight">
+                18+
               </div>
-              <div className="text-xs text-slate-600 mt-0.5">
-                Heavy to Precision Plants
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mt-1">
+                Years of Experience
               </div>
             </div>
             <div className="p-3">
-              <div className="text-xl sm:text-2xl font-black text-[#0C356A]">
-                100% Genuine
+              <div className="text-3xl sm:text-4xl font-black text-[#0C356A] tracking-tight">
+                600+
               </div>
-              <div className="text-xs text-slate-600 mt-0.5">
-                Refinery Batch CoAs
-              </div>
-            </div>
-            <div className="p-3">
-              <div className="text-xl sm:text-2xl font-black text-[#0C356A]">
-                24–48h
-              </div>
-              <div className="text-xs text-slate-600 mt-0.5">
-                Emergency Plant Dispatch
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mt-1">
+                Retailers Network
               </div>
             </div>
             <div className="p-3">
-              <div className="text-xl sm:text-2xl font-black text-[#C86218]">
-                Up to 35%
+              <div className="text-3xl sm:text-4xl font-black text-[#0C356A] tracking-tight">
+                80+
               </div>
-              <div className="text-xs text-slate-600 mt-0.5">
-                Lubrication TCO Savings
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mt-1">
+                Workshops Network
+              </div>
+            </div>
+            <div className="p-3">
+              <div className="text-3xl sm:text-4xl font-black text-[#0C356A] tracking-tight">
+                10
+              </div>
+              <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mt-1">
+                Own Delivery Vehicles
               </div>
             </div>
           </div>
