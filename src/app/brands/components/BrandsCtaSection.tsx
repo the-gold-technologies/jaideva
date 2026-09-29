@@ -12,29 +12,24 @@ interface BrandsCtaProps {
 export default function BrandsCtaSection({ onOpenEnquiry }: BrandsCtaProps) {
   const { pages } = useCMSStore();
   const {
-    eyebrowBadge,
     badge,
     heading,
     description,
-    bgImage,
     image,
-    buttonText = "Request Engine Oil Quote",
-    phoneText = "Direct Dispatch Desk",
+    buttonText,
+    phoneText,
     phoneNumber,
   } = pages["brands"]?.BrandsCtaSection || {};
 
-  const ctaBadge = eyebrowBadge || badge;
-  const ctaImage = bgImage || image;
-
-  if (!heading && !ctaImage) return null;
+  if (!heading && !image) return null;
 
   return (
     <section className="py-20 bg-white font-sans">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative rounded-3xl overflow-hidden bg-[#071f3b] text-white p-8 sm:p-12 lg:p-16 shadow-2xl">
-          {ctaImage && (
+          {image && (
             <img
-              src={ctaImage}
+              src={image}
               alt="Engine oil and synthetic lubricants"
               className="absolute inset-0 h-full w-full object-cover object-right opacity-30 mix-blend-luminosity"
             />
@@ -43,9 +38,9 @@ export default function BrandsCtaSection({ onOpenEnquiry }: BrandsCtaProps) {
 
           <div className="relative z-10 grid gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:items-center">
             <div>
-              {ctaBadge && (
+              {badge && (
                 <div className="inline-flex items-center gap-2 rounded-full bg-[#F4B24D]/15 border border-[#F4B24D]/30 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-[#F4B24D] mb-4">
-                  <ShieldCheck size={14} /> <FormattedText text={ctaBadge} />
+                  <ShieldCheck size={14} /> <FormattedText text={badge} />
                 </div>
               )}
               {heading && (

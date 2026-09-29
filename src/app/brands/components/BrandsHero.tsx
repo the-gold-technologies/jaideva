@@ -13,26 +13,21 @@ export default function BrandsHero({ onOpenEnquiry }: BrandsHeroProps) {
   const { pages } = useCMSStore();
   const {
     badge,
-    eyebrowBadge,
     heading,
     description,
     bannerImage,
-    image,
     ctaPrimaryText,
     ctaPrimaryUrl,
     ctaSecondaryText,
   } = pages["brands"]?.BrandsHero || {};
 
-  const heroBadge = badge || eyebrowBadge;
-  const heroBanner = bannerImage || image;
-
-  if (!heading && !heroBanner) return null;
+  if (!heading && !bannerImage) return null;
 
   return (
     <section className="relative isolate overflow-hidden bg-[#071f3b] text-white">
-      {heroBanner && (
+      {bannerImage && (
         <img
-          src={heroBanner}
+          src={bannerImage}
           alt={heading || "Brands hero"}
           className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
         />
@@ -40,9 +35,9 @@ export default function BrandsHero({ onOpenEnquiry }: BrandsHeroProps) {
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-[#071f3b]/90 via-[#071f3b]/80 to-[#071f3b]/70" />
 
       <div className="mx-auto max-w-5xl px-5 py-20 sm:px-8 lg:px-12 lg:py-28 text-center">
-        {heroBadge && (
+        {badge && (
           <div className="inline-flex items-center gap-2 rounded-full bg-[#F4B24D]/15 border border-[#F4B24D]/30 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-[#F4B24D] mb-6">
-            <Award size={15} /> <FormattedText text={heroBadge} />
+            <Award size={15} /> <FormattedText text={badge} />
           </div>
         )}
         {heading && (
