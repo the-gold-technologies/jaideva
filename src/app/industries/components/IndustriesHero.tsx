@@ -81,19 +81,19 @@ export default function IndustriesHero({ onOpenEnquiry }: IndustriesHeroProps) {
 
       {/* ── QUICK METRICS BAND ── */}
       {Array.isArray(stats) && stats.length > 0 && (
-        <section className="bg-white border-b border-slate-200 py-6">
+        <section className="bg-white border-b border-slate-200 py-6 sm:py-8 shadow-xs">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center divide-y sm:divide-y-0 md:divide-x divide-slate-200/80">
               {stats.map((st: any, i: number) => (
                 <div key={i} className="p-3">
                   <div
-                    className={`text-xl sm:text-2xl font-black ${
+                    className={`text-3xl sm:text-4xl font-black ${
                       st.highlight ? "text-[#C86218]" : "text-[#0C356A]"
-                    }`}
+                    } tracking-tight`}
                   >
                     <FormattedText text={st.value} />
                   </div>
-                  <div className="text-xs text-slate-600 mt-0.5">
+                  <div className="text-xs font-bold uppercase tracking-wider text-slate-500 mt-1">
                     <FormattedText text={st.label} />
                   </div>
                 </div>

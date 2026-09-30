@@ -14,6 +14,7 @@ import {
   User,
 } from "lucide-react";
 import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
+import { CaptchaInput, useCaptcha } from "@/components/CaptchaWidget";
 
 export default function ContactFormSection() {
   const { pages, pageSEO, submitEnquiry } = useCMSStore();
@@ -21,10 +22,19 @@ export default function ContactFormSection() {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
+    companyName: "",
     email: "",
     product: "",
     message: "",
   });
+
+  const {
+    code,
+    input: captchaInput,
+    setInput: setCaptchaInput,
+    refresh: refreshCaptcha,
+    isValid: captchaValid,
+  } = useCaptcha();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -63,12 +73,19 @@ export default function ContactFormSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!captchaValid) {
+      setErrorMessage("Please enter the security verification code correctly.");
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage("");
 
     try {
       const res = await submitEnquiry({
         name: formData.name,
+        companyName: formData.companyName || undefined,
         phone: formData.phone,
         email: formData.email || undefined,
         product: formData.product || "General Enquiry",
@@ -82,10 +99,12 @@ export default function ContactFormSection() {
         setFormData({
           name: "",
           phone: "",
+          companyName: "",
           email: "",
           product: "",
           message: "",
         });
+        refreshCaptcha();
       }
     } catch (err: any) {
       console.error("Enquiry submit error:", err);
@@ -318,8 +337,23 @@ export default function ContactFormSection() {
                   </div>
                 </div>
 
-                {/* Email & Subject */}
+                {/* Company Name & Email */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
+                      Company Name <span className="text-[#C86218]">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="companyName"
+                      required
+                      value={formData.companyName}
+                      onChange={handleChange}
+                      placeholder="Your company / business name"
+                      className="w-full px-3.5 py-2.5 text-sm bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#002b5c] focus:ring-2 focus:ring-[#002b5c]/10 transition-all"
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
                       Email Address
@@ -333,20 +367,21 @@ export default function ContactFormSection() {
                       className="w-full px-3.5 py-2.5 text-sm bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#002b5c] focus:ring-2 focus:ring-[#002b5c]/10 transition-all"
                     />
                   </div>
+                </div>
 
-                  <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
-                      Product Requirement
-                    </label>
-                    <input
-                      type="text"
-                      name="product"
-                      value={formData.product}
-                      onChange={handleChange}
-                      placeholder="e.g. HP Lubricants"
-                      className="w-full px-3.5 py-2.5 text-sm bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#002b5c] focus:bg-white focus:ring-2 focus:ring-[#002b5c]/10 transition-all"
-                    />
-                  </div>
+                {/* Product Requirement */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
+                    Product Requirement
+                  </label>
+                  <input
+                    type="text"
+                    name="product"
+                    value={formData.product}
+                    onChange={handleChange}
+                    placeholder="e.g. HP Lubricants"
+                    className="w-full px-3.5 py-2.5 text-sm bg-white border border-gray-300 rounded-lg text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#002b5c] focus:bg-white focus:ring-2 focus:ring-[#002b5c]/10 transition-all"
+                  />
                 </div>
 
                 {/* Message */}
@@ -366,12 +401,27 @@ export default function ContactFormSection() {
                   />
                 </div>
 
+                {/* Visual CAPTCHA */}
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
+                    Security Verification{" "}
+                    <span className="text-[#C86218]">*</span>
+                  </label>
+                  <CaptchaInput
+                    code={code}
+                    value={captchaInput}
+                    onChange={setCaptchaInput}
+                    isValid={captchaValid}
+                    onRefresh={refreshCaptcha}
+                  />
+                </div>
+
                 {/* Submit Button */}
                 <div className="pt-2">
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#C86218] hover:bg-[#A74D0E] active:scale-[0.99] disabled:opacity-60 text-white text-sm font-bold uppercase tracking-wider py-3.5 px-6 rounded-lg transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    disabled={isSubmitting || !captchaValid}
+                    className="w-full bg-[#C86218] hover:bg-[#A74D0E] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#C86218] text-white text-sm font-bold uppercase tracking-wider py-3.5 px-6 rounded-lg transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <>

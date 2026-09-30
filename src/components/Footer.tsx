@@ -147,8 +147,13 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
               </h4>
               <div className="space-y-2.5 text-sm text-slate-300">
                 <div className="flex items-start gap-2.5">
-                  <MapPin size={16} className="text-[#C86218] shrink-0 mt-0.5" />
-                  <span className="leading-snug text-xs sm:text-sm">{companyAddress}</span>
+                  <MapPin
+                    size={16}
+                    className="text-[#C86218] shrink-0 mt-0.5"
+                  />
+                  <span className="leading-snug text-xs sm:text-sm">
+                    {companyAddress}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-2.5">
@@ -178,13 +183,22 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
             <p>{copyrightText}</p>
             <div className="flex items-center gap-6">
-              <Link href="/privacy-policy" className="hover:text-white transition-colors">
+              <Link
+                href="/privacy-policy"
+                className="hover:text-white transition-colors"
+              >
                 Privacy Policy
               </Link>
-              <a href="/sitemap.xml" className="hover:text-white transition-colors">
+              <a
+                href="/sitemap.xml"
+                className="hover:text-white transition-colors"
+              >
                 Site Map
               </a>
-              <Link href="/contact-us" className="hover:text-white transition-colors">
+              <Link
+                href="/contact-us"
+                className="hover:text-white transition-colors"
+              >
                 Contact Us
               </Link>
             </div>
@@ -194,7 +208,7 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
 
       {/* Persistent Sticky ENQUIRY Button Fixed on Bottom Right Corner */}
       <button
-        onClick={() => onOpenEnquiry("Footer Site Enquiry")}
+        onClick={() => onOpenEnquiry("")}
         className="fixed bottom-1 right-0 z-50 bg-[#C86218] text-white text-xs font-extrabold uppercase tracking-wider px-4 py-2 rounded-tl-md shadow-2xl flex items-center gap-1.5 hover:bg-[#A74D0E] transition-all cursor-pointer"
       >
         <Mail size={14} />

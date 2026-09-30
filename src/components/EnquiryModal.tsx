@@ -1,8 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { X, Send, CheckCircle2, Loader2 } from 'lucide-react';
-import { useCMSStore } from '@/store/useCMSStore';
+import React, { useState, useEffect } from "react";
+import { X, Send, CheckCircle2, Loader2 } from "lucide-react";
+import { useCMSStore } from "@/store/useCMSStore";
+import { CaptchaInput, useCaptcha } from "@/components/CaptchaWidget";
 
 interface EnquiryModalProps {
   isOpen: boolean;
@@ -13,20 +14,36 @@ interface EnquiryModalProps {
 export default function EnquiryModal({
   isOpen,
   onClose,
-  initialProduct = ''
+  initialProduct = "",
 }: EnquiryModalProps) {
-  const [name, setName] = useState('');
-  const [mobile, setMobile] = useState('');
-  const [email, setEmail] = useState('');
-  const [product, setProduct] = useState(initialProduct || 'Industrial Lubricant Enquiry');
+  const [name, setName] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
+  const [product, setProduct] = useState(
+    initialProduct && initialProduct !== "Footer Site Enquiry"
+      ? initialProduct
+      : "",
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const {
+    code,
+    input: captchaInput,
+    setInput: setCaptchaInput,
+    refresh: refreshCaptcha,
+    isValid: captchaValid,
+  } = useCaptcha();
 
   const { submitEnquiry } = useCMSStore();
 
   useEffect(() => {
-    if (initialProduct) {
+    if (initialProduct && initialProduct !== "Footer Site Enquiry") {
       setProduct(initialProduct);
+    } else {
+      setProduct("");
     }
   }, [initialProduct]);
 
@@ -34,13 +51,19 @@ export default function EnquiryModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaValid) {
+      setErrorMessage("Please enter the security verification code correctly.");
+      return;
+    }
     setIsSubmitting(true);
+    setErrorMessage("");
     try {
       await submitEnquiry({
         name,
+        companyName,
         email: email || undefined,
         phone: mobile,
-        product,
+        product: product || "General Enquiry",
       });
       setIsSubmitted(true);
     } catch (err) {
@@ -57,7 +80,7 @@ export default function EnquiryModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-7 relative shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95 duration-150"
+        className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-7 relative shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95 duration-150 max-h-[92vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
@@ -97,6 +120,20 @@ export default function EnquiryModal({
                 />
               </div>
 
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                  Company Name <span className="text-[#C86218]">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Your company / business name"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0C356A] focus:ring-1 focus:ring-[#0C356A] transition-colors"
+                />
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                 <div>
                   <label className="block text-xs font-bold text-gray-700 mb-1.5">
@@ -132,21 +169,37 @@ export default function EnquiryModal({
                 <input
                   type="text"
                   required
+                  placeholder="e.g. HP Lubricants, Industrial Oil, etc."
                   value={product}
                   onChange={(e) => setProduct(e.target.value)}
                   className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0C356A] focus:ring-1 focus:ring-[#0C356A] transition-colors font-medium text-[#0C356A]"
                 />
               </div>
 
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                  Security Verification{" "}
+                  <span className="text-[#C86218]">*</span>
+                </label>
+                <CaptchaInput
+                  code={code}
+                  value={captchaInput}
+                  onChange={setCaptchaInput}
+                  isValid={captchaValid}
+                  onRefresh={refreshCaptcha}
+                />
+              </div>
+
               <div className="pt-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-[#C86218] hover:bg-[#A74D0E] disabled:opacity-70 text-white text-xs sm:text-sm font-bold uppercase tracking-wider py-3 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={isSubmitting || !captchaValid}
+                  className="w-full bg-[#C86218] hover:bg-[#A74D0E] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold uppercase tracking-wider py-3 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 size={15} className="animate-spin" /> Submitting...
+                      <Loader2 size={15} className="animate-spin" />{" "}
+                      Submitting...
                     </>
                   ) : (
                     <>
@@ -164,14 +217,16 @@ export default function EnquiryModal({
               Enquiry Submitted!
             </h3>
             <p className="text-xs sm:text-sm text-gray-600 mb-5 leading-relaxed">
-              Thank you <strong>{name}</strong>. Our Jai Deva Oil Co. representative will contact you at <strong>{mobile}</strong> shortly.
+              Thank you <strong>{name}</strong>. Our Jai Deva Oil Co.
+              representative will contact you at <strong>{mobile}</strong>{" "}
+              shortly.
             </p>
             <button
               onClick={() => {
                 setIsSubmitted(false);
-                setName('');
-                setMobile('');
-                setEmail('');
+                setName("");
+                setMobile("");
+                setEmail("");
                 onClose();
               }}
               className="bg-[#0C356A] hover:bg-[#082142] text-white text-xs font-bold px-6 py-2.5 rounded-lg transition-colors cursor-pointer"

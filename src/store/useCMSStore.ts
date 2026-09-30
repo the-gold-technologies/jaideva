@@ -260,6 +260,8 @@ interface CMSStoreActions {
   } | null>;
   submitEnquiry: (data: {
     name: string;
+    company?: string;
+    companyName?: string;
     email?: string;
     phone?: string;
     product?: string;
@@ -891,6 +893,7 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>(
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...data,
+            company: data.company || data.companyName || undefined,
             email: data.email || "noemail@provided.com",
           }),
         });
