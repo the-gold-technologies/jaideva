@@ -137,17 +137,24 @@ export interface CMSProduct {
   id: string;
   name: string;
   slug: string;
+  subtitle?: string;
   categorySlug: string;
+  categoryName?: string;
   subCategoryTitle?: string;
   tagline?: string;
   description?: string;
+  containerImage?: string;
   coverImage?: string;
   productImages?: string[];
   pdfUrl?: string;
   tdsPdfUrl?: string;
+  msdsUrl?: string;
   msdsPdfUrl?: string;
+  applicationAreas?: string;
   applications?: string[];
   performanceBenefits?: string[];
+  specialFeatures?: string[];
+  specsText?: string;
   propertiesTable?: Array<{
     property: string;
     value?: string;
@@ -156,6 +163,10 @@ export interface CMSProduct {
   tableHeaders?: string[];
   order?: number;
   isFeatured?: boolean;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  targetKeywords?: string | null;
+  canonicalUrl?: string | null;
 }
 
 export interface CMSProductCategory {
@@ -163,8 +174,16 @@ export interface CMSProductCategory {
   name: string;
   slug: string;
   description?: string;
-  order?: number;
+  shortDesc?: string;
+  fullDesc?: string;
+  coverImage?: string;
   bannerImage?: string;
+  primaryCtaText?: string;
+  secondaryCtaText?: string;
+  featuredBadgeText?: string;
+  order?: number;
+  isFeatured?: boolean;
+  _count?: { products: number };
 }
 
 export interface CMSBlogPost {
@@ -224,7 +243,10 @@ interface CMSStoreActions {
   setPageSEO: (slug: string, seo: PageSEO) => void;
   fetchNavLinks: () => Promise<NavLink[] | null>;
   fetchGlobalSEO: () => Promise<GlobalSEO | null>;
-  fetchProducts: (categorySlug?: string) => Promise<{
+  fetchProducts: (
+    categorySlug?: string,
+    forceRefresh?: boolean,
+  ) => Promise<{
     products: CMSProduct[];
     categories: CMSProductCategory[];
   } | null>;
@@ -486,18 +508,23 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>(
       return reqPromise;
     },
 
-    fetchProducts: async (categorySlug?: string) => {
+    fetchProducts: async (categorySlug?: string, forceRefresh?: boolean) => {
       const isFiltered = Boolean(categorySlug && categorySlug !== "all");
       const key = "products:" + (isFiltered ? categorySlug : "all");
 
-      if (!isFiltered && get().products && get().products!.length > 0) {
+      if (
+        !isFiltered &&
+        !forceRefresh &&
+        get().products &&
+        get().products!.length > 0
+      ) {
         return {
           products: get().products!,
           categories: get().productCategories || [],
         };
       }
 
-      if (inFlightRequests.has(key)) {
+      if (inFlightRequests.has(key) && !forceRefresh) {
         return inFlightRequests.get(key);
       }
 
@@ -600,12 +627,30 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>(
           const json = await response.json();
           if (json.success && json.data) {
             const prodSEO = json.seo || json.data?.seo || null;
-            set((state) => ({
-              productDetails: { ...state.productDetails, [slug]: json.data },
-              pageSEO: prodSEO
-                ? { ...state.pageSEO, [`product:${slug}`]: prodSEO }
-                : state.pageSEO,
-            }));
+            set((state) => {
+              const existingProducts = state.products || [];
+              const productIndex = existingProducts.findIndex(
+                (p) => p.slug === slug || p.id === json.data.id,
+              );
+              let updatedProducts = existingProducts;
+              if (productIndex >= 0) {
+                updatedProducts = [...existingProducts];
+                updatedProducts[productIndex] = {
+                  ...updatedProducts[productIndex],
+                  ...json.data,
+                };
+              } else if (existingProducts.length > 0) {
+                updatedProducts = [...existingProducts, json.data];
+              }
+
+              return {
+                products: updatedProducts,
+                productDetails: { ...state.productDetails, [slug]: json.data },
+                pageSEO: prodSEO
+                  ? { ...state.pageSEO, [`product:${slug}`]: prodSEO }
+                  : state.pageSEO,
+              };
+            });
             return json.data;
           }
           return null;

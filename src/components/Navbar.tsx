@@ -16,7 +16,12 @@ import {
 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { changeLanguage, useLanguage } from "@/components/GoogleTranslator";
-import { BRAND_PRODUCTS } from "@/data/brandProductsData";
+
+interface NavBrand {
+  id: string;
+  name: string;
+  categories: { name: string; slug: string }[];
+}
 
 interface NavbarProps {
   fontSizeMultiplier?: number;
@@ -50,6 +55,7 @@ export default function Navbar({
 
   const {
     products,
+    productCategories,
     fetchProducts,
     globalSEO,
     fetchGlobalSEO,
@@ -64,8 +70,12 @@ export default function Navbar({
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
-      const isOutsideDesktop = !searchDropdownRef.current || !searchDropdownRef.current.contains(target);
-      const isOutsideMobile = !mobileSearchDropdownRef.current || !mobileSearchDropdownRef.current.contains(target);
+      const isOutsideDesktop =
+        !searchDropdownRef.current ||
+        !searchDropdownRef.current.contains(target);
+      const isOutsideMobile =
+        !mobileSearchDropdownRef.current ||
+        !mobileSearchDropdownRef.current.contains(target);
       if (isOutsideDesktop && isOutsideMobile) {
         setIsSearchDropdownOpen(false);
       }
@@ -76,7 +86,7 @@ export default function Navbar({
     };
   }, []);
 
-  // Consolidate searchable products from BRAND_PRODUCTS & CMS
+  // Consolidate searchable products from live CMS Store
   const allSearchableProducts = useMemo(() => {
     const list: Array<{
       id: string;
@@ -87,39 +97,20 @@ export default function Navbar({
       description: string;
     }> = [];
 
-    // 1. From BRAND_PRODUCTS
-    BRAND_PRODUCTS.forEach((b) => {
-      b.categories.forEach((cat) => {
-        cat.products.forEach((p) => {
-          list.push({
-            id: p.id,
-            name: p.name,
-            slug: p.slug,
-            categorySlug: b.id,
-            subCategoryTitle: `${b.name} • ${cat.name}`,
-            description: p.description || p.specs || "",
-          });
-        });
-      });
-    });
-
-    // 2. From CMS Store
     if (products && products.length > 0) {
       products.forEach((p) => {
-        if (!list.some((existing) => existing.slug === p.slug)) {
-          list.push({
-            id: p.id,
-            name: p.name,
-            slug: p.slug,
-            categorySlug: p.categorySlug || "hp-lubricants",
-            subCategoryTitle:
-              (p as any).subCategoryTitle ||
-              (p as any).subtitle ||
-              p.categorySlug ||
-              "Products",
-            description: p.description || "",
-          });
-        }
+        list.push({
+          id: p.id,
+          name: p.name,
+          slug: p.slug,
+          categorySlug: p.categorySlug || "hp-lubricants",
+          subCategoryTitle:
+            p.subCategoryTitle ||
+            p.subtitle ||
+            p.categoryName ||
+            "Industrial Lubricant",
+          description: p.description || p.specsText || "",
+        });
       });
     }
 
@@ -154,7 +145,9 @@ export default function Navbar({
     });
 
     const targetCat = matched ? matched.categorySlug : "hp-lubricants";
-    router.push(`/products/${targetCat}?search=${encodeURIComponent(searchQuery.trim())}`);
+    router.push(
+      `/products/${targetCat}?search=${encodeURIComponent(searchQuery.trim())}`,
+    );
   };
 
   // Font sizing with local storage persistence and root style scaling
@@ -162,7 +155,9 @@ export default function Navbar({
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem("jaideva_font_size") || localStorage.getItem("mahalaxmi_font_size");
+      const saved =
+        localStorage.getItem("jaideva_font_size") ||
+        localStorage.getItem("mahalaxmi_font_size");
       if (saved) {
         const parsed = parseInt(saved, 10);
         if (!isNaN(parsed) && parsed >= 12 && parsed <= 26) {
@@ -228,8 +223,37 @@ export default function Navbar({
     changeLanguage(lang);
   };
 
+  const brandList: NavBrand[] = useMemo(() => {
+    if (productCategories && productCategories.length > 0) {
+      return productCategories.map((c) => {
+        const brandProds = (products || []).filter(
+          (p) => p.categorySlug === c.slug,
+        );
+        const subTitles = Array.from(
+          new Set(
+            brandProds
+              .map((p) => p.subCategoryTitle?.trim())
+              .filter((s): s is string => Boolean(s)),
+          ),
+        );
+
+        const categories = subTitles.map((title) => ({
+          name: title,
+          slug: title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        }));
+
+        return {
+          id: c.slug,
+          name: c.name,
+          categories,
+        };
+      });
+    }
+    return [];
+  }, [productCategories, products]);
+
   const currentBrand =
-    BRAND_PRODUCTS.find((b) => b.id === activeBrandId) || BRAND_PRODUCTS[0];
+    brandList.find((b) => b.id === activeBrandId) || brandList[0] || null;
 
   const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
 
@@ -285,7 +309,9 @@ export default function Navbar({
             >
               English
             </button>
-            <span className="text-gray-400 notranslate" translate="no">|</span>
+            <span className="text-gray-400 notranslate" translate="no">
+              |
+            </span>
             <button
               onClick={() => handleLanguageChange("HI")}
               className={`hover:underline cursor-pointer notranslate ${currentLanguage === "HI" ? "font-bold text-[#C86218]" : ""}`}
@@ -299,7 +325,10 @@ export default function Navbar({
 
           {/* Desktop Search */}
           <div className="relative" ref={searchDropdownRef}>
-            <form onSubmit={handleSearchSubmit} className="flex items-center font-sans">
+            <form
+              onSubmit={handleSearchSubmit}
+              className="flex items-center font-sans"
+            >
               <input
                 type="text"
                 placeholder="Search products..."
@@ -369,7 +398,9 @@ export default function Navbar({
             className="flex items-center gap-1"
             title={`Text Size: ${currentFontSize}px`}
           >
-            <span className="text-gray-600 text-xs font-sans select-none">Text</span>
+            <span className="text-gray-600 text-xs font-sans select-none">
+              Text
+            </span>
             <button
               onClick={increaseFont}
               disabled={currentFontSize >= 26}
@@ -406,7 +437,9 @@ export default function Navbar({
           >
             English
           </button>
-          <span className="text-gray-300 notranslate" translate="no">|</span>
+          <span className="text-gray-300 notranslate" translate="no">
+            |
+          </span>
           <button
             onClick={() => handleLanguageChange("HI")}
             className={`cursor-pointer notranslate ${currentLanguage === "HI" ? "font-bold text-[#C86218]" : ""}`}
@@ -421,7 +454,10 @@ export default function Navbar({
         <div className="flex items-center gap-2">
           {/* Mobile Search */}
           <div className="relative" ref={mobileSearchDropdownRef}>
-            <form onSubmit={handleSearchSubmit} className="flex items-center font-sans">
+            <form
+              onSubmit={handleSearchSubmit}
+              className="flex items-center font-sans"
+            >
               <input
                 type="text"
                 placeholder="Search"
@@ -448,7 +484,9 @@ export default function Navbar({
               <div className="absolute right-0 mt-1 w-64 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50 text-left">
                 <div className="px-2.5 py-1.5 bg-[#f8fafc] border-b border-gray-100 flex items-center justify-between text-[9px] font-bold text-gray-500 uppercase">
                   <span>Products ({liveSearchResults.length})</span>
-                  <span className="text-[#C86218] truncate max-w-[80px]">&ldquo;{searchQuery}&rdquo;</span>
+                  <span className="text-[#C86218] truncate max-w-[80px]">
+                    &ldquo;{searchQuery}&rdquo;
+                  </span>
                 </div>
                 {liveSearchResults.length > 0 ? (
                   <div className="max-h-48 overflow-y-auto divide-y divide-gray-50">
@@ -575,7 +613,11 @@ export default function Navbar({
                           </p>
                         </div>
                         <Link
-                          href={`/products/${currentBrand.id}`}
+                          href={
+                            currentBrand
+                              ? `/products/${currentBrand.id}`
+                              : "/products"
+                          }
                           onClick={() => setOpenDropdown(null)}
                           className="shrink-0 rounded-full border border-white/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#0C356A]"
                         >
@@ -583,91 +625,100 @@ export default function Navbar({
                         </Link>
                       </div>
 
-                      <div className="border-b border-gray-100 bg-[#fbfcfe] px-4 py-2.5">
-                        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-visible">
-                          {BRAND_PRODUCTS.map((brand, bIdx) => {
-                            const isBrandActive = activeBrandId === brand.id;
-                            return (
-                              <Link
-                                key={brand.id}
-                                href={`/products/${brand.id}`}
-                                onMouseEnter={() => setActiveBrandId(brand.id)}
-                                onClick={() => {
-                                  setActiveBrandId(brand.id);
-                                  setOpenDropdown(null);
-                                }}
-                                className={`shrink-0 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold transition-all cursor-pointer ${
-                                  isBrandActive
-                                    ? "border-[#0C356A] bg-[#0C356A] text-white shadow-xs"
-                                    : "border-gray-200 bg-white text-gray-600 hover:border-[#C86218] hover:text-[#C86218]"
-                                }`}
-                              >
-                                <span
-                                  className={`flex h-4 w-4 items-center justify-center rounded-full text-[8px] font-extrabold ${
+                      {brandList.length > 0 && (
+                        <div className="border-b border-gray-100 bg-[#fbfcfe] px-4 py-2.5">
+                          <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-visible">
+                            {brandList.map((brand, bIdx) => {
+                              const isBrandActive = activeBrandId === brand.id;
+                              return (
+                                <Link
+                                  key={brand.id}
+                                  href={`/products/${brand.id}`}
+                                  onMouseEnter={() =>
+                                    setActiveBrandId(brand.id)
+                                  }
+                                  onClick={() => {
+                                    setActiveBrandId(brand.id);
+                                    setOpenDropdown(null);
+                                  }}
+                                  className={`shrink-0 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-bold transition-all cursor-pointer ${
                                     isBrandActive
-                                      ? "bg-[#F4B24D] text-[#0C356A]"
-                                      : "bg-gray-100 text-gray-600"
+                                      ? "border-[#0C356A] bg-[#0C356A] text-white shadow-xs"
+                                      : "border-gray-200 bg-white text-gray-600 hover:border-[#C86218] hover:text-[#C86218]"
                                   }`}
                                 >
-                                  {bIdx + 1}
-                                </span>
-                                <span>{brand.name}</span>
-                              </Link>
-                            );
-                          })}
+                                  <span
+                                    className={`flex h-4 w-4 items-center justify-center rounded-full text-[8px] font-extrabold ${
+                                      isBrandActive
+                                        ? "bg-[#F4B24D] text-[#0C356A]"
+                                        : "bg-gray-100 text-gray-600"
+                                    }`}
+                                  >
+                                    {bIdx + 1}
+                                  </span>
+                                  <span>{brand.name}</span>
+                                </Link>
+                              );
+                            })}
+                          </div>
                         </div>
-                      </div>
+                      )}
 
-                      <div className="px-5 py-4">
-                        <div className="mb-2.5 flex items-center justify-between">
-                          <div>
-                            <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#C86218]">
-                              Featured Brand
-                            </p>
+                      {currentBrand && (
+                        <div className="px-5 py-4">
+                          <div className="mb-2.5 flex items-center justify-between">
+                            <div>
+                              <p className="text-[9px] font-extrabold uppercase tracking-[0.14em] text-[#C86218]">
+                                Featured Brand
+                              </p>
+                              <Link
+                                href={`/products/${currentBrand.id}`}
+                                onClick={() => setOpenDropdown(null)}
+                                className="group/bname flex items-center gap-1.5 hover:text-[#C86218] transition-colors"
+                              >
+                                <h3 className="text-base font-black text-[#0C356A] group-hover/bname:text-[#C86218] transition-colors">
+                                  {currentBrand.name}
+                                </h3>
+                                <ArrowRight
+                                  size={14}
+                                  className="text-gray-400 group-hover/bname:text-[#C86218] transition-colors"
+                                />
+                              </Link>
+                            </div>
                             <Link
                               href={`/products/${currentBrand.id}`}
                               onClick={() => setOpenDropdown(null)}
-                              className="group/bname flex items-center gap-1.5 hover:text-[#C86218] transition-colors"
+                              className="rounded-full bg-orange-50 px-2.5 py-1 text-[9px] font-bold text-[#C86218] hover:bg-orange-100 transition-colors"
                             >
-                              <h3 className="text-base font-black text-[#0C356A] group-hover/bname:text-[#C86218] transition-colors">
-                                {currentBrand.name}
-                              </h3>
-                              <ArrowRight size={14} className="text-gray-400 group-hover/bname:text-[#C86218] transition-colors" />
+                              {currentBrand.categories.length} categories →
                             </Link>
                           </div>
-                          <Link
-                            href={`/products/${currentBrand.id}`}
-                            onClick={() => setOpenDropdown(null)}
-                            className="rounded-full bg-orange-50 px-2.5 py-1 text-[9px] font-bold text-[#C86218] hover:bg-orange-100 transition-colors"
-                          >
-                            {currentBrand.categories.length} categories →
-                          </Link>
-                        </div>
 
-                        <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto pr-1 scrollbar-visible">
-                          {currentBrand.categories.map((cat, cIdx) => (
-                            <Link
-                              key={cIdx}
-                              href={`/products/${currentBrand.id}#subcat-${cIdx}`}
-                              onClick={() => setOpenDropdown(null)}
-                              className="group flex items-center justify-between rounded-lg border border-gray-100 bg-[#f8fafc] px-3.5 py-2.5 transition hover:border-[#F4B24D] hover:bg-orange-50"
-                            >
-                              <div className="min-w-0 pr-2">
-                                <span className="block truncate text-[11.5px] font-extrabold leading-snug text-[#0C356A] group-hover:text-[#C86218] transition-colors">
-                                  {cat.name}
-                                </span>
-                                <span className="block text-[9px] text-gray-400 font-medium">
-                                  {currentBrand.name}
-                                </span>
-                              </div>
-                              <ChevronRight
-                                size={13}
-                                className="mt-0.5 shrink-0 text-gray-300 group-hover:text-[#C86218] group-hover:translate-x-0.5 transition-all"
-                              />
-                            </Link>
-                          ))}
+                          <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto pr-1 scrollbar-visible">
+                            {currentBrand.categories.map((cat, cIdx) => (
+                              <Link
+                                key={cIdx}
+                                href={`/products/${currentBrand.id}#subcat-${cIdx}`}
+                                onClick={() => setOpenDropdown(null)}
+                                className="group flex items-center justify-between rounded-lg border border-gray-100 bg-[#f8fafc] px-3.5 py-2.5 transition hover:border-[#F4B24D] hover:bg-orange-50"
+                              >
+                                <div className="min-w-0 pr-2">
+                                  <span className="block truncate text-[11.5px] font-extrabold leading-snug text-[#0C356A] group-hover:text-[#C86218] transition-colors">
+                                    {cat.name}
+                                  </span>
+                                  <span className="block text-[9px] text-gray-400 font-medium">
+                                    {currentBrand.name}
+                                  </span>
+                                </div>
+                                <ChevronRight
+                                  size={13}
+                                  className="mt-0.5 shrink-0 text-gray-300 group-hover:text-[#C86218] group-hover:translate-x-0.5 transition-all"
+                                />
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -770,7 +821,7 @@ export default function Navbar({
                               </Link>
                             </div>
                             <div className="flex flex-col gap-1.5 max-h-72 overflow-y-auto pr-1">
-                              {BRAND_PRODUCTS.map((brand, bIdx) => {
+                              {brandList.map((brand, bIdx) => {
                                 const isBrandOpen =
                                   mobileSelectedBrand === brand.id;
                                 return (

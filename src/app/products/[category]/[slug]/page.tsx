@@ -2,17 +2,19 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
 import DownloadModal from "@/components/DownloadModal";
-import { ArrowLeft, FileText, Droplet, Search } from "lucide-react";
-import { useCMSStore, PageSEO } from "@/store/useCMSStore";
-import { FormattedText } from "@/components/FormattedText";
 import SEOMeta from "@/components/SEOMeta";
-
-import { BRAND_PRODUCTS } from "@/data/brandProductsData";
+import { useCMSStore, PageSEO } from "@/store/useCMSStore";
+import {
+  ProductBreadcrumb,
+  ProductShowcaseCard,
+  ProductDetailsContent,
+  ProductSubCategoryNav,
+  ProductNotFound,
+} from "./components";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -30,13 +32,8 @@ export default function ProductDetailPage() {
   const [downloadPdfType, setDownloadPdfType] = useState<"TDS" | "MSDS">("TDS");
   const [downloadPdfUrl, setDownloadPdfUrl] = useState("");
 
-  const {
-    productDetails,
-    products,
-    productCategories,
-    fetchProductBySlug,
-    fetchProducts,
-  } = useCMSStore();
+  const { productDetails, products, fetchProductBySlug, fetchProducts } =
+    useCMSStore();
 
   useEffect(() => {
     if (productSlug) {
@@ -47,152 +44,14 @@ export default function ProductDetailPage() {
     }
   }, [productSlug, categorySlug, fetchProductBySlug, fetchProducts]);
 
-  // Match brand and product from BRAND_PRODUCTS
-  const brandProductMatch = useMemo(() => {
-    if (!productSlug) return null;
+  const product =
+    productDetails[productSlug] ||
+    products?.find((p) => p.slug === productSlug);
 
-    // 1. Direct match with categorySlug matching brand.id
-    if (categorySlug) {
-      const brand = BRAND_PRODUCTS.find((b) => b.id === categorySlug);
-      if (brand) {
-        for (const cat of brand.categories) {
-          const prod = cat.products.find(
-            (p) => p.slug === productSlug || p.id === productSlug,
-          );
-          if (prod) {
-            return { brand, category: cat, product: prod };
-          }
-        }
-      }
-    }
-
-    // 2. Search all brands if not directly matched by brand.id
-    for (const b of BRAND_PRODUCTS) {
-      for (const cat of b.categories) {
-        const prod = cat.products.find(
-          (p) => p.slug === productSlug || p.id === productSlug,
-        );
-        if (prod) {
-          return { brand: b, category: cat, product: prod };
-        }
-      }
-    }
-    return null;
-  }, [categorySlug, productSlug]);
-
-  const product: any = useMemo(() => {
-    const cmsProduct =
-      productDetails[productSlug] ||
-      products?.find((p) => p.slug === productSlug);
-    if (cmsProduct) return cmsProduct;
-
-    if (brandProductMatch) {
-      const { brand, category: cat, product: p } = brandProductMatch;
-      return {
-        id: p.id,
-        name: p.name,
-        slug: p.slug,
-        subtitle: `${brand.name} • ${cat.name}`,
-        subCategoryTitle: cat.name,
-        categorySlug: brand.id,
-        specsText: p.specs,
-        description: p.description,
-        coverImage: p.coverImage,
-        containerImage: p.coverImage,
-        packaging: p.packaging,
-        applicationAreas: p.applications.join(", "),
-        performanceBenefits: [
-          `Formulated with advanced additive chemistry meeting ${p.specs}.`,
-          `Exceptional thermal stability, oxidation resistance, and extended operational fluid life.`,
-          `Robust anti-wear protection minimizing metal friction and maintenance downtime.`,
-          `Guaranteed authentic factory quality backed by ${brand.name}.`,
-        ],
-        specialFeatures: [
-          `Original certified factory supply from ${brand.name}`,
-          `Available industrial packaging: ${p.packaging.join(" / ")}`,
-          `Target application areas: ${p.applications.join(", ")}`,
-          `Meets & exceeds specifications: ${p.specs}`,
-        ],
-        propertiesTable: [
-          { property: "Brand / Manufacturer", value: brand.name },
-          { property: "Supply / Authorization", value: `${brand.country} (${brand.authStatus})` },
-          { property: "Product Range", value: cat.name },
-          { property: "Industry Specification", value: p.specs },
-          { property: "Primary Applications", value: p.applications.join(", ") },
-          { property: "Standard Packaging Options", value: p.packaging.join(", ") },
-          { property: "Authenticity Status", value: "100% Genuine Sealed Direct Stock" },
-        ],
-        tdsPdfUrl: "#",
-        msdsPdfUrl: "#",
-      };
-    }
-
-    return null;
-  }, [productDetails, products, productSlug, brandProductMatch]);
-
-  const category = useMemo(() => {
-    if (brandProductMatch) {
-      return {
-        slug: brandProductMatch.brand.id,
-        name: brandProductMatch.brand.name,
-        shortDesc: brandProductMatch.brand.tagline,
-        fullDesc: brandProductMatch.brand.about,
-      };
-    }
-    const found = productCategories?.find((c) => c.slug === categorySlug);
-    if (found) return found;
-    return {
-      slug: categorySlug,
-      name: categorySlug
-        ? categorySlug
-            .replace(/-/g, " ")
-            .replace(/\b\w/g, (l) => l.toUpperCase())
-        : "Products",
-      shortDesc: "",
-      fullDesc: "",
-    };
-  }, [productCategories, categorySlug, brandProductMatch]);
-
-  const siblingProducts = useMemo(() => {
-    if (brandProductMatch) {
-      return brandProductMatch.category.products
-        .filter((p) => p.slug !== productSlug && p.id !== productSlug)
-        .map((p) => ({
-          id: p.id,
-          name: p.name,
-          slug: p.slug,
-          categorySlug: brandProductMatch.brand.id,
-        }));
-    }
-    if (!products) return [];
-    return products.filter(
-      (p) =>
-        (!categorySlug || p.categorySlug === categorySlug) &&
-        p.slug !== productSlug,
-    );
-  }, [products, categorySlug, productSlug, brandProductMatch]);
-
-  const subCategoryList = useMemo(() => {
-    if (brandProductMatch) {
-      return brandProductMatch.brand.categories.map((cat, idx) => ({
-        title: cat.name,
-        slug: cat.slug,
-        index: idx,
-      }));
-    }
-    if (!products) return [];
-    const catProducts = products.filter(
-      (p) => !categorySlug || p.categorySlug === categorySlug,
-    );
-    const titles = Array.from(
-      new Set(
-        catProducts
-          .map((p) => p.subCategoryTitle || (p as any).subtitle || p.name)
-          .filter(Boolean),
-      ),
-    );
-    return titles.map((title, idx) => ({ title, slug: "", index: idx }));
-  }, [products, categorySlug, brandProductMatch]);
+  const handleOpenEnquiry = (prodName?: string) => {
+    setEnquiryProduct(prodName || product?.name || "");
+    setIsEnquiryOpen(true);
+  };
 
   const handleOpenDownload = (pdfType: "TDS" | "MSDS") => {
     if (!product) return;
@@ -200,66 +59,32 @@ export default function ProductDetailPage() {
     setDownloadPdfType(pdfType);
     setDownloadPdfUrl(
       pdfType === "TDS"
-        ? product.tdsPdfUrl || product.pdfUrl || "#"
-        : product.msdsPdfUrl || product.msdsUrl || product.pdfUrl || "#",
+        ? product.tdsPdfUrl || product.pdfUrl || ""
+        : product.msdsPdfUrl || product.msdsUrl || "",
     );
     setIsDownloadOpen(true);
   };
 
-  const handleOpenEnquiry = (prodName?: string) => {
-    if (prodName) setEnquiryProduct(prodName);
-    else if (product) setEnquiryProduct(product.name);
-    setIsEnquiryOpen(true);
-  };
-
   if (!product) {
     return (
-      <main className="min-h-screen bg-white text-gray-800 font-sans flex flex-col justify-between">
-        <Navbar
-          fontSizeMultiplier={fontSizeMultiplier}
-          setFontSizeMultiplier={setFontSizeMultiplier}
-          language={language}
-          setLanguage={setLanguage}
-        />
-        <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-          <h1 className="text-3xl font-extrabold text-[#002b5c] mb-4">
-            Product Not Found
-          </h1>
-          <p className="text-gray-600 mb-8">
-            The requested lubricant product could not be located.
-          </p>
-          <Link
-            href="/products/industrial-oils"
-            className="inline-flex items-center gap-2 bg-[#002b5c] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#C86218] transition"
-          >
-            <ArrowLeft size={16} /> Return to All Products
-          </Link>
-        </div>
-        <Footer onOpenEnquiry={() => setIsEnquiryOpen(true)} />
-      </main>
+      <ProductNotFound
+        fontSizeMultiplier={fontSizeMultiplier}
+        setFontSizeMultiplier={setFontSizeMultiplier}
+        language={language}
+        setLanguage={setLanguage}
+        onOpenEnquiry={() => setIsEnquiryOpen(true)}
+      />
     );
   }
 
-  const currentGroup = {
-    title:
-      product.subCategoryTitle || (product as any).subtitle || category.name,
+  const productSEO: PageSEO = {
+    title: product.metaTitle || product.name,
+    metaTitle: product.metaTitle || product.name,
+    metaDescription: product.metaDescription || product.description,
+    targetKeywords: product.targetKeywords,
+    canonicalUrl: product.canonicalUrl,
+    schema: (product as any).schema || null,
   };
-
-  const hasMultiCols = Boolean(
-    product.tableHeaders && product.tableHeaders.length > 0,
-  );
-  const colCount = hasMultiCols ? product.tableHeaders!.length : 1;
-
-  const productSEO: PageSEO = useMemo(() => {
-    return {
-      title: product?.metaTitle || product?.title || product?.name,
-      metaTitle: product?.metaTitle || product?.title || product?.name,
-      metaDescription: product?.metaDescription || product?.description || product?.tagline,
-      targetKeywords: product?.targetKeywords,
-      canonicalUrl: product?.canonicalUrl,
-      schema: product?.schema,
-    };
-  }, [product]);
 
   return (
     <main
@@ -278,373 +103,24 @@ export default function ProductDetailPage() {
       />
 
       {/* Breadcrumbs matching exact HP Lubricants style */}
-      <section className="bg-white py-4 border-b border-gray-100">
-        <div className="max-w-6xl mx-auto px-4 md:px-8 text-xs md:text-sm text-gray-600 flex items-center gap-2 font-medium flex-wrap">
-          <Link href="/" className="text-[#337ab7] hover:underline">
-            Home
-          </Link>
-          <span className="text-gray-400">/</span>
-          <Link
-            href={`/products/${category.slug}`}
-            className="text-[#337ab7] hover:underline"
-          >
-            {category.name}
-          </Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-[#C86218] font-semibold">{product.name}</span>
-        </div>
-      </section>
+      <ProductBreadcrumb />
 
       {/* Main Content Area */}
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-12 w-full">
-        {/* Category Title with Dark Blue Underline Bar */}
-        <div className="mb-8 border-b border-gray-200 pb-3 flex items-center justify-between">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-[#002b5c] uppercase tracking-wider inline-block relative">
-            <span className="border-b-4 border-[#002b5c] pb-3 inline-block">
-              {currentGroup?.title || product.subtitle || category.name}
-            </span>
-          </h1>
-          <span className="text-xs font-bold uppercase tracking-widest text-[#C86218] bg-red-50 px-3 py-1 rounded-full border border-red-100 hidden sm:inline-block">
-            Industrial Grade
-          </span>
-        </div>
-
         {/* Top Product Showcase Card */}
-        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-8 mb-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left Column: Product Image Frame Container */}
-            <div className="lg:col-span-5 rounded-2xl bg-gradient-to-b from-slate-50 via-slate-50/60 to-slate-100/90 border border-slate-200/80 p-6 relative flex items-center justify-center min-h-[320px] group shadow-inner">
-              <img
-                src={product.containerImage || product.coverImage}
-                alt={product.name}
-                className="max-h-72 object-contain mx-auto transition-transform duration-300 group-hover:scale-105"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src =
-                    "https://www.hplubricants.in/sites/default/files/15-W-40-Final-Graphic.jpg";
-                }}
-              />
-              <div className="absolute bottom-3.5 right-3.5 bg-white/90 backdrop-blur-sm p-2 rounded-lg border border-slate-200 text-slate-500 shadow-xs">
-                <Search size={15} />
-              </div>
-            </div>
+        <ProductShowcaseCard
+          onOpenEnquiry={handleOpenEnquiry}
+          onOpenDownload={handleOpenDownload}
+        />
 
-            {/* Center Column: Product Name, Subtitle, Specifications & Quick CTAs */}
-            <div className="lg:col-span-4 flex flex-col justify-center space-y-4">
-              <div>
-                <span className="text-[11px] font-extrabold text-[#C86218] uppercase tracking-wider block mb-1">
-                  {product.subtitle || currentGroup?.title || category.name}
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-[#002b5c] tracking-tight mb-2">
-                  {product.name}
-                </h2>
-                <div className="w-12 h-1 bg-[#002b5c] rounded-full mb-4" />
-
-                {/* Specifications or Key Highlights */}
-                {product.specsText ? (
-                  <div className="bg-slate-50 border-l-4 border-[#C86218] rounded-r-xl p-3.5 shadow-xs mb-4">
-                    <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C86218] mb-1">
-                      Meets Specifications:
-                    </h3>
-                    <p className="text-xs text-slate-700 leading-relaxed font-sans font-medium">
-                      {product.specsText}
-                    </p>
-                  </div>
-                ) : product.applicationAreas ? (
-                  <div className="bg-slate-50 border-l-4 border-[#002b5c] rounded-r-xl p-3.5 shadow-xs mb-4">
-                    <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#002b5c] mb-1">
-                      Key Application:
-                    </h3>
-                    <p className="text-xs text-slate-700 leading-relaxed font-sans font-medium">
-                      {product.applicationAreas}
-                    </p>
-                  </div>
-                ) : null}
-
-                {/* Quick Info Badges */}
-                <div className="flex flex-wrap gap-2 text-[11px] text-slate-600 font-medium">
-                  <span className="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
-                    📦 20L / 50L / 210L Barrel
-                  </span>
-                  <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200 font-semibold">
-                    ✓ In Stock & Ready to Dispatch
-                  </span>
-                </div>
-              </div>
-
-              {/* Quick Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <button
-                  onClick={() => handleOpenEnquiry(product.name)}
-                  className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg shadow-sm hover:shadow-md transition-all cursor-pointer"
-                >
-                  Inquire Product
-                </button>
-                <button
-                  onClick={() => handleOpenDownload("TDS")}
-                  className="bg-[#002b5c] hover:bg-[#001f42] text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
-                >
-                  <FileText size={14} /> TDS
-                </button>
-              </div>
-            </div>
-
-            {/* Right Column: Sibling Products Sidebar */}
-            <div className="lg:col-span-3 bg-slate-50/80 border border-slate-200/80 rounded-2xl p-4">
-              <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#002b5c] block mb-3 pb-2 border-b border-slate-200">
-                In This Series ({siblingProducts.length})
-              </span>
-              <div className="space-y-1.5 max-h-[260px] overflow-y-auto pr-1 scrollbar-visible">
-                {siblingProducts.map((sib: any) => {
-                  const isCurrent = sib.slug === product.slug;
-                  return (
-                    <Link
-                      key={sib.id}
-                      href={`/products/${category.slug}/${sib.slug}`}
-                      className={`block px-3.5 py-2 text-xs rounded-xl font-bold uppercase transition-all flex items-center justify-between ${
-                        isCurrent
-                          ? "bg-[#002b5c] text-white shadow-xs"
-                          : "bg-white hover:bg-slate-200 text-slate-700 border border-slate-100"
-                      }`}
-                    >
-                      <span className="truncate">{sib.name}</span>
-                      {isCurrent && (
-                        <span className="text-xs text-sky-300">●</span>
-                      )}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Lower Main Sections: Description, Application Areas, Performance Benefits */}
-        <div className="space-y-6 mb-12">
-          {/* Description */}
-          {product.description && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-              <h3 className="text-base sm:text-lg font-bold text-[#002b5c] mb-2 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
-                Description
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans font-normal">
-                <FormattedText text={product.description} />
-              </p>
-            </div>
-          )}
-
-          {/* Application Areas & Performance Benefits Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Application Areas */}
-            {product.applicationAreas && (
-              <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col">
-                <h3 className="text-base sm:text-lg font-bold text-[#C86218] mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#002b5c]" />{" "}
-                  Application Areas:
-                </h3>
-                <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans">
-                  <FormattedText text={product.applicationAreas} />
-                </p>
-              </div>
-            )}
-
-            {/* Performance Benefits */}
-            {product.performanceBenefits &&
-              product.performanceBenefits.length > 0 && (
-                <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col">
-                  <h3 className="text-base sm:text-lg font-bold text-[#C86218] mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-[#002b5c]" />{" "}
-                    Performance Benefits:
-                  </h3>
-                  <ul className="space-y-2.5">
-                    {product.performanceBenefits.map(
-                      (benefit: string, bIdx: number) => (
-                        <li
-                          key={bIdx}
-                          className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700"
-                        >
-                          <span className="text-[#C86218] font-bold text-sm leading-none mt-0.5">
-                            •
-                          </span>
-                          <span>{benefit}</span>
-                        </li>
-                      ),
-                    )}
-                  </ul>
-                </div>
-              )}
-          </div>
-
-          {/* Special Features */}
-          {product.specialFeatures && product.specialFeatures.length > 0 && (
-            <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-              <h3 className="text-base sm:text-lg font-bold text-[#002b5c] mb-3 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#C86218]" /> Special
-                Features:
-              </h3>
-              <ul className="space-y-2">
-                {product.specialFeatures.map((feat: string, fIdx: number) => (
-                  <li key={fIdx} className="text-xs sm:text-sm text-slate-700">
-                    {feat}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Physico-Chemical Properties Table */}
-          {product.propertiesTable && product.propertiesTable.length > 0 && (
-            <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs pt-4">
-              <div className="px-6 pb-3">
-                <h3 className="text-base sm:text-lg font-bold text-[#002b5c] flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
-                  Physico-Chemical Properties
-                </h3>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs font-sans border-collapse">
-                  <thead>
-                    <tr className="bg-[#002b5c] text-white">
-                      <th
-                        colSpan={hasMultiCols ? colCount + 1 : 2}
-                        className="py-3 px-4 text-center font-extrabold uppercase border-b border-[#002b5c]"
-                      >
-                        {product.name}
-                      </th>
-                    </tr>
-                    {hasMultiCols && (
-                      <tr className="bg-[#002b5c] text-white border-t border-white/20">
-                        <th className="py-2 px-4 border-r border-white/20"></th>
-                        {product.tableHeaders!.map(
-                          (hdr: string, hIdx: number) => (
-                            <th
-                              key={hIdx}
-                              className="py-2 px-4 text-center font-bold border-r border-white/20 last:border-r-0"
-                            >
-                              {hdr}
-                            </th>
-                          ),
-                        )}
-                      </tr>
-                    )}
-                  </thead>
-                  <tbody>
-                    {product.propertiesTable.map((row: any, rIdx: number) => (
-                      <tr
-                        key={rIdx}
-                        className={rIdx % 2 === 0 ? "bg-white" : "bg-slate-50"}
-                      >
-                        <td className="py-2.5 px-4 font-semibold text-slate-700 border-b border-r border-slate-200">
-                          {row.property}
-                        </td>
-
-                        {hasMultiCols ? (
-                          row.values ? (
-                            row.values.map((v: any, vIdx: number) => (
-                              <td
-                                key={vIdx}
-                                className="py-2.5 px-4 text-slate-900 font-bold border-b border-r border-slate-200 last:border-r-0 text-center"
-                              >
-                                {v}
-                              </td>
-                            ))
-                          ) : (
-                            <td
-                              colSpan={colCount}
-                              className="py-2.5 px-4 text-slate-900 font-bold border-b border-slate-200 text-center"
-                            >
-                              {row.value}
-                            </td>
-                          )
-                        ) : (
-                          <td className="py-2.5 px-4 text-slate-900 font-bold border-b border-slate-200 text-center">
-                            {row.value}
-                          </td>
-                        )}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* Action Buttons: TDS, MSDS, & Inquire */}
-          <div className="pt-4 flex flex-wrap items-center gap-3">
-            <button
-              onClick={() => handleOpenDownload("TDS")}
-              className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg flex items-center gap-2 shadow-xs transition cursor-pointer"
-            >
-              <FileText size={15} /> Download PDF (TDS)
-            </button>
-
-            <button
-              onClick={() => handleOpenDownload("MSDS")}
-              className="bg-[#002b5c] hover:bg-[#001f42] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg flex items-center gap-2 shadow-xs transition cursor-pointer"
-            >
-              <FileText size={15} /> Download MSDS PDF
-            </button>
-
-            <button
-              onClick={() => handleOpenEnquiry(product.name)}
-              className="bg-slate-800 hover:bg-black text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg transition cursor-pointer"
-            >
-              Inquire Product
-            </button>
-          </div>
-        </div>
+        {/* Lower Main Sections: Description, Applications, Benefits, Properties Table */}
+        <ProductDetailsContent
+          onOpenEnquiry={handleOpenEnquiry}
+          onOpenDownload={handleOpenDownload}
+        />
 
         {/* Sub-Category Teardrop Navigation Grid */}
-        {subCategoryList.length > 0 && (
-          <div className="mt-8 pt-2">
-            <div className="border-t border-gray-200">
-              {Array.from({
-                length: Math.ceil(subCategoryList.length / 4),
-              }).map((_, rIdx) => {
-                const rowItems = subCategoryList.slice(rIdx * 4, rIdx * 4 + 4);
-                return (
-                  <div
-                    key={rIdx}
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 items-center py-5 border-b border-gray-200"
-                  >
-                    {rowItems.map((subGroup, cIdx) => {
-                      const isCurrentGroup = Boolean(
-                        currentGroup?.title &&
-                        subGroup.title.trim().toLowerCase() ===
-                          currentGroup.title.trim().toLowerCase(),
-                      );
-                      return (
-                        <Link
-                          key={cIdx}
-                          href={`/products/${category.slug}#subcat-${subGroup.index !== undefined ? subGroup.index : rIdx * 4 + cIdx}`}
-                          className="flex items-center gap-3.5 group transition-colors py-1.5"
-                        >
-                          <Droplet
-                            size={21}
-                            className={`shrink-0 transition-colors ${
-                              isCurrentGroup
-                                ? "text-[#C86218] fill-[#C86218]"
-                                : "text-[#475569] fill-[#475569] group-hover:text-[#C86218] group-hover:fill-[#C86218]"
-                            }`}
-                          />
-                          <span
-                            className={`text-sm md:text-[15px] font-normal uppercase tracking-normal leading-relaxed transition-colors ${
-                              isCurrentGroup
-                                ? "text-[#C86218] font-semibold"
-                                : "text-[#334155] group-hover:text-[#C86218]"
-                            }`}
-                          >
-                            {subGroup.title}
-                          </span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        <ProductSubCategoryNav />
       </div>
 
       <Footer onOpenEnquiry={handleOpenEnquiry} />
