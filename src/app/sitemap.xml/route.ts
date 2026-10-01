@@ -3,25 +3,36 @@ import { getApiBaseUrl } from "@/store/useCMSStore";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const origin = process.env.NEXT_PUBLIC_SITE_URL || "";
+export async function GET(request: Request) {
+  // Dynamically determine origin from request host or environment variable
+  const host = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  const proto =
+    request.headers.get("x-forwarded-proto") ||
+    (host && host.includes("localhost") ? "http" : "https");
+  const origin = (process.env.NEXT_PUBLIC_SITE_URL || (host ? `${proto}://${host}` : "")).replace(
+    /\/$/,
+    "",
+  );
+
   try {
     const apiUrl = getApiBaseUrl();
+
+    // 1. Fetch Global SEO & Sitemap Directives from CMS
     const seoRes = await fetch(`${apiUrl}/api/seo`, {
       next: { revalidate: 60 },
     });
     const seoJson = seoRes.ok ? await seoRes.json() : null;
     const globalSEO = seoJson?.data;
 
-    // 1. If sitemap is disabled in CMS
+    // Check if sitemap is disabled in CMS
     if (globalSEO && globalSEO.sitemapEnabled === false) {
       return new NextResponse("Sitemap generation is disabled in CMS", {
         status: 404,
-        headers: { "Content-Type": "text/plain" },
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
       });
     }
 
-    // 2. If custom uploaded XML file is provided in CMS
+    // Check if custom uploaded XML file is provided in CMS
     if (
       globalSEO?.sitemapCustomContent &&
       (globalSEO.sitemapCustomContent.trim().startsWith("<?xml") ||
@@ -30,57 +41,82 @@ export async function GET() {
       return new NextResponse(globalSEO.sitemapCustomContent.trim(), {
         headers: {
           "Content-Type": "application/xml; charset=utf-8",
-          "Cache-Control": "public, max-age=60, s-maxage=60",
+          "Cache-Control": "public, max-age=60, s-maxage=60, stale-while-revalidate=300",
         },
       });
     }
 
-    // 3. Dynamic XML compilation from live pages & blog posts
-    const urls: Array<{
-      loc: string;
-      lastmod: string;
-      changefreq: string;
-      priority: string;
-    }> = [
+    // 2. Dynamic XML compilation
+    const urlMap = new Map<
+      string,
       {
-        loc: `${origin}`,
-        lastmod: new Date().toISOString(),
-        changefreq: "daily",
-        priority: "1.0",
-      },
-      {
-        loc: `${origin}/about-us`,
-        lastmod: new Date().toISOString(),
-        changefreq: "weekly",
-        priority: "0.8",
-      },
-      {
-        loc: `${origin}/contact-us`,
-        lastmod: new Date().toISOString(),
-        changefreq: "weekly",
-        priority: "0.8",
-      },
-      {
-        loc: `${origin}/events`,
-        lastmod: new Date().toISOString(),
-        changefreq: "weekly",
-        priority: "0.7",
-      },
-      {
-        loc: `${origin}/blogs`,
-        lastmod: new Date().toISOString(),
-        changefreq: "daily",
-        priority: "0.8",
-      },
-      {
-        loc: `${origin}/privacy-policy`,
-        lastmod: new Date().toISOString(),
-        changefreq: "monthly",
-        priority: "0.5",
-      },
-    ];
+        loc: string;
+        lastmod: string;
+        changefreq: string;
+        priority: string;
+      }
+    >();
 
-    // Dynamic products & categories
+    const addUrl = (
+      path: string,
+      lastmod?: string,
+      changefreq: string = "weekly",
+      priority: string = "0.8",
+    ) => {
+      const cleanPath = path.startsWith("/") ? path : `/${path}`;
+      const fullUrl = cleanPath === "/" ? origin : `${origin}${cleanPath}`;
+      urlMap.set(fullUrl, {
+        loc: fullUrl,
+        lastmod: lastmod ? lastmod.split("T")[0] : new Date().toISOString().split("T")[0],
+        changefreq,
+        priority,
+      });
+    };
+
+    // Standard core pages
+    addUrl("/", undefined, "daily", "1.0");
+    addUrl("/about-us", undefined, "weekly", "0.8");
+    addUrl("/brands", undefined, "weekly", "0.9");
+    addUrl("/industries", undefined, "weekly", "0.9");
+    addUrl("/products", undefined, "daily", "0.9");
+    addUrl("/events", undefined, "weekly", "0.7");
+    addUrl("/blogs", undefined, "daily", "0.8");
+    addUrl("/contact-us", undefined, "weekly", "0.8");
+    addUrl("/privacy-policy", undefined, "monthly", "0.5");
+
+    // 3. Fetch CMS Pages (checking visibility & noIndex)
+    try {
+      const pagesRes = await fetch(`${apiUrl}/api/seo?type=pages`, {
+        next: { revalidate: 60 },
+      });
+      if (pagesRes.ok) {
+        const pagesJson = await pagesRes.json();
+        const cmsPages = Array.isArray(pagesJson?.data) ? pagesJson.data : [];
+
+        for (const page of cmsPages) {
+          if (page?.slug) {
+            const pageSlug = page.slug === "home" ? "/" : `/${page.slug}`;
+            const fullUrl = pageSlug === "/" ? origin : `${origin}${pageSlug}`;
+
+            // Exclude if marked as noIndex or not published
+            if (page.noIndex === true || (page.visibility && page.visibility !== "published")) {
+              urlMap.delete(fullUrl);
+              continue;
+            }
+
+            // Update or add page
+            const lastmod = page.updatedAt || page.createdAt;
+            const priority = pageSlug === "/" ? "1.0" : "0.8";
+            const changefreq = pageSlug === "/" ? "daily" : "weekly";
+            addUrl(pageSlug, lastmod, changefreq, priority);
+          }
+        }
+      }
+    } catch (e) {
+      console.error("Error fetching CMS pages for sitemap:", e);
+    }
+
+    // 4. Dynamic Products & Categories from CMS
     try {
       const prodRes = await fetch(`${apiUrl}/api/products`, {
         next: { revalidate: 60 },
@@ -92,23 +128,16 @@ export async function GET() {
 
         categories.forEach((cat: any) => {
           if (cat?.slug) {
-            urls.push({
-              loc: `${origin}/products/${cat.slug}`,
-              lastmod: new Date().toISOString(),
-              changefreq: "weekly",
-              priority: "0.8",
-            });
+            addUrl(`/products/${cat.slug}`, undefined, "weekly", "0.8");
           }
         });
 
         products.forEach((prod: any) => {
           if (prod?.categorySlug && prod?.slug) {
-            urls.push({
-              loc: `${origin}/products/${prod.categorySlug}/${prod.slug}`,
-              lastmod: new Date().toISOString(),
-              changefreq: "weekly",
-              priority: "0.7",
-            });
+            // Respect product-level noIndex
+            if (prod.noIndex === true) return;
+
+            addUrl(`/products/${prod.categorySlug}/${prod.slug}`, prod.updatedAt, "weekly", "0.7");
           }
         });
       }
@@ -116,7 +145,7 @@ export async function GET() {
       console.error("Error fetching products for sitemap:", e);
     }
 
-    // Dynamic blog articles
+    // 5. Dynamic Blog Articles from CMS
     try {
       const blogRes = await fetch(`${apiUrl}/api/blogs`, {
         next: { revalidate: 60 },
@@ -131,12 +160,10 @@ export async function GET() {
 
         blogList.forEach((b: any) => {
           if (b?.slug) {
-            urls.push({
-              loc: `${origin}/blogs/${b.slug}`,
-              lastmod: b.updatedAt ? new Date(b.updatedAt).toISOString() : new Date().toISOString(),
-              changefreq: "weekly",
-              priority: "0.7",
-            });
+            // Respect unpublished blogs
+            if (b.isPublished === false) return;
+
+            addUrl(`/blogs/${b.slug}`, b.updatedAt || b.createdAt, "weekly", "0.7");
           }
         });
       }
@@ -144,13 +171,14 @@ export async function GET() {
       console.error("Error fetching blogs for sitemap:", e);
     }
 
+    const urlList = Array.from(urlMap.values());
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls
+${urlList
   .map(
     (u) => `  <url>
     <loc>${u.loc}</loc>
-    <lastmod>${u.lastmod.split("T")[0]}</lastmod>
+    <lastmod>${u.lastmod}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
   </url>`,
@@ -161,7 +189,7 @@ ${urls
     return new NextResponse(xml, {
       headers: {
         "Content-Type": "application/xml; charset=utf-8",
-        "Cache-Control": "public, max-age=60, s-maxage=60",
+        "Cache-Control": "public, max-age=60, s-maxage=60, stale-while-revalidate=300",
       },
     });
   } catch (err: any) {
