@@ -6,7 +6,7 @@ import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
 
 export default function AboutJaiDevaContent() {
-  const { pages, pageSEO } = useCMSStore();
+  const { pages } = useCMSStore();
   const {
     title,
     subtitle,
@@ -16,17 +16,15 @@ export default function AboutJaiDevaContent() {
   if (!title && (!Array.isArray(paragraphs) || paragraphs.length === 0))
     return null;
 
-  const HeadingTag = getHeadingTag(pageSEO["about-us"]?.headingOptions, "h1");
-
   return (
     <section
       id="about-story"
       className="max-w-6xl mx-auto px-4 md:px-8 py-12 md:py-16 font-sans scroll-mt-24"
     >
       {title && (
-        <HeadingTag className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0C356A] tracking-tight uppercase mb-3 border-b-2 border-gray-100 pb-4">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0C356A] tracking-tight uppercase mb-3 border-b-2 border-gray-100 pb-4">
           <FormattedText text={title} />
-        </HeadingTag>
+        </h2>
       )}
 
       {subtitle && (

@@ -50,7 +50,7 @@ export function CategoryHero({ onOpenEnquiry }: CategoryHeroProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
           <div className="lg:col-span-7">
             <HeadingTag className="text-3xl md:text-5xl font-black tracking-tight uppercase leading-[1.08] text-white">
-              {currentSEO?.title || category.name}
+              {category.name}
             </HeadingTag>
 
             {category.shortDesc && (

@@ -21,77 +21,20 @@ export interface ApiNavLink {
 }
 
 export interface PageSEO {
-  title?: string | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   targetKeywords?: string | null;
   canonicalUrl?: string | null;
   noIndex?: boolean;
   schema?: string | null;
-  headingOptions?: any;
+  headingOptions?: string | null;
 }
 export function getHeadingTag(
-  headingOptions?: any,
+  headingOptions?: string | null,
   defaultTag: string = "h1",
-  targetType?:
-    | "h1"
-    | "h2"
-    | "h3"
-    | "h4"
-    | "h5"
-    | "h6"
-    | "hero"
-    | "sub"
-    | string,
 ): React.ElementType {
   if (!headingOptions) return defaultTag as React.ElementType;
-
-  let rawTag: any = defaultTag;
-
-  if (typeof headingOptions === "string") {
-    rawTag = headingOptions;
-  } else if (typeof headingOptions === "object" && headingOptions !== null) {
-    const isPrimary =
-      !targetType ||
-      targetType === "h1" ||
-      targetType === "hero" ||
-      targetType === "title";
-
-    const isSecondary =
-      targetType === "h2" || targetType === "sub" || targetType === "subtitle";
-
-    if (isPrimary) {
-      rawTag =
-        headingOptions.heroHeadingTag ||
-        headingOptions.h1 ||
-        headingOptions.headingTag ||
-        headingOptions.titleTag ||
-        headingOptions.hero ||
-        headingOptions.tag ||
-        defaultTag;
-    } else if (isSecondary) {
-      rawTag =
-        headingOptions.subHeadingTag ||
-        headingOptions.h2 ||
-        headingOptions.subtitleTag ||
-        headingOptions.subTag ||
-        headingOptions.secondaryTag ||
-        defaultTag;
-    } else if (targetType) {
-      rawTag = headingOptions[targetType] || defaultTag;
-    } else {
-      rawTag =
-        headingOptions.heroHeadingTag ||
-        headingOptions.h1 ||
-        headingOptions.h2 ||
-        headingOptions.headingTag ||
-        defaultTag;
-    }
-  }
-
-  const tag = (typeof rawTag === "string" ? rawTag : defaultTag)
-    .toLowerCase()
-    .trim();
+  const tag = String(headingOptions).toLowerCase().trim();
   const validTags = ["h1", "h2", "h3", "h4", "h5", "h6", "p", "div", "span"];
   return (validTags.includes(tag) ? tag : defaultTag) as React.ElementType;
 }
@@ -120,6 +63,9 @@ export interface GlobalSEO {
   schema?: string | null;
   customHeaderScripts?: string | null;
   customFooterScripts?: string | null;
+  headingOptions?: string | null;
+  canonicalOrdering?: string | null;
+  sitemapEnabled?: boolean;
 }
 
 export interface OfficeLocation {
@@ -168,6 +114,9 @@ export interface CMSProduct {
   metaDescription?: string | null;
   targetKeywords?: string | null;
   canonicalUrl?: string | null;
+  noIndex?: boolean;
+  schema?: string | null;
+  headingOptions?: string | null;
 }
 
 export interface CMSProductCategory {
@@ -362,6 +311,12 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>(
             normalizedData = {
               ...pageData,
               ...pageData.sections,
+            };
+          }
+          if (pageSEO && normalizedData && typeof normalizedData === "object") {
+            normalizedData = {
+              ...normalizedData,
+              seo: pageSEO,
             };
           }
 
@@ -578,6 +533,14 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>(
                   Array.isArray(categories) && categories.length > 0
                     ? categories
                     : state.productCategories,
+                pages: prodSEO
+                  ? {
+                      ...state.pages,
+                      ...(categorySlug
+                        ? { [`products/${categorySlug}`]: { seo: prodSEO } }
+                        : { products: { seo: prodSEO } }),
+                    }
+                  : state.pages,
                 pageSEO: prodSEO
                   ? {
                       ...state.pageSEO,
@@ -649,8 +612,30 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>(
               return {
                 products: updatedProducts,
                 productDetails: { ...state.productDetails, [slug]: json.data },
+                pages: prodSEO
+                  ? {
+                      ...state.pages,
+                      [`product:${slug}`]: { seo: prodSEO },
+                      ...(json.data.categorySlug
+                        ? {
+                            [`products/${json.data.categorySlug}/${slug}`]: {
+                              seo: prodSEO,
+                            },
+                          }
+                        : {}),
+                    }
+                  : state.pages,
                 pageSEO: prodSEO
-                  ? { ...state.pageSEO, [`product:${slug}`]: prodSEO }
+                  ? {
+                      ...state.pageSEO,
+                      [`product:${slug}`]: prodSEO,
+                      ...(json.data.categorySlug
+                        ? {
+                            [`products/${json.data.categorySlug}/${slug}`]:
+                              prodSEO,
+                          }
+                        : {}),
+                    }
                   : state.pageSEO,
               };
             });

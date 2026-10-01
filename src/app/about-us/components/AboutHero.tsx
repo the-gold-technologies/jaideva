@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { ArrowRight, Factory } from "lucide-react";
-import { useCMSStore } from "@/store/useCMSStore";
+import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
 
 interface AboutHeroProps {
   onOpenEnquiry?: (subject?: string) => void;
@@ -11,21 +11,20 @@ interface AboutHeroProps {
 
 export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
   const { pages } = useCMSStore();
-  const {
-    heading,
-    tagline,
-    description,
-    altText,
-    bannerImage,
-  } = pages["about-us"]?.AboutHero || {};
+  const HeadingTag = getHeadingTag(
+    pages["about-us"]?.seo?.headingOptions,
+    "h1",
+  );
+  const { heading, tagline, description, altText, bannerImage } =
+    pages["about-us"]?.AboutHero || {};
 
   if (!heading && !bannerImage) return null;
 
   return (
     <section className="relative isolate overflow-hidden bg-[#071f3b] text-white">
       <img
-        src={bannerImage || "/oil-drums-warehouse.jpg"}
-        alt={altText || "Jai Deva Oil Co. lubricant warehouse and supply"}
+        src={bannerImage || ""}
+        alt={altText || ""}
         className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#071f3b]/90 via-[#071f3b]/80 to-[#071f3b]/70" />
@@ -37,9 +36,9 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
           </div>
 
           {heading && (
-            <h1 className="text-3xl font-black uppercase leading-[1.08] tracking-tight sm:text-4xl md:text-5xl">
+            <HeadingTag className="text-3xl font-black uppercase leading-[1.08] tracking-tight sm:text-4xl md:text-5xl">
               {heading}
-            </h1>
+            </HeadingTag>
           )}
 
           {tagline && (

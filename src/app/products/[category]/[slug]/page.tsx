@@ -78,12 +78,12 @@ export default function ProductDetailPage() {
   }
 
   const productSEO: PageSEO = {
-    title: product.metaTitle || product.name,
-    metaTitle: product.metaTitle || product.name,
-    metaDescription: product.metaDescription || product.description,
-    targetKeywords: product.targetKeywords,
-    canonicalUrl: product.canonicalUrl,
-    schema: (product as any).schema || null,
+    metaTitle: product.metaTitle || null,
+    metaDescription: product.metaDescription || null,
+    targetKeywords: product.targetKeywords || null,
+    canonicalUrl: product.canonicalUrl || null,
+    schema: product.schema || null,
+    headingOptions: product.headingOptions || null,
   };
 
   return (

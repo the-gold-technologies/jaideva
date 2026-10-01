@@ -24,15 +24,14 @@ export default function Home() {
   const [enquiryProduct, setEnquiryProduct] = useState("");
 
   const [isDistributorOpen, setIsDistributorOpen] = useState(false);
-  const [distributorType, setDistributorType] = useState(
-    "Industrial Lube Distributor (ILD)"
-  );
+  const [distributorType, setDistributorType] = useState("");
 
-  const { fetchPage } = useCMSStore();
+  const { fetchPage, fetchGlobalSEO } = useCMSStore();
 
   useEffect(() => {
     fetchPage("home").catch(console.error);
-  }, [fetchPage]);
+    fetchGlobalSEO().catch(console.error);
+  }, [fetchPage, fetchGlobalSEO]);
 
   const handleOpenEnquiry = (productName?: string) => {
     if (productName) setEnquiryProduct(productName);
@@ -52,7 +51,7 @@ export default function Home() {
         fontSize: `${16 * fontSizeMultiplier}px`,
       }}
     >
-      <SEOMeta pageSlug="home" isLandingPage={true} />
+      <SEOMeta pageSlug="home" />
 
       {/* 1. Header Utility & Navigation Bar */}
       <Navbar

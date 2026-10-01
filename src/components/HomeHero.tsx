@@ -2,7 +2,7 @@
 
 import React from "react";
 import { ArrowRight, CheckCircle2, Factory, Truck } from "lucide-react";
-import { useCMSStore } from "@/store/useCMSStore";
+import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
 
 interface HomeHeroProps {
@@ -14,7 +14,9 @@ export default function HomeHero({
   onOpenEnquiry,
   onOpenDistributor,
 }: HomeHeroProps) {
-  const { pages } = useCMSStore();
+  const { pages, globalSEO } = useCMSStore();
+
+  const HeadingTag = getHeadingTag(globalSEO?.headingOptions, "h1");
 
   // 1-to-1 direct mapping from CMS HomeHero API
   const {
@@ -80,9 +82,9 @@ export default function HomeHero({
           )}
 
           {heading && (
-            <h1 className="text-3xl font-black uppercase leading-[1.05] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.6rem]">
+            <HeadingTag className="text-3xl font-black uppercase leading-[1.05] tracking-[-0.04em] sm:text-[2.75rem] lg:text-[3.6rem]">
               <FormattedText text={heading} />
-            </h1>
+            </HeadingTag>
           )}
 
           {description && (

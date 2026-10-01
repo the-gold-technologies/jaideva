@@ -5,37 +5,38 @@ import Script from "next/script";
 import { useCMSStore, PageSEO } from "@/store/useCMSStore";
 
 interface SEOMetaProps {
-  pageSlug?: string;
-  isLandingPage?: boolean;
+  pageSlug: string;
   customSEO?: PageSEO | null;
 }
 
-export default function SEOMeta({
-  pageSlug,
-  isLandingPage = false,
-  customSEO,
-}: SEOMetaProps) {
+export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
   const {
     globalSEO,
-    pageSEO,
+    fetchGlobalSEO,
     pages,
+    pageSEO,
     productDetails,
     blogPosts,
     products,
     blogs,
   } = useCMSStore();
 
+  const isHome = pageSlug === "home";
   const activeSEO: PageSEO | null =
-    customSEO || (pageSlug ? pageSEO[pageSlug] : null) || null;
+    customSEO || pages[pageSlug]?.seo || pageSEO?.[pageSlug] || null;
+
+  // Auto fetch global SEO if not loaded yet
+  useEffect(() => {
+    if (!globalSEO) {
+      fetchGlobalSEO().catch(console.error);
+    }
+  }, [globalSEO, fetchGlobalSEO]);
 
   useEffect(() => {
-    // 1. Determine Title & Description strictly from CMS data
-    const title = isLandingPage
-      ? globalSEO?.siteTitle || "Jai Deva Oil Co. | Multi-Brand Industrial & Automotive Lubricants Distributor"
-      : activeSEO?.metaTitle ||
-        activeSEO?.title ||
-        globalSEO?.siteTitle ||
-        "Jai Deva Oil Co.";
+    // 1. Determine Title strictly from CMS data
+    const title = isHome
+      ? globalSEO?.siteTitle || ""
+      : activeSEO?.metaTitle || "";
 
     if (title) {
       document.title = title;
@@ -45,11 +46,11 @@ export default function SEOMeta({
     const setMetaTag = (
       attr: "name" | "property",
       key: string,
-      content: string | null | undefined
+      content: string | null | undefined,
     ) => {
       if (!content) return;
       let tag = document.querySelector<HTMLMetaElement>(
-        `meta[${attr}="${key}"]`
+        `meta[${attr}="${key}"]`,
       );
       if (!tag) {
         tag = document.createElement("meta");
@@ -72,14 +73,11 @@ export default function SEOMeta({
     };
 
     // 3. Description & Keywords strictly from CMS
-    const description = isLandingPage
-      ? globalSEO?.siteDescription ||
-        "Authorized Distributors of Industrial & Automotive Lubricants, Engine Oils, Hydraulic Oils, Greases, and Fluids."
-      : activeSEO?.metaDescription || globalSEO?.siteDescription || "";
+    const description = isHome
+      ? globalSEO?.siteDescription || ""
+      : activeSEO?.metaDescription || "";
 
-    const keywords =
-      activeSEO?.targetKeywords ||
-      "Jai Deva Oil Co., Lubricant Distributor, Engine Oil, Hydraulic Oil, Gear Oil, Cutting Oil, Industrial Grease, Uttar Pradesh, India";
+    const keywords = activeSEO?.targetKeywords || "";
 
     const currentUrl =
       activeSEO?.canonicalUrl ||
@@ -95,7 +93,7 @@ export default function SEOMeta({
       setMetaTag(
         "name",
         "robots",
-        activeSEO.noIndex ? "noindex, nofollow" : "index, follow"
+        activeSEO.noIndex ? "noindex, nofollow" : "index, follow",
       );
     }
 
@@ -113,7 +111,11 @@ export default function SEOMeta({
       setMetaTag("property", "og:description", description);
       setMetaTag("name", "twitter:description", description);
     }
-    setMetaTag("property", "og:type", pageSlug?.startsWith("blogs/") ? "article" : "website");
+    setMetaTag(
+      "property",
+      "og:type",
+      pageSlug?.startsWith("blogs/") ? "article" : "website",
+    );
     setMetaTag("name", "twitter:card", "summary_large_image");
 
     if (globalSEO?.siteTitle) {
@@ -126,36 +128,49 @@ export default function SEOMeta({
 
     // 5. Google Search Console Verification
     if (globalSEO?.searchConsoleId) {
-      setMetaTag(
-        "name",
-        "google-site-verification",
-        globalSEO.searchConsoleId
-      );
+      let token = globalSEO.searchConsoleId.trim();
+      const contentMatch = token.match(/content=["']([^"']+)["']/i);
+      if (contentMatch) {
+        token = contentMatch[1];
+      }
+      if (token) {
+        setMetaTag("name", "google-site-verification", token);
+      }
     }
 
-    // 6. Favicon Dynamic Update
+    // 6. Favicon Dynamic Update from CMS Global Settings
     if (globalSEO?.favicon) {
-      setLinkTag("icon", globalSEO.favicon);
-      setLinkTag("shortcut icon", globalSEO.favicon);
-      setLinkTag("apple-touch-icon", globalSEO.favicon);
+      const fav = globalSEO.favicon.trim();
+      if (fav) {
+        setLinkTag("icon", fav);
+        setLinkTag("shortcut icon", fav);
+        setLinkTag("apple-touch-icon", fav);
+      }
     }
 
-    // 7. Structured Data (JSON-LD) - Dynamic per page content with custom override
+    // 7. Structured Data (JSON-LD)
     let finalSchema: any = null;
-    const rawCustomSchema = activeSEO?.schema?.trim();
+    const rawCustomSchema = (
+      isHome ? globalSEO?.schema : activeSEO?.schema
+    )?.trim();
 
     if (rawCustomSchema) {
       try {
-        const cleaned = rawCustomSchema.replace(/<\/?script[^>]*>/gi, "").trim();
+        const cleaned = rawCustomSchema
+          .replace(/<script[^>]*>/gi, "")
+          .replace(/<\/script>/gi, "")
+          .trim();
         finalSchema = JSON.parse(cleaned);
       } catch {
-        finalSchema = rawCustomSchema.replace(/<\/?script[^>]*>/gi, "").trim();
+        finalSchema = rawCustomSchema
+          .replace(/<script[^>]*>/gi, "")
+          .replace(/<\/script>/gi, "")
+          .trim();
       }
     } else {
       // Automatically generate contextual JSON-LD structured data for this page
       finalSchema = generatePageSchema({
         pageSlug,
-        isLandingPage,
         activeSEO,
         globalSEO,
         pages,
@@ -236,7 +251,7 @@ export default function SEOMeta({
   }, [
     activeSEO,
     globalSEO,
-    isLandingPage,
+    isHome,
     pageSlug,
     pages,
     productDetails,
@@ -245,10 +260,20 @@ export default function SEOMeta({
     blogs,
   ]);
 
+  const rawGtmId = globalSEO?.gtmId?.trim();
+  const gtmId = rawGtmId
+    ? rawGtmId.match(/GTM-[A-Z0-9]+/i)?.[0] || rawGtmId
+    : null;
+
+  const rawGaId = globalSEO?.googleAnalyticsId?.trim();
+  const gaId = rawGaId
+    ? rawGaId.match(/(G-[A-Z0-9]+|UA-[0-9-]+)/i)?.[0] || rawGaId
+    : null;
+
   return (
     <>
       {/* Google Tag Manager (GTM) Native Scripts */}
-      {globalSEO?.gtmId && (
+      {gtmId && (
         <>
           <Script
             id="google-tag-manager-script"
@@ -259,13 +284,13 @@ export default function SEOMeta({
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
                 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','${globalSEO.gtmId}');
+                })(window,document,'script','dataLayer','${gtmId}');
               `,
             }}
           />
           <noscript>
             <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${globalSEO.gtmId}`}
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
               height="0"
               width="0"
               style={{ display: "none", visibility: "hidden" }}
@@ -275,12 +300,12 @@ export default function SEOMeta({
       )}
 
       {/* Google Analytics (GA4) Native Scripts */}
-      {globalSEO?.googleAnalyticsId && (
+      {gaId && (
         <>
           <Script
             id="google-analytics-src"
             strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${globalSEO.googleAnalyticsId}`}
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           />
           <Script
             id="google-analytics-init"
@@ -290,7 +315,7 @@ export default function SEOMeta({
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${globalSEO.googleAnalyticsId}', {
+                gtag('config', '${gaId}', {
                   page_path: window.location.pathname,
                 });
               `,
@@ -307,7 +332,6 @@ export default function SEOMeta({
  */
 function generatePageSchema({
   pageSlug,
-  isLandingPage,
   activeSEO,
   globalSEO,
   pages,
@@ -316,8 +340,7 @@ function generatePageSchema({
   products,
   blogs,
 }: {
-  pageSlug?: string;
-  isLandingPage?: boolean;
+  pageSlug: string;
   activeSEO: PageSEO | null;
   globalSEO: any;
   pages: Record<string, any>;
@@ -334,16 +357,15 @@ function generatePageSchema({
   const companyAddress =
     globalSEO?.address ||
     "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India";
-  const companyLogo =
-    globalSEO?.logo ||
-    `${origin}/jaideva-logo.png`;
+  const companyLogo = globalSEO?.logo || `${origin}/jaideva-logo.png`;
 
   // Base Organization Schema Node
   const organizationNode = {
     "@type": ["LocalBusiness", "AutoPartsStore"],
     "@id": `${origin}/#organization`,
     name: "Jai Deva Oil Co.",
-    alternateName: "Authorized Multi-Brand Lubricants Distributor Jai Deva Oil Co.",
+    alternateName:
+      "Authorized Multi-Brand Lubricants Distributor Jai Deva Oil Co.",
     url: origin,
     logo: companyLogo,
     image: companyLogo,
@@ -378,7 +400,7 @@ function generatePageSchema({
   };
 
   // 1. Home / Landing Page Schema
-  if (isLandingPage || pageSlug === "home" || !pageSlug) {
+  if (pageSlug === "home") {
     return {
       "@context": "https://schema.org",
       "@graph": [
@@ -461,6 +483,20 @@ function generatePageSchema({
     };
   }
 
+  // Brands Overview Page Schema
+  if (pageSlug === "brands") {
+    return {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: activeSEO?.metaTitle || "Multi-Brand Lubricants Portfolio | Jai Deva Oil Co.",
+      description:
+        activeSEO?.metaDescription ||
+        "Explore authorized multi-brand lubricant portfolios covering industrial oils, automotive lubricants, and greases.",
+      url: `${origin}/brands`,
+      mainEntity: organizationNode,
+    };
+  }
+
   // 6. Blogs Main Index Page Schema
   if (pageSlug === "blogs") {
     const blogList = Array.isArray(blogs) ? blogs.slice(0, 10) : [];
@@ -486,7 +522,8 @@ function generatePageSchema({
   if (pageSlug.startsWith("blogs/")) {
     const blogSlug = pageSlug.replace("blogs/", "").trim();
     const post = blogPosts[blogSlug] || {};
-    const articleTitle = post.title || activeSEO?.metaTitle || "Technical Article";
+    const articleTitle =
+      post.title || activeSEO?.metaTitle || "Technical Article";
     const articleDesc =
       post.excerpt ||
       activeSEO?.metaDescription ||
@@ -503,7 +540,8 @@ function generatePageSchema({
       headline: articleTitle,
       description: articleDesc,
       image: articleImage,
-      datePublished: post.publishDate || post.createdAt || new Date().toISOString(),
+      datePublished:
+        post.publishDate || post.createdAt || new Date().toISOString(),
       author: {
         "@type": "Person",
         name: post.author || "Technical Lubricants Team",
@@ -523,7 +561,8 @@ function generatePageSchema({
   if (pageSlug.startsWith("product:")) {
     const prodSlug = pageSlug.replace("product:", "").trim();
     const product = productDetails[prodSlug] || {};
-    const prodName = product.name || activeSEO?.metaTitle || "Industrial Lubricant";
+    const prodName =
+      product.name || activeSEO?.metaTitle || "Industrial Lubricant";
     const prodDesc =
       product.description ||
       product.tagline ||
@@ -597,7 +636,11 @@ function generatePageSchema({
  */
 function injectHtmlWithScripts(container: HTMLElement, rawHtml: string) {
   if (!rawHtml || !container) return;
-  container.innerHTML = rawHtml;
+  const trimmed = rawHtml.trim();
+  if (!trimmed) return;
+  if (container.dataset.renderedContent === trimmed) return;
+  container.dataset.renderedContent = trimmed;
+  container.innerHTML = trimmed;
   const scripts = Array.from(container.querySelectorAll("script"));
   scripts.forEach((oldScript) => {
     const newScript = document.createElement("script");
