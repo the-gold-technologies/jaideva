@@ -20,11 +20,7 @@ export default function EnquiryModal({
   const [companyName, setCompanyName] = useState("");
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
-  const [product, setProduct] = useState(
-    initialProduct && initialProduct !== "Footer Site Enquiry"
-      ? initialProduct
-      : "",
-  );
+  const [product, setProduct] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -40,12 +36,17 @@ export default function EnquiryModal({
   const { submitEnquiry } = useCMSStore();
 
   useEffect(() => {
-    if (initialProduct && initialProduct !== "Footer Site Enquiry") {
-      setProduct(initialProduct);
-    } else {
+    if (isOpen) {
       setProduct("");
+      setName("");
+      setCompanyName("");
+      setMobile("");
+      setEmail("");
+      setIsSubmitted(false);
+      setErrorMessage("");
+      refreshCaptcha();
     }
-  }, [initialProduct]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -225,8 +226,10 @@ export default function EnquiryModal({
               onClick={() => {
                 setIsSubmitted(false);
                 setName("");
+                setCompanyName("");
                 setMobile("");
                 setEmail("");
+                setProduct("");
                 onClose();
               }}
               className="bg-[#0C356A] hover:bg-[#082142] text-white text-xs font-bold px-6 py-2.5 rounded-lg transition-colors cursor-pointer"

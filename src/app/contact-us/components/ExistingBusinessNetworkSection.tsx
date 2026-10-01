@@ -13,6 +13,7 @@ import {
   Map as MapIcon,
   Maximize2,
 } from "lucide-react";
+import { useCMSStore } from "@/store/useCMSStore";
 
 export type PinType = "warehouse" | "office" | "field";
 
@@ -28,192 +29,27 @@ export interface NetworkLocation {
   address?: string;
 }
 
-export const NETWORK_LOCATIONS: NetworkLocation[] = [
-  // 1. Warehouses + Offices (Key Hubs)
-  {
-    id: "mandoli",
-    name: "Delhi / Mandoli",
-    state: "Delhi",
-    region: "Delhi NCR",
-    type: ["warehouse", "office"],
-    lat: 28.709,
-    lng: 77.311,
-    description: "Central Warehouse Hub & Corporate Operations Office",
-    address: "Mandoli Industrial Area, Delhi 110093",
-  },
-  {
-    id: "baghpat",
-    name: "Baghpat",
-    state: "Uttar Pradesh",
-    region: "Western U.P.",
-    type: ["warehouse"],
-    lat: 28.948,
-    lng: 77.228,
-    description: "Regional Bulk Storage Warehouse & Rapid Distribution Depot",
-    address: "Industrial Corridor, Baghpat, Uttar Pradesh",
-  },
-  {
-    id: "haridwar",
-    name: "Haridwar",
-    state: "Uttarakhand",
-    region: "Uttarakhand",
-    type: ["warehouse", "office"],
-    lat: 29.938,
-    lng: 78.145,
-    description: "Uttarakhand Regional Warehouse & Branch Operations Office",
-    address: "SIDCUL Industrial Area, Haridwar, Uttarakhand",
-  },
-
-  // 2. Field Presence - Delhi NCR & UP
-  {
-    id: "ghaziabad",
-    name: "Ghaziabad",
-    state: "Uttar Pradesh",
-    region: "Delhi NCR",
-    type: ["field"],
-    lat: 28.669,
-    lng: 77.438,
-    description: "Engineering & Heavy Industrial Unit Coverage",
-  },
-  {
-    id: "noida",
-    name: "Noida",
-    state: "Uttar Pradesh",
-    region: "Delhi NCR",
-    type: ["field"],
-    lat: 28.535,
-    lng: 77.391,
-    description: "Industrial Machine & Automotive Component Cluster",
-  },
-  {
-    id: "greater-noida",
-    name: "Greater Noida",
-    state: "Uttar Pradesh",
-    region: "Delhi NCR",
-    type: ["field"],
-    lat: 28.474,
-    lng: 77.503,
-    description: "Automotive OEM & Heavy Manufacturing Belt",
-  },
-
-  // 3. Field Presence - Western U.P.
-  {
-    id: "meerut",
-    name: "Meerut",
-    state: "Uttar Pradesh",
-    region: "Western U.P.",
-    type: ["field"],
-    lat: 28.984,
-    lng: 77.706,
-    description: "Industrial Engineering, Sports & Transformers Industry",
-  },
-  {
-    id: "muzaffarnagar",
-    name: "Muzaffarnagar",
-    state: "Uttar Pradesh",
-    region: "Western U.P.",
-    type: ["field"],
-    lat: 29.472,
-    lng: 77.708,
-    description: "Steel Rolling Mills & Paper Mills Lubrication Supply",
-  },
-  {
-    id: "saharanpur",
-    name: "Saharanpur",
-    state: "Uttar Pradesh",
-    region: "Western U.P.",
-    type: ["field"],
-    lat: 29.967,
-    lng: 77.551,
-    description: "Agro, Wood Processing & Paper Machinery Lubricants",
-  },
-  {
-    id: "hapur",
-    name: "Hapur",
-    state: "Uttar Pradesh",
-    region: "Western U.P.",
-    type: ["field"],
-    lat: 28.73,
-    lng: 77.78,
-    description: "Industrial Processing & Heavy Machinery Support",
-  },
-  {
-    id: "sikandrabad",
-    name: "Sikandrabad",
-    state: "Uttar Pradesh",
-    region: "Western U.P.",
-    type: ["field"],
-    lat: 28.45,
-    lng: 77.694,
-    description: "Ceramics, Cables & Metallurgy Industrial Area",
-  },
-  {
-    id: "aligarh",
-    name: "Aligarh",
-    state: "Uttar Pradesh",
-    region: "Western U.P.",
-    type: ["field"],
-    lat: 27.897,
-    lng: 78.088,
-    description: "Hardware, Metal Die-Casting & Auto Components",
-  },
-
-  // 4. Field Presence - Uttarakhand
-  {
-    id: "roorkee",
-    name: "Roorkee",
-    state: "Uttarakhand",
-    region: "Uttarakhand",
-    type: ["field"],
-    lat: 29.854,
-    lng: 77.888,
-    description: "Manufacturing & Precision Instrumentation Corridor",
-  },
-  {
-    id: "dehradun",
-    name: "Dehradun",
-    state: "Uttarakhand",
-    region: "Uttarakhand",
-    type: ["field"],
-    lat: 30.316,
-    lng: 78.032,
-    description: "Pharma, Light Engineering & Transport Fleet Lubrication",
-  },
-
-  // 5. Field Presence - Haryana
-  {
-    id: "sonipat",
-    name: "Sonipat",
-    state: "Haryana",
-    region: "Haryana",
-    type: ["field"],
-    lat: 28.993,
-    lng: 77.015,
-    description: "Kundli/Rai Industrial Zones & Automotive Suppliers",
-  },
-  {
-    id: "bahadurgarh",
-    name: "Bahadurgarh",
-    state: "Haryana",
-    region: "Haryana",
-    type: ["field"],
-    lat: 28.692,
-    lng: 76.924,
-    description: "Heavy Industrial Machinery & Footwear Manufacturing",
-  },
-  {
-    id: "rohtak",
-    name: "Rohtak",
-    state: "Haryana",
-    region: "Haryana",
-    type: ["field"],
-    lat: 28.895,
-    lng: 76.606,
-    description: "Fast-Growing Automotive Hub & Engineering Plants",
-  },
-];
-
 export default function ExistingBusinessNetworkSection() {
+  const { pages } = useCMSStore();
+  const cmsNetwork = pages["contact-us"]?.ExistingBusinessNetwork;
+
+  const badge = cmsNetwork?.badge;
+  const heading = cmsNetwork?.heading;
+  const description = cmsNetwork?.description;
+  const regionalMapImage = cmsNetwork?.regionalMapImage;
+
+  const quickJumpWarehouses = cmsNetwork?.quickJumpWarehouses;
+  const quickJumpOffices = cmsNetwork?.quickJumpOffices;
+  const quickJumpFieldHubs = cmsNetwork?.quickJumpFieldHubs;
+
+  const summaryWarehouses = cmsNetwork?.summaryWarehouses;
+  const summaryOffices = cmsNetwork?.summaryOffices;
+  const summaryFieldHubs = cmsNetwork?.summaryFieldHubs;
+
+  const locations: NetworkLocation[] = Array.isArray(cmsNetwork?.locations)
+    ? cmsNetwork.locations
+    : [];
+
   const [viewMode, setViewMode] = useState<"regional" | "google">("regional");
   const [selectedLocation, setSelectedLocation] =
     useState<NetworkLocation | null>(null);
@@ -321,7 +157,7 @@ export default function ExistingBusinessNetworkSection() {
         });
       };
 
-      markersRef.current = NETWORK_LOCATIONS.map((loc) => {
+      markersRef.current = locations.map((loc) => {
         const marker = L.marker([loc.lat, loc.lng], {
           icon: createLocationIcon(loc),
         });
@@ -376,25 +212,27 @@ export default function ExistingBusinessNetworkSection() {
         return marker;
       });
 
-      // Calculate bounds for all locations so every pin fits on screen
-      const bounds = L.latLngBounds(
-        NETWORK_LOCATIONS.map((loc) => [loc.lat, loc.lng]),
-      );
-      map.fitBounds(bounds, {
-        padding: [40, 40],
-        maxZoom: 9,
-      });
+      if (locations.length > 0) {
+        // Calculate bounds for all locations so every pin fits on screen
+        const bounds = L.latLngBounds(
+          locations.map((loc) => [loc.lat, loc.lng]),
+        );
+        map.fitBounds(bounds, {
+          padding: [40, 40],
+          maxZoom: 9,
+        });
 
-      // Recalculate size & refit on switch
-      setTimeout(() => {
-        if (mapInstanceRef.current) {
-          mapInstanceRef.current.invalidateSize();
-          mapInstanceRef.current.fitBounds(bounds, {
-            padding: [40, 40],
-            maxZoom: 9,
-          });
-        }
-      }, 120);
+        // Recalculate size & refit on switch
+        setTimeout(() => {
+          if (mapInstanceRef.current) {
+            mapInstanceRef.current.invalidateSize();
+            mapInstanceRef.current.fitBounds(bounds, {
+              padding: [40, 40],
+              maxZoom: 9,
+            });
+          }
+        }, 120);
+      }
     });
 
     return () => {
@@ -404,14 +242,18 @@ export default function ExistingBusinessNetworkSection() {
         mapInstanceRef.current = null;
       }
     };
-  }, [viewMode, mapType]);
+  }, [viewMode, mapType, locations]);
 
   // Quick summary counts
-  const warehouses = NETWORK_LOCATIONS.filter((l) =>
+  const warehouses = locations.filter((l) =>
     l.type.includes("warehouse"),
   );
-  const offices = NETWORK_LOCATIONS.filter((l) => l.type.includes("office"));
-  const fieldHubs = NETWORK_LOCATIONS.filter((l) => l.type.includes("field"));
+  const offices = locations.filter((l) => l.type.includes("office"));
+  const fieldHubs = locations.filter((l) => l.type.includes("field"));
+
+  if (!cmsNetwork && locations.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -422,19 +264,24 @@ export default function ExistingBusinessNetworkSection() {
         {/* Section Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-5 sm:mb-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-[#C86218] bg-orange-50 border border-orange-200/80 px-3 py-0.5 rounded-full mb-2 shadow-2xs">
-              <Navigation className="w-3.5 h-3.5 text-[#C86218]" />
-              <span>North India Network</span>
-            </div>
+            {badge && (
+              <div className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-widest text-[#C86218] bg-orange-50 border border-orange-200/80 px-3 py-0.5 rounded-full mb-2 shadow-2xs">
+                <Navigation className="w-3.5 h-3.5 text-[#C86218]" />
+                <span>{badge}</span>
+              </div>
+            )}
 
-            <h2 className="text-2xl sm:text-3xl font-black text-[#0C356A] uppercase tracking-tight leading-tight">
-              Existing Business Network
-            </h2>
+            {heading && (
+              <h2 className="text-2xl sm:text-3xl font-black text-[#0C356A] uppercase tracking-tight leading-tight">
+                {heading}
+              </h2>
+            )}
 
-            <p className="mt-1 text-xs sm:text-sm text-slate-600 font-normal">
-              Direct distribution hubs, administrative branches, and field teams
-              across the northern industrial corridor.
-            </p>
+            {description && (
+              <p className="mt-1 text-xs sm:text-sm text-slate-600 font-normal">
+                {description}
+              </p>
+            )}
           </div>
 
           {/* View Mode Switcher: Regional Graphic vs Live Google Map */}
@@ -470,44 +317,53 @@ export default function ExistingBusinessNetworkSection() {
         {/* Main Display Container */}
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
           {viewMode === "regional" ? (
-            /* VIEW 1: Clean Regional Network Map Graphic (User Reference) */
+            /* VIEW 1: Clean Regional Network Map Graphic */
             <div className="relative p-2 sm:p-4 bg-white flex flex-col items-center justify-center">
-              {/* Image Container with previous spacious height */}
-              <div className="relative w-full max-w-[820px] mx-auto rounded-xl overflow-hidden flex items-center justify-center bg-white">
-                <Image
-                  src="/operating-region-map.png"
-                  alt="Jaideva Existing Business Network Operating Region Map"
-                  width={996}
-                  height={782}
-                  className="w-full h-auto max-h-[460px] sm:max-h-[500px] object-contain"
-                  priority
-                />
-              </div>
+              {/* Image Container with spacious height */}
+              {regionalMapImage && (
+                <div className="relative w-full max-w-[820px] mx-auto rounded-xl overflow-hidden flex items-center justify-center bg-white">
+                  <img
+                    src={regionalMapImage}
+                    alt={heading || "Operating Region Map"}
+                    className="w-full h-auto max-h-[460px] sm:max-h-[500px] object-contain"
+                  />
+                </div>
+              )}
 
               {/* Bottom Quick-Action Info Bar */}
-              <div className="w-full mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs px-2">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-bold text-slate-700">Quick Jump:</span>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200 text-[11px] font-bold">
-                    🔴 Mandoli, Baghpat, Haridwar
-                  </span>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-50 text-[#0C356A] border border-blue-200 text-[11px] font-bold">
-                    🔵 Delhi HQ & Haridwar
-                  </span>
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[11px] font-bold">
-                    🟡 14 Field Presence Hubs
-                  </span>
-                </div>
+              {(quickJumpWarehouses ||
+                quickJumpOffices ||
+                quickJumpFieldHubs) && (
+                <div className="w-full mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs px-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-bold text-slate-700">Quick Jump:</span>
+                    {quickJumpWarehouses && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-800 border border-rose-200 text-[11px] font-bold">
+                        {quickJumpWarehouses}
+                      </span>
+                    )}
+                    {quickJumpOffices && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-blue-50 text-[#0C356A] border border-blue-200 text-[11px] font-bold">
+                        {quickJumpOffices}
+                      </span>
+                    )}
+                    {quickJumpFieldHubs && (
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-900 border border-amber-200 text-[11px] font-bold">
+                        {quickJumpFieldHubs}
+                      </span>
+                    )}
+                  </div>
 
-                <button
-                  type="button"
-                  onClick={() => setViewMode("google")}
-                  className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0C356A] hover:text-blue-700 cursor-pointer ml-auto"
-                >
-                  <span>Explore on Live Google Map</span>
-                  <span>→</span>
-                </button>
-              </div>
+                  <button
+                    type="button"
+                    onClick={() => setViewMode("google")}
+                    className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0C356A] hover:text-blue-700 cursor-pointer ml-auto"
+                  >
+                    <span>Explore on Live Google Map</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             /* VIEW 2: Interactive Google Map */
@@ -542,7 +398,7 @@ export default function ExistingBusinessNetworkSection() {
                     if (mapInstanceRef.current) {
                       import("leaflet").then((L) => {
                         const bounds = L.latLngBounds(
-                          NETWORK_LOCATIONS.map((loc) => [loc.lat, loc.lng]),
+                          locations.map((loc) => [loc.lat, loc.lng]),
                         );
                         mapInstanceRef.current.fitBounds(bounds, {
                           padding: [45, 45],
@@ -552,7 +408,7 @@ export default function ExistingBusinessNetworkSection() {
                     }
                   }}
                   className="px-2 py-1 text-[11px] font-bold rounded cursor-pointer transition-colors text-slate-700 hover:bg-slate-100 flex items-center gap-1 border-l border-slate-200 ml-0.5"
-                  title="Fit all 17+ locations on screen"
+                  title="Fit all locations on screen"
                 >
                   <Maximize2 className="w-3 h-3 text-slate-600" />
                   <span>Fit All</span>
@@ -575,46 +431,51 @@ export default function ExistingBusinessNetworkSection() {
         </div>
 
         {/* Compact Hub Directory Pills below map */}
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
-          {/* Warehouses Card */}
-          <div className="bg-white rounded-xl p-3 border border-slate-200/90 shadow-2xs">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#E11D48]" />
-              <span className="text-xs font-black uppercase tracking-wider text-rose-900">
-                Warehouses (3 Hubs)
-              </span>
-            </div>
-            <div className="text-xs font-medium text-slate-700 leading-relaxed">
-              Mandoli (Delhi), Baghpat (U.P.), Haridwar (Uttarakhand)
-            </div>
-          </div>
+        {(summaryWarehouses || summaryOffices || summaryFieldHubs) && (
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+            {summaryWarehouses && (
+              <div className="bg-white rounded-xl p-3 border border-slate-200/90 shadow-2xs">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#E11D48]" />
+                  <span className="text-xs font-black uppercase tracking-wider text-rose-900">
+                    Warehouses ({warehouses.length > 0 ? `${warehouses.length} Hubs` : "Hubs"})
+                  </span>
+                </div>
+                <div className="text-xs font-medium text-slate-700 leading-relaxed">
+                  {summaryWarehouses}
+                </div>
+              </div>
+            )}
 
-          {/* Offices Card */}
-          <div className="bg-white rounded-xl p-3 border border-slate-200/90 shadow-2xs">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#0C356A]" />
-              <span className="text-xs font-black uppercase tracking-wider text-[#0C356A]">
-                Offices (2 Locations)
-              </span>
-            </div>
-            <div className="text-xs font-medium text-slate-700 leading-relaxed">
-              Delhi HQ (Corporate), Haridwar (Regional Operations)
-            </div>
-          </div>
+            {summaryOffices && (
+              <div className="bg-white rounded-xl p-3 border border-slate-200/90 shadow-2xs">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#0C356A]" />
+                  <span className="text-xs font-black uppercase tracking-wider text-[#0C356A]">
+                    Offices ({offices.length > 0 ? `${offices.length} Locations` : "Locations"})
+                  </span>
+                </div>
+                <div className="text-xs font-medium text-slate-700 leading-relaxed">
+                  {summaryOffices}
+                </div>
+              </div>
+            )}
 
-          {/* Field Presence Card */}
-          <div className="bg-white rounded-xl p-3 border border-slate-200/90 shadow-2xs">
-            <div className="flex items-center gap-2 mb-1.5">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
-              <span className="text-xs font-black uppercase tracking-wider text-amber-800">
-                Field Presence (14+ Clusters)
-              </span>
-            </div>
-            <div className="text-xs font-medium text-slate-700 leading-relaxed truncate">
-              Noida, Ghaziabad, Meerut, Sonipat, Rohtak, Dehradun +
-            </div>
+            {summaryFieldHubs && (
+              <div className="bg-white rounded-xl p-3 border border-slate-200/90 shadow-2xs">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
+                  <span className="text-xs font-black uppercase tracking-wider text-amber-800">
+                    Field Presence ({fieldHubs.length > 0 ? `${fieldHubs.length}+ Clusters` : "Clusters"})
+                  </span>
+                </div>
+                <div className="text-xs font-medium text-slate-700 leading-relaxed truncate">
+                  {summaryFieldHubs}
+                </div>
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

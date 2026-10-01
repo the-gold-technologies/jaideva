@@ -4,11 +4,9 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import {
   Facebook,
-  Youtube,
   Instagram,
   Mail,
   Linkedin,
-  Twitter,
   MapPin,
   Phone,
 } from "lucide-react";
@@ -19,28 +17,18 @@ interface FooterProps {
 }
 
 export default function Footer({ onOpenEnquiry }: FooterProps) {
-  const { globalSEO, fetchGlobalSEO, pages, fetchPage } = useCMSStore();
+  const { globalSEO, fetchGlobalSEO } = useCMSStore();
 
   useEffect(() => {
     fetchGlobalSEO().catch(console.error);
-    fetchPage("contact-us").catch(console.error);
-  }, [fetchGlobalSEO, fetchPage]);
+  }, [fetchGlobalSEO]);
 
   const socialLinks: any = globalSEO?.socialLinks || {};
-  const copyrightText =
-    socialLinks.copyrightText ||
-    `© ${new Date().getFullYear()} Jai Deva Oil Co. All rights reserved.`;
-
-  const contactHeadquarter = pages["contact-us"]?.ContactHeadquarter || {};
-  const companyPhone =
-    contactHeadquarter.phone || globalSEO?.phone || "+91 98120 22340";
-  const companyEmail =
-    contactHeadquarter.email || globalSEO?.email || "sales@jaideva.com";
-  const companyAddress =
-    contactHeadquarter.address ||
-    globalSEO?.address ||
-    "Industrial Area & Regional Distribution Hub, Haryana / Delhi NCR, India";
-  const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
+  const copyrightText = socialLinks.copyrightText || "";
+  const companyPhone = globalSEO?.phone || "";
+  const companyEmail = globalSEO?.email || "";
+  const companyAddress = globalSEO?.address || "";
+  const logoSrc = socialLinks.footerLogo || globalSEO?.logo || "";
 
   const quickLinks = [
     { name: "Products", href: "/products" },
@@ -55,69 +43,63 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-white/10 items-start">
             {/* 1. LOGO & Social Media */}
             <div className="md:col-span-5 space-y-5">
-              <Link href="/" className="inline-block">
-                <div className="bg-white rounded-xl p-2.5 inline-flex items-center shadow-md">
-                  <img
-                    src={logoSrc}
-                    alt="Jai Deva Oil Co."
-                    className="h-10 w-auto object-contain"
-                  />
-                </div>
-              </Link>
+              {logoSrc && (
+                <Link href="/" className="inline-block">
+                  <div className="bg-white rounded-xl p-2.5 inline-flex items-center shadow-md">
+                    <img
+                      src={logoSrc}
+                      alt={globalSEO?.siteTitle || "Jai Deva Oil Co."}
+                      className="h-10 w-auto object-contain"
+                    />
+                  </div>
+                </Link>
+              )}
 
               {/* Social Media */}
-              <div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
-                  Social Media
+              {(socialLinks.facebook ||
+                socialLinks.linkedin ||
+                socialLinks.instagram) && (
+                <div>
+                  <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+                    Social Media
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {socialLinks.facebook && (
+                      <a
+                        href={socialLinks.facebook}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#3b5998] flex items-center justify-center text-white transition-colors"
+                        aria-label="Facebook"
+                      >
+                        <Facebook size={16} />
+                      </a>
+                    )}
+                    {socialLinks.linkedin && (
+                      <a
+                        href={socialLinks.linkedin}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#0077b5] flex items-center justify-center text-white transition-colors"
+                        aria-label="LinkedIn"
+                      >
+                        <Linkedin size={16} />
+                      </a>
+                    )}
+                    {socialLinks.instagram && (
+                      <a
+                        href={socialLinks.instagram}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#e4405f] flex items-center justify-center text-white transition-colors"
+                        aria-label="Instagram"
+                      >
+                        <Instagram size={16} />
+                      </a>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <a
-                    href={socialLinks.facebook || "https://facebook.com"}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#3b5998] flex items-center justify-center text-white transition-colors"
-                    aria-label="Facebook"
-                  >
-                    <Facebook size={16} />
-                  </a>
-                  <a
-                    href={socialLinks.linkedin || "https://linkedin.com"}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#0077b5] flex items-center justify-center text-white transition-colors"
-                    aria-label="LinkedIn"
-                  >
-                    <Linkedin size={16} />
-                  </a>
-                  <a
-                    href={socialLinks.youtube || "https://youtube.com"}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#ff0000] flex items-center justify-center text-white transition-colors"
-                    aria-label="YouTube"
-                  >
-                    <Youtube size={16} />
-                  </a>
-                  <a
-                    href={socialLinks.instagram || "https://instagram.com"}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#e4405f] flex items-center justify-center text-white transition-colors"
-                    aria-label="Instagram"
-                  >
-                    <Instagram size={16} />
-                  </a>
-                  <a
-                    href={socialLinks.twitter || "https://twitter.com"}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="w-9 h-9 rounded-lg bg-white/10 hover:bg-[#1da1f2] flex items-center justify-center text-white transition-colors"
-                    aria-label="Twitter"
-                  >
-                    <Twitter size={16} />
-                  </a>
-                </div>
-              </div>
+              )}
             </div>
 
             {/* 2. Quick Links: Products, Brands, Industries */}
@@ -141,47 +123,55 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
             </div>
 
             {/* 3. Contact Details */}
-            <div className="md:col-span-4 space-y-3">
-              <h4 className="text-sm font-black text-white uppercase tracking-wider border-l-2 border-[#C86218] pl-2.5">
-                Contact Details
-              </h4>
-              <div className="space-y-2.5 text-sm text-slate-300">
-                <div className="flex items-start gap-2.5">
-                  <MapPin
-                    size={16}
-                    className="text-[#C86218] shrink-0 mt-0.5"
-                  />
-                  <span className="leading-snug text-xs sm:text-sm">
-                    {companyAddress}
-                  </span>
-                </div>
+            {(companyAddress || companyPhone || companyEmail) && (
+              <div className="md:col-span-4 space-y-3">
+                <h4 className="text-sm font-black text-white uppercase tracking-wider border-l-2 border-[#C86218] pl-2.5">
+                  Contact Details
+                </h4>
+                <div className="space-y-2.5 text-sm text-slate-300">
+                  {companyAddress && (
+                    <div className="flex items-start gap-2.5">
+                      <MapPin
+                        size={16}
+                        className="text-[#C86218] shrink-0 mt-0.5"
+                      />
+                      <span className="leading-snug text-xs sm:text-sm">
+                        {companyAddress}
+                      </span>
+                    </div>
+                  )}
 
-                <div className="flex items-center gap-2.5">
-                  <Phone size={16} className="text-[#C86218] shrink-0" />
-                  <a
-                    href={`tel:${companyPhone.replace(/\s+/g, "")}`}
-                    className="hover:text-white font-medium transition-colors text-xs sm:text-sm"
-                  >
-                    {companyPhone}
-                  </a>
-                </div>
+                  {companyPhone && (
+                    <div className="flex items-center gap-2.5">
+                      <Phone size={16} className="text-[#C86218] shrink-0" />
+                      <a
+                        href={`tel:${companyPhone.replace(/\s+/g, "")}`}
+                        className="hover:text-white font-medium transition-colors text-xs sm:text-sm"
+                      >
+                        {companyPhone}
+                      </a>
+                    </div>
+                  )}
 
-                <div className="flex items-center gap-2.5">
-                  <Mail size={16} className="text-[#C86218] shrink-0" />
-                  <a
-                    href={`mailto:${companyEmail}`}
-                    className="hover:text-white transition-colors text-xs sm:text-sm"
-                  >
-                    {companyEmail}
-                  </a>
+                  {companyEmail && (
+                    <div className="flex items-center gap-2.5">
+                      <Mail size={16} className="text-[#C86218] shrink-0" />
+                      <a
+                        href={`mailto:${companyEmail}`}
+                        className="hover:text-white transition-colors text-xs sm:text-sm"
+                      >
+                        {companyEmail}
+                      </a>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Bottom Bar */}
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-            <p>{copyrightText}</p>
+            {copyrightText && <p>{copyrightText}</p>}
             <div className="flex items-center gap-6">
               <Link
                 href="/privacy-policy"

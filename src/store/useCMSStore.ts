@@ -109,11 +109,12 @@ export interface GlobalSEO {
   gtmId?: string | null;
   searchConsoleId?: string | null;
   socialLinks?: {
-    youtube?: string;
     facebook?: string;
     linkedin?: string;
     instagram?: string;
-    twitter?: string;
+    footerLogo?: string;
+    copyrightText?: string;
+    [key: string]: any;
   };
   robotsTxt?: string | null;
   schema?: string | null;

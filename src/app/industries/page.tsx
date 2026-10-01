@@ -27,9 +27,8 @@ export default function IndustriesPage() {
     fetchPage("industries").catch(console.error);
   }, [fetchPage]);
 
-  const handleOpenEnquiry = (productName?: string) => {
-    if (productName) setEnquiryProduct(productName);
-    else setEnquiryProduct("");
+  const handleOpenEnquiry = () => {
+    setEnquiryProduct("");
     setIsEnquiryOpen(true);
   };
 
