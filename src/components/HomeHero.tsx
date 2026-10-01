@@ -10,10 +10,7 @@ interface HomeHeroProps {
   onOpenDistributor: (type?: string) => void;
 }
 
-export default function HomeHero({
-  onOpenEnquiry,
-  onOpenDistributor,
-}: HomeHeroProps) {
+export default function HomeHero({ onOpenEnquiry, onOpenDistributor }: HomeHeroProps) {
   const { pages, globalSEO } = useCMSStore();
 
   const HeadingTag = getHeadingTag(globalSEO?.headingOptions, "h1");
@@ -123,10 +120,7 @@ export default function HomeHero({
                   key={`${point}-${idx}`}
                   className="flex items-start gap-2 text-xs leading-5 text-slate-200"
                 >
-                  <CheckCircle2
-                    size={16}
-                    className="mt-0.5 shrink-0 text-[#F4B24D]"
-                  />
+                  <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-[#F4B24D]" />
                   <span>{point}</span>
                 </div>
               ))}

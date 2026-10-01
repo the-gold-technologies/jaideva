@@ -63,8 +63,7 @@ export function CategoryProductSection({
           <div
             className="absolute inset-0 opacity-10"
             style={{
-              backgroundImage:
-                "radial-gradient(circle, #fff 1px, transparent 1px)",
+              backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
               backgroundSize: "18px 18px",
             }}
           />
@@ -102,9 +101,7 @@ export function CategoryProductSection({
                 <span className="text-[9px] font-black text-gray-300 group-hover/prod:text-white/30 w-4 shrink-0 transition-colors">
                   {String(pIdx + 1).padStart(2, "0")}
                 </span>
-                <span className="flex-1 truncate leading-snug">
-                  {prod.name}
-                </span>
+                <span className="flex-1 truncate leading-snug">{prod.name}</span>
                 <ChevronRight
                   size={11}
                   className="shrink-0 text-gray-300 group-hover/prod:text-[#C86218] transition-colors"

@@ -35,3 +35,7 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 
+# IDE & Formatter (local)
+.vscode/
+.prettierrc*
+.prettierignore

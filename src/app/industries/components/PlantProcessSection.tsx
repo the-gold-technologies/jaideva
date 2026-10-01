@@ -1,15 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  TestTube2,
-  Boxes,
-  FileCheck2,
-  Truck,
-  ArrowRight,
-  ShieldCheck,
-  Cog,
-} from "lucide-react";
+import { TestTube2, Boxes, FileCheck2, Truck, ArrowRight, ShieldCheck, Cog } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
 
@@ -37,9 +29,7 @@ interface PlantProcessProps {
   onOpenEnquiry?: (serviceName?: string) => void;
 }
 
-export default function PlantProcessSection({
-  onOpenEnquiry,
-}: PlantProcessProps) {
+export default function PlantProcessSection({ onOpenEnquiry }: PlantProcessProps) {
   const { pages } = useCMSStore();
   const {
     eyebrow,
@@ -94,10 +84,7 @@ export default function PlantProcessSection({
             {steps.map((s: any, idx: number) => {
               const StepIcon = resolveIcon(s.icon);
               return (
-                <div
-                  key={idx}
-                  className="relative flex flex-col justify-between"
-                >
+                <div key={idx} className="relative flex flex-col justify-between">
                   <div>
                     {/* Step Number & Line */}
                     <div className="flex items-center gap-3 mb-5">

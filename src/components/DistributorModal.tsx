@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { X, Send, CheckCircle2, Loader2, Building, MapPin, Phone, Mail, User } from 'lucide-react';
-import { useCMSStore } from '@/store/useCMSStore';
+import React, { useState, useEffect } from "react";
+import { X, Send, CheckCircle2, Loader2, Building, MapPin, Phone, Mail, User } from "lucide-react";
+import { useCMSStore } from "@/store/useCMSStore";
 
 interface DistributorModalProps {
   isOpen: boolean;
@@ -11,12 +11,37 @@ interface DistributorModalProps {
 }
 
 const INDIAN_STATES = [
-  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-  "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
-  "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
-  "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
-  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
-  "Delhi", "Jammu and Kashmir", "Ladakh"
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  "Delhi",
+  "Jammu and Kashmir",
+  "Ladakh",
 ];
 
 const LUBE_TYPES = [
@@ -25,29 +50,29 @@ const LUBE_TYPES = [
   "CFA Distributor",
   "Caltex Distributor",
   "Multi-Brand Dealership",
-  "Other Partnership"
+  "Other Partnership",
 ];
 
 export default function DistributorModal({
   isOpen,
   onClose,
-  initialType = 'Industrial Lube Distributor (ILD)'
+  initialType = "Industrial Lube Distributor (ILD)",
 }: DistributorModalProps) {
-  const [name, setName] = useState('');
-  const [firmName, setFirmName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [state, setState] = useState('Uttar Pradesh');
-  const [city, setCity] = useState('');
+  const [name, setName] = useState("");
+  const [firmName, setFirmName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [state, setState] = useState("Uttar Pradesh");
+  const [city, setCity] = useState("");
   const [lubeType, setLubeType] = useState(initialType);
-  const [currentBusiness, setCurrentBusiness] = useState('');
-  const [experienceYears, setExperienceYears] = useState('5-10 Years');
-  const [investmentCapacity, setInvestmentCapacity] = useState('₹10 - 25 Lakhs');
-  const [message, setMessage] = useState('');
-  
+  const [currentBusiness, setCurrentBusiness] = useState("");
+  const [experienceYears, setExperienceYears] = useState("5-10 Years");
+  const [investmentCapacity, setInvestmentCapacity] = useState("₹10 - 25 Lakhs");
+  const [message, setMessage] = useState("");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { submitDistributorLead } = useCMSStore();
 
@@ -62,7 +87,7 @@ export default function DistributorModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setErrorMessage('');
+    setErrorMessage("");
 
     try {
       await submitDistributorLead({
@@ -89,12 +114,12 @@ export default function DistributorModal({
 
   const handleResetAndClose = () => {
     setIsSubmitted(false);
-    setName('');
-    setFirmName('');
-    setPhone('');
-    setEmail('');
-    setCity('');
-    setMessage('');
+    setName("");
+    setFirmName("");
+    setPhone("");
+    setEmail("");
+    setCity("");
+    setMessage("");
     onClose();
   };
 
@@ -127,7 +152,8 @@ export default function DistributorModal({
                 Apply for Dealership / Distributorship
               </h2>
               <p className="text-xs text-gray-500 mt-1">
-                Partner with Jai Deva Oil Co. — Authorized Multi-Brand Industrial &amp; Automotive Lubricants Distributor.
+                Partner with Jai Deva Oil Co. — Authorized Multi-Brand Industrial &amp; Automotive
+                Lubricants Distributor.
               </p>
             </div>
 
@@ -205,7 +231,9 @@ export default function DistributorModal({
                     className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0C356A] focus:ring-1 focus:ring-[#0C356A] bg-white transition-colors"
                   >
                     {LUBE_TYPES.map((t) => (
-                      <option key={t} value={t}>{t}</option>
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -236,7 +264,9 @@ export default function DistributorModal({
                     className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0C356A] focus:ring-1 focus:ring-[#0C356A] bg-white transition-colors"
                   >
                     {INDIAN_STATES.map((s) => (
-                      <option key={s} value={s}>{s}</option>
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -305,9 +335,7 @@ export default function DistributorModal({
                 />
               </div>
 
-              {errorMessage && (
-                <p className="text-xs text-red-600 font-semibold">{errorMessage}</p>
-              )}
+              {errorMessage && <p className="text-xs text-red-600 font-semibold">{errorMessage}</p>}
 
               <div className="pt-2">
                 <button
@@ -331,11 +359,15 @@ export default function DistributorModal({
         ) : (
           <div className="text-center py-8">
             <CheckCircle2 size={50} className="mx-auto text-green-500 mb-3" />
-            <h3 className="text-2xl font-black text-[#0C356A] mb-2">
-              Application Received!
-            </h3>
+            <h3 className="text-2xl font-black text-[#0C356A] mb-2">Application Received!</h3>
             <p className="text-xs sm:text-sm text-gray-600 mb-6 max-w-md mx-auto leading-relaxed">
-              Thank you <strong>{name}</strong> from <strong>{firmName}</strong>. Your distributorship application for <strong>{city}, {state}</strong> has been registered with Jai Deva Oil Co. Our channel development team will get in touch with you shortly at <strong>{phone}</strong>.
+              Thank you <strong>{name}</strong> from <strong>{firmName}</strong>. Your
+              distributorship application for{" "}
+              <strong>
+                {city}, {state}
+              </strong>{" "}
+              has been registered with Jai Deva Oil Co. Our channel development team will get in
+              touch with you shortly at <strong>{phone}</strong>.
             </p>
             <button
               onClick={handleResetAndClose}

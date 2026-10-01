@@ -8,11 +8,7 @@ import EnquiryModal from "@/components/EnquiryModal";
 import DownloadModal from "@/components/DownloadModal";
 import { useCMSStore } from "@/store/useCMSStore";
 import SEOMeta from "@/components/SEOMeta";
-import {
-  CategoryHero,
-  CategorySidebar,
-  CategoryProductList,
-} from "./components";
+import { CategoryHero, CategorySidebar, CategoryProductList } from "./components";
 
 function CategoryProductsPageContent() {
   const params = useParams();

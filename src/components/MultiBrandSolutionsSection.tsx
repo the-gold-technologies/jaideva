@@ -43,10 +43,7 @@ export default function MultiBrandSolutionsSection() {
   }
 
   return (
-    <section
-      id="solutions"
-      className="py-16 sm:py-20 bg-white border-y border-slate-100 font-sans"
-    >
+    <section id="solutions" className="py-16 sm:py-20 bg-white border-y border-slate-100 font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column: Heading & Company Narrative */}
@@ -97,9 +94,7 @@ export default function MultiBrandSolutionsSection() {
                     <span className="bg-white px-3 py-1 rounded border border-slate-200 shadow-2xs">
                       {st.name}
                     </span>
-                    {idx < steps.length - 1 && (
-                      <span className="text-[#C86218] font-bold">→</span>
-                    )}
+                    {idx < steps.length - 1 && <span className="text-[#C86218] font-bold">→</span>}
                   </React.Fragment>
                 ))}
               </div>

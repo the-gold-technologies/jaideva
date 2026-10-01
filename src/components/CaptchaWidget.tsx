@@ -6,10 +6,9 @@ import { RefreshCw } from "lucide-react";
 const CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 function genCode(len = 6): string {
-  return Array.from(
-    { length: len },
-    () => CHARS[Math.floor(Math.random() * CHARS.length)],
-  ).join("");
+  return Array.from({ length: len }, () => CHARS[Math.floor(Math.random() * CHARS.length)]).join(
+    "",
+  );
 }
 
 // --- Canvas Wave CAPTCHA Renderer ---
@@ -29,13 +28,7 @@ function drawCaptcha(canvas: HTMLCanvasElement, code: string) {
   // Noise dots
   for (let i = 0; i < 70; i++) {
     ctx.beginPath();
-    ctx.arc(
-      Math.random() * W,
-      Math.random() * H,
-      Math.random() * 2,
-      0,
-      Math.PI * 2,
-    );
+    ctx.arc(Math.random() * W, Math.random() * H, Math.random() * 2, 0, Math.PI * 2);
     ctx.fillStyle = `hsla(${Math.random() * 360}, 60%, 60%, 0.35)`;
     ctx.fill();
   }
@@ -52,14 +45,7 @@ function drawCaptcha(canvas: HTMLCanvasElement, code: string) {
 
   // Characters with wave offset
   const charW = W / (code.length + 1);
-  const colors = [
-    "#0C356A",
-    "#C86218",
-    "#002b5c",
-    "#b45309",
-    "#1e3a8a",
-    "#9a3412",
-  ];
+  const colors = ["#0C356A", "#C86218", "#002b5c", "#b45309", "#1e3a8a", "#9a3412"];
 
   code.split("").forEach((ch, i) => {
     const x = charW * (i + 0.7);
@@ -127,13 +113,7 @@ interface CaptchaProps {
   code: string;
 }
 
-export function CaptchaInput({
-  value,
-  onChange,
-  isValid,
-  onRefresh,
-  code,
-}: CaptchaProps) {
+export function CaptchaInput({ value, onChange, isValid, onRefresh, code }: CaptchaProps) {
   return (
     <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
       {/* Canvas CAPTCHA image */}
@@ -155,9 +135,7 @@ export function CaptchaInput({
       <input
         type="text"
         value={value}
-        onChange={(e) =>
-          onChange(e.target.value.toUpperCase().replace(/\s/g, ""))
-        }
+        onChange={(e) => onChange(e.target.value.toUpperCase().replace(/\s/g, ""))}
         maxLength={6}
         placeholder="ENTER CODE"
         autoComplete="off"

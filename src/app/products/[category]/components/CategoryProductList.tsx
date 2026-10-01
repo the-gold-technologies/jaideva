@@ -11,9 +11,7 @@ interface CategoryProductListProps {
   onOpenEnquiry: (productName?: string) => void;
 }
 
-export function CategoryProductList({
-  onOpenEnquiry,
-}: CategoryProductListProps) {
+export function CategoryProductList({ onOpenEnquiry }: CategoryProductListProps) {
   const params = useParams();
   const searchParams = useSearchParams();
   const categorySlug = params?.category as string;
@@ -66,10 +64,8 @@ export function CategoryProductList({
             </span>
             <p className="text-sm font-semibold text-gray-800 mt-1">
               Showing matching results for{" "}
-              <span className="font-extrabold text-[#C86218]">
-                &ldquo;{searchQuery}&rdquo;
-              </span>{" "}
-              in {category?.name}
+              <span className="font-extrabold text-[#C86218]">&ldquo;{searchQuery}&rdquo;</span> in{" "}
+              {category?.name}
             </p>
           </div>
           <Link
@@ -82,10 +78,7 @@ export function CategoryProductList({
       )}
 
       {subCategoryGroups.length === 0 ? (
-        <CategoryEmptyState
-          searchQuery={searchQuery}
-          categorySlug={categorySlug}
-        />
+        <CategoryEmptyState searchQuery={searchQuery} categorySlug={categorySlug} />
       ) : (
         subCategoryGroups.map((group, idx) => (
           <CategoryProductSection

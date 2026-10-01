@@ -2,19 +2,8 @@
 
 import React, { useCallback, useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker,
-  Line,
-} from "react-simple-maps";
-import {
-  MapPin,
-  Phone,
-  ShieldCheck,
-  CheckCircle2,
-} from "lucide-react";
+import { ComposableMap, Geographies, Geography, Marker, Line } from "react-simple-maps";
+import { MapPin, Phone, ShieldCheck, CheckCircle2 } from "lucide-react";
 
 const geoUrl = "/countries-110m.json";
 
@@ -48,8 +37,14 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     authStatus: "Authorized Industrial Partner",
     isDirectAuthorized: true,
     category: "Industrial, Automotive & Turbine Fluids",
-    keyProducts: ["Enklo Hydraulic 32/46/68", "Parthan Industrial Gear", "Turbinol Turbine Oils", "Milcy Turbo Diesel"],
-    description: "Official authorized industrial distribution hub with direct refinery pipeline supply, guaranteed batch testing, and bulk tanker dispatch.",
+    keyProducts: [
+      "Enklo Hydraulic 32/46/68",
+      "Parthan Industrial Gear",
+      "Turbinol Turbine Oils",
+      "Milcy Turbo Diesel",
+    ],
+    description:
+      "Official authorized industrial distribution hub with direct refinery pipeline supply, guaranteed batch testing, and bulk tanker dispatch.",
     address: "Jai Deva Oil Co., Central Hub, Sector 10",
     contact: "+91 98120 22340 / sales@jaideva.com",
   },
@@ -65,7 +60,8 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     isDirectAuthorized: false,
     category: "Commercial Fleet & Long-Drain Engine Oils",
     keyProducts: ["All-Fleet Premium Engine Oils", "Heavy-Duty Gear Oils", "Long-Life Coolants"],
-    description: "Over 150 years of heritage in severe-duty engine fluids, heavy fleet maintenance, and extended drain interval chemistry.",
+    description:
+      "Over 150 years of heritage in severe-duty engine fluids, heavy fleet maintenance, and extended drain interval chemistry.",
     address: "Lexington, Kentucky, USA",
     contact: "Certified Multi-Brand Supply",
   },
@@ -80,8 +76,13 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     authStatus: "Certified Multi-Brand Stockist",
     isDirectAuthorized: false,
     category: "Synthetic Heavy Engine & Hydraulic Fluids",
-    keyProducts: ["Kixx HDX CK-4 Engine Oils", "Hydro HD Hydraulic Fluids", "Thermic Heat Transfer"],
-    description: "World-class Group II/III synthetic engine oils providing low volatility, fuel economy, and high oxidation stability.",
+    keyProducts: [
+      "Kixx HDX CK-4 Engine Oils",
+      "Hydro HD Hydraulic Fluids",
+      "Thermic Heat Transfer",
+    ],
+    description:
+      "World-class Group II/III synthetic engine oils providing low volatility, fuel economy, and high oxidation stability.",
     address: "GS Tower, Gangnam-gu, Seoul, South Korea",
     contact: "Certified Multi-Brand Stock",
   },
@@ -96,8 +97,13 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     authStatus: "Certified Multi-Brand Stockist",
     isDirectAuthorized: false,
     category: "Precision High-Speed Machine Tool Oils",
-    keyProducts: ["Daphne Precision Series", "High-Speed Spindle Fluids", "Low-Ash Engine Formulations"],
-    description: "Tight-tolerance Japanese OEM lubricants formulated for high-speed spindles, EDM dielectric machining, and robot joints.",
+    keyProducts: [
+      "Daphne Precision Series",
+      "High-Speed Spindle Fluids",
+      "Low-Ash Engine Formulations",
+    ],
+    description:
+      "Tight-tolerance Japanese OEM lubricants formulated for high-speed spindles, EDM dielectric machining, and robot joints.",
     address: "Chiyoda-ku, Tokyo, Japan",
     contact: "Factory-Sealed Supply",
   },
@@ -113,7 +119,8 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     isDirectAuthorized: false,
     category: "Extreme Pressure & Kiln Greases",
     keyProducts: ["Molylube Ultra High Temp", "Open Gear Compounds", "Anti-Seize Pastes"],
-    description: "Engineered specialty greases for cement kilns, steel mills, continuous casters, and extreme shock-load equipment.",
+    description:
+      "Engineered specialty greases for cement kilns, steel mills, continuous casters, and extreme shock-load equipment.",
     address: "Mumbai Special Industrial Zone, India",
     contact: "Refinery Tested Stock",
   },
@@ -129,7 +136,8 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     isDirectAuthorized: false,
     category: "Metal Transformation & Severe Quench Fluids",
     keyProducts: ["Thermocool Heat Transfer", "Supracool CNC Emulsions", "Safco Clean Degreasers"],
-    description: "Specialized French industrial division delivering high-performance metal transformation fluids and severe heat treatment quench oils.",
+    description:
+      "Specialized French industrial division delivering high-performance metal transformation fluids and severe heat treatment quench oils.",
     address: "Aubervilliers, Greater Paris, France",
     contact: "Genuine Refinery Import",
   },
@@ -144,8 +152,13 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     authStatus: "Certified Multi-Brand Stockist",
     isDirectAuthorized: false,
     category: "Compressor Systems & Rotary Tool Lubes",
-    keyProducts: ["Screw Compressor Oils 46/68", "Pneumatic Airline Oils", "Synthetic 8000h Drain Fluids"],
-    description: "Formulated specifically for rotary screw, reciprocating, and vane air compressors ensuring carbon-free valve performance.",
+    keyProducts: [
+      "Screw Compressor Oils 46/68",
+      "Pneumatic Airline Oils",
+      "Synthetic 8000h Drain Fluids",
+    ],
+    description:
+      "Formulated specifically for rotary screw, reciprocating, and vane air compressors ensuring carbon-free valve performance.",
     address: "Ahmedabad Industrial Zone, Gujarat, India",
     contact: "Certified Compressor Stocks",
   },
@@ -161,7 +174,8 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     isDirectAuthorized: false,
     category: "Custom Industrial Blends & Machine Lubricants",
     keyProducts: ["Custom Blend Hydraulics", "Slideway ISO 68/220", "Heavy Circulating Oils"],
-    description: "Formulated to order for specialized manufacturing lines, custom anti-wear packages, and plant retrofits.",
+    description:
+      "Formulated to order for specialized manufacturing lines, custom anti-wear packages, and plant retrofits.",
     address: "Delhi NCR Industrial Corridor, India",
     contact: "Custom Batch Supply",
   },
@@ -176,8 +190,13 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     authStatus: "Certified Multi-Brand Stockist",
     isDirectAuthorized: false,
     category: "High-Performance Metalworking & Coolants",
-    keyProducts: ["Bio-Stable CNC Coolants", "Rust Preventatives", "Precision Forming & Stamping Oils"],
-    description: "German-engineered formulations tailored for tight-tolerance multi-axis CNC machining, high-pressure spindle cooling, and long sump life.",
+    keyProducts: [
+      "Bio-Stable CNC Coolants",
+      "Rust Preventatives",
+      "Precision Forming & Stamping Oils",
+    ],
+    description:
+      "German-engineered formulations tailored for tight-tolerance multi-axis CNC machining, high-pressure spindle cooling, and long sump life.",
     address: "Frankfurt am Main, Hesse, Germany",
     contact: "OEM Certificate of Analysis",
   },
@@ -192,8 +211,13 @@ export const BRAND_LOCATIONS: MapBrandLocation[] = [
     authStatus: "Certified Multi-Brand Stockist",
     isDirectAuthorized: false,
     category: "Machining Mist Elimination & Filtration",
-    keyProducts: ["Centrifugal Mist Collectors", "High-Efficiency Afterfilters", "Oil Smoke Elimination"],
-    description: "World-leading UK manufacturer of oil mist extraction units for machine shops, eliminating hazardous oil smoke and recovering re-usable coolants.",
+    keyProducts: [
+      "Centrifugal Mist Collectors",
+      "High-Efficiency Afterfilters",
+      "Oil Smoke Elimination",
+    ],
+    description:
+      "World-leading UK manufacturer of oil mist extraction units for machine shops, eliminating hazardous oil smoke and recovering re-usable coolants.",
     address: "Telford, Shropshire, United Kingdom",
     contact: "Genuine Filtration Systems",
   },
@@ -210,9 +234,9 @@ export default function BrandsMapSection({ onOpenEnquiry }: BrandsMapSectionProp
   const hqCoords = hqLocation.coordinates;
 
   // Connecting dashed lines from all origin nodes to India HQ
-  const connections = BRAND_LOCATIONS.filter(
-    (loc) => loc.id !== hqLocation.id
-  ).map((loc) => [loc.coordinates, hqCoords] as [[number, number], [number, number]]);
+  const connections = BRAND_LOCATIONS.filter((loc) => loc.id !== hqLocation.id).map(
+    (loc) => [loc.coordinates, hqCoords] as [[number, number], [number, number]],
+  );
 
   const sectionRef = useRef<HTMLElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -316,7 +340,8 @@ export default function BrandsMapSection({ onOpenEnquiry }: BrandsMapSectionProp
             transition={{ duration: 0.6, delay: 0.25 }}
             className="mt-1 text-sm sm:text-base text-slate-600 max-w-2xl mx-auto"
           >
-            Our multi-brand portfolio includes products from leading lubricant and industrial solution brands.
+            Our multi-brand portfolio includes products from leading lubricant and industrial
+            solution brands.
           </motion.p>
         </div>
 
@@ -394,24 +419,26 @@ export default function BrandsMapSection({ onOpenEnquiry }: BrandsMapSectionProp
                       fill="#FFFFFF"
                       stroke="#CBD5E1"
                       strokeWidth={0.55}
-                      style={{
-                        default: {
-                          fill: "#FFFFFF",
-                          stroke: "#CBD5E1",
-                          strokeWidth: 0.55,
-                          outline: "none",
-                        },
-                        hover: {
-                          fill: "#E2E8F0",
-                          stroke: "#C86218",
-                          strokeWidth: 0.75,
-                          outline: "none",
-                        },
-                        pressed: {
-                          fill: "#E2E8F0",
-                          outline: "none",
-                        },
-                      } as any}
+                      style={
+                        {
+                          default: {
+                            fill: "#FFFFFF",
+                            stroke: "#CBD5E1",
+                            strokeWidth: 0.55,
+                            outline: "none",
+                          },
+                          hover: {
+                            fill: "#E2E8F0",
+                            stroke: "#C86218",
+                            strokeWidth: 0.75,
+                            outline: "none",
+                          },
+                          pressed: {
+                            fill: "#E2E8F0",
+                            outline: "none",
+                          },
+                        } as any
+                      }
                     />
                   ))
                 }
@@ -432,8 +459,7 @@ export default function BrandsMapSection({ onOpenEnquiry }: BrandsMapSectionProp
 
               {/* The 10 Brand Origin Markers */}
               {BRAND_LOCATIONS.map((loc, i) => {
-                const isSelected =
-                  hoveredLocation?.id === loc.id || activeBrandId === loc.id;
+                const isSelected = hoveredLocation?.id === loc.id || activeBrandId === loc.id;
                 const isHQ = loc.id === "hp-lubricants";
 
                 return (
@@ -453,21 +479,13 @@ export default function BrandsMapSection({ onOpenEnquiry }: BrandsMapSectionProp
                     }}
                   >
                     {/* Invisible hit area */}
-                    <circle
-                      r={14}
-                      fill="transparent"
-                      className="cursor-pointer"
-                    />
+                    <circle r={14} fill="transparent" className="cursor-pointer" />
 
                     {/* Outer pulse halo */}
                     <motion.circle
                       r={isHQ ? 12 : 8.5}
                       fill="rgba(200, 98, 24, 0.12)"
-                      stroke={
-                        isSelected
-                          ? "rgba(200, 98, 24, 0.9)"
-                          : "rgba(12, 53, 106, 0.4)"
-                      }
+                      stroke={isSelected ? "rgba(200, 98, 24, 0.9)" : "rgba(12, 53, 106, 0.4)"}
                       strokeWidth={isSelected ? 1.5 : 0.8}
                       initial={{ scale: 0, opacity: 0 }}
                       animate={
@@ -504,9 +522,7 @@ export default function BrandsMapSection({ onOpenEnquiry }: BrandsMapSectionProp
                     />
 
                     {/* White center pip on HQ */}
-                    {isHQ && (
-                      <circle cx={0} cy={0} r={1.6} fill="#ffffff" pointerEvents="none" />
-                    )}
+                    {isHQ && <circle cx={0} cy={0} r={1.6} fill="#ffffff" pointerEvents="none" />}
 
                     {/* Node Text Label */}
                     <motion.text

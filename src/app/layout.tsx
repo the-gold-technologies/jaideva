@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import GoogleTranslator from '@/components/GoogleTranslator';
+import type { Metadata } from "next";
+import "./globals.css";
+import GoogleTranslator from "@/components/GoogleTranslator";
 
 export default function RootLayout({
   children,

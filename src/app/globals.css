@@ -1,17 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  *, ::before, ::after {
-    font-family: 'Open Sans', sans-serif;
+  *,
+  ::before,
+  ::after {
+    font-family: "Open Sans", sans-serif;
   }
 }
 
-html, body {
-  font-family: 'Open Sans', sans-serif;
+html,
+body {
+  font-family: "Open Sans", sans-serif;
   color: #333333;
   background-color: #ffffff;
   overflow-x: hidden;
@@ -24,21 +27,21 @@ html, body {
 }
 
 .section-underline::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 70px;
   height: 3px;
-  background-color: #C86218;
+  background-color: #c86218;
 }
 
 /* Custom Scrollbar for Product Containers */
 .scrollbar-visible {
   -ms-overflow-style: auto !important;
   scrollbar-width: thin !important;
-  scrollbar-color: #0C356A #e9ecef !important;
+  scrollbar-color: #0c356a #e9ecef !important;
 }
 
 .scrollbar-visible::-webkit-scrollbar {
@@ -52,7 +55,7 @@ html, body {
 }
 
 .scrollbar-visible::-webkit-scrollbar-thumb {
-  background: #0C356A !important;
+  background: #0c356a !important;
   border-radius: 4px !important;
 }
 
@@ -61,7 +64,7 @@ html, body {
 .blog-rich-content h2 {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #0C356A;
+  color: #0c356a;
   margin-top: 1.75rem;
   margin-bottom: 0.75rem;
   letter-spacing: -0.02em;
@@ -70,7 +73,7 @@ html, body {
 .blog-rich-content h3 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #0C356A;
+  color: #0c356a;
   margin-top: 1.5rem;
   margin-bottom: 0.5rem;
 }
@@ -106,7 +109,7 @@ html, body {
 
 .blog-rich-content blockquote {
   background-color: #f8f9fa;
-  border-left: 4px solid #C86218;
+  border-left: 4px solid #c86218;
   padding: 1rem 1.25rem;
   border-radius: 0 0.75rem 0.75rem 0;
   font-style: italic;
@@ -115,13 +118,13 @@ html, body {
 }
 
 .blog-rich-content a {
-  color: #C86218;
+  color: #c86218;
   font-weight: 600;
   text-decoration: underline;
 }
 
 .blog-rich-content a:hover {
-  color: #A74D0E;
+  color: #a74d0e;
 }
 
 .blog-rich-content strong,
@@ -192,20 +195,23 @@ html.translating-hi body {
 
 /* Subtle sleek brand progress line while Hindi translates */
 html.translating-hi::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, #0C356A, #C86218, #0C356A);
+  background: linear-gradient(90deg, #0c356a, #c86218, #0c356a);
   background-size: 200% 100%;
   animation: translate-progress 0.9s linear infinite;
   z-index: 9999999;
 }
 
 @keyframes translate-progress {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
 }
-

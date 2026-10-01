@@ -11,19 +11,14 @@ interface ProductShowcaseCardProps {
   onOpenDownload: (pdfType: "TDS" | "MSDS") => void;
 }
 
-export function ProductShowcaseCard({
-  onOpenEnquiry,
-  onOpenDownload,
-}: ProductShowcaseCardProps) {
+export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductShowcaseCardProps) {
   const params = useParams();
   const categorySlug = params?.category as string;
   const productSlug = params?.slug as string;
 
   const { productDetails, products, productCategories } = useCMSStore();
 
-  const product =
-    productDetails[productSlug] ||
-    products?.find((p) => p.slug === productSlug);
+  const product = productDetails[productSlug] || products?.find((p) => p.slug === productSlug);
 
   const activeCategorySlug = product?.categorySlug || categorySlug;
   const category = productCategories?.find((c) => c.slug === activeCategorySlug);
@@ -33,8 +28,7 @@ export function ProductShowcaseCard({
     return products
       .filter(
         (p) =>
-          (!activeCategorySlug || p.categorySlug === activeCategorySlug) &&
-          p.slug !== productSlug,
+          (!activeCategorySlug || p.categorySlug === activeCategorySlug) && p.slug !== productSlug,
       )
       .map((p) => ({
         id: p.id,
@@ -46,8 +40,7 @@ export function ProductShowcaseCard({
 
   if (!product) return null;
 
-  const currentGroupTitle =
-    product.subCategoryTitle || product.subtitle || category?.name;
+  const currentGroupTitle = product.subCategoryTitle || product.subtitle || category?.name;
   const productImage = product.containerImage || product.coverImage;
 
   return (
@@ -55,9 +48,7 @@ export function ProductShowcaseCard({
       {/* Category Title with Dark Blue Underline Bar */}
       <div className="mb-8 border-b border-gray-200 pb-3 flex items-center justify-between">
         <h1 className="text-2xl md:text-3xl font-extrabold text-[#002b5c] uppercase tracking-wider inline-block relative">
-          <span className="border-b-4 border-[#002b5c] pb-3 inline-block">
-            {currentGroupTitle}
-          </span>
+          <span className="border-b-4 border-[#002b5c] pb-3 inline-block">{currentGroupTitle}</span>
         </h1>
         <span className="text-xs font-bold uppercase tracking-widest text-[#C86218] bg-red-50 px-3 py-1 rounded-full border border-red-100 hidden sm:inline-block">
           Industrial Grade
@@ -162,9 +153,7 @@ export function ProductShowcaseCard({
                     }`}
                   >
                     <span className="truncate">{sib.name}</span>
-                    {isCurrent && (
-                      <span className="text-xs text-sky-300">●</span>
-                    )}
+                    {isCurrent && <span className="text-xs text-sky-300">●</span>}
                   </Link>
                 );
               })}

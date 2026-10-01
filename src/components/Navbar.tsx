@@ -40,9 +40,7 @@ export default function Navbar({
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
-  const [mobileSelectedBrand, setMobileSelectedBrand] = useState<string | null>(
-    "hp-lubricants",
-  );
+  const [mobileSelectedBrand, setMobileSelectedBrand] = useState<string | null>("hp-lubricants");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [activeBrandId, setActiveBrandId] = useState<string>("hp-lubricants");
   const [activeTab, setActiveTab] = useState<string>("");
@@ -53,13 +51,7 @@ export default function Navbar({
   const searchDropdownRef = useRef<HTMLDivElement>(null);
   const mobileSearchDropdownRef = useRef<HTMLDivElement>(null);
 
-  const {
-    products,
-    productCategories,
-    fetchProducts,
-    globalSEO,
-    fetchGlobalSEO,
-  } = useCMSStore();
+  const { products, productCategories, fetchProducts, globalSEO, fetchGlobalSEO } = useCMSStore();
 
   useEffect(() => {
     fetchGlobalSEO().catch(console.error);
@@ -71,11 +63,9 @@ export default function Navbar({
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       const isOutsideDesktop =
-        !searchDropdownRef.current ||
-        !searchDropdownRef.current.contains(target);
+        !searchDropdownRef.current || !searchDropdownRef.current.contains(target);
       const isOutsideMobile =
-        !mobileSearchDropdownRef.current ||
-        !mobileSearchDropdownRef.current.contains(target);
+        !mobileSearchDropdownRef.current || !mobileSearchDropdownRef.current.contains(target);
       if (isOutsideDesktop && isOutsideMobile) {
         setIsSearchDropdownOpen(false);
       }
@@ -105,10 +95,7 @@ export default function Navbar({
           slug: p.slug,
           categorySlug: p.categorySlug || "hp-lubricants",
           subCategoryTitle:
-            p.subCategoryTitle ||
-            p.subtitle ||
-            p.categoryName ||
-            "Industrial Lubricant",
+            p.subCategoryTitle || p.subtitle || p.categoryName || "Industrial Lubricant",
           description: p.description || p.specsText || "",
         });
       });
@@ -145,9 +132,7 @@ export default function Navbar({
     });
 
     const targetCat = matched ? matched.categorySlug : "hp-lubricants";
-    router.push(
-      `/products/${targetCat}?search=${encodeURIComponent(searchQuery.trim())}`,
-    );
+    router.push(`/products/${targetCat}?search=${encodeURIComponent(searchQuery.trim())}`);
   };
 
   // Font sizing with local storage persistence and root style scaling
@@ -156,8 +141,7 @@ export default function Navbar({
   useEffect(() => {
     try {
       const saved =
-        localStorage.getItem("jaideva_font_size") ||
-        localStorage.getItem("mahalaxmi_font_size");
+        localStorage.getItem("jaideva_font_size") || localStorage.getItem("mahalaxmi_font_size");
       if (saved) {
         const parsed = parseInt(saved, 10);
         if (!isNaN(parsed) && parsed >= 12 && parsed <= 26) {
@@ -170,9 +154,7 @@ export default function Navbar({
         }
       }
       const computed =
-        Math.round(
-          parseFloat(getComputedStyle(document.documentElement).fontSize),
-        ) || 16;
+        Math.round(parseFloat(getComputedStyle(document.documentElement).fontSize)) || 16;
       setCurrentFontSize(computed);
     } catch {
       setCurrentFontSize(16);
@@ -226,9 +208,7 @@ export default function Navbar({
   const brandList: NavBrand[] = useMemo(() => {
     if (productCategories && productCategories.length > 0) {
       return productCategories.map((c) => {
-        const brandProds = (products || []).filter(
-          (p) => p.categorySlug === c.slug,
-        );
+        const brandProds = (products || []).filter((p) => p.categorySlug === c.slug);
         const subTitles = Array.from(
           new Set(
             brandProds
@@ -252,8 +232,7 @@ export default function Navbar({
     return [];
   }, [productCategories, products]);
 
-  const currentBrand =
-    brandList.find((b) => b.id === activeBrandId) || brandList[0] || null;
+  const currentBrand = brandList.find((b) => b.id === activeBrandId) || brandList[0] || null;
 
   const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
 
@@ -325,10 +304,7 @@ export default function Navbar({
 
           {/* Desktop Search */}
           <div className="relative" ref={searchDropdownRef}>
-            <form
-              onSubmit={handleSearchSubmit}
-              className="flex items-center font-sans"
-            >
+            <form onSubmit={handleSearchSubmit} className="flex items-center font-sans">
               <input
                 type="text"
                 placeholder="Search products..."
@@ -394,13 +370,8 @@ export default function Navbar({
           </div>
 
           {/* Desktop Font Sizing Controls */}
-          <div
-            className="flex items-center gap-1"
-            title={`Text Size: ${currentFontSize}px`}
-          >
-            <span className="text-gray-600 text-xs font-sans select-none">
-              Text
-            </span>
+          <div className="flex items-center gap-1" title={`Text Size: ${currentFontSize}px`}>
+            <span className="text-gray-600 text-xs font-sans select-none">Text</span>
             <button
               onClick={increaseFont}
               disabled={currentFontSize >= 26}
@@ -454,10 +425,7 @@ export default function Navbar({
         <div className="flex items-center gap-2">
           {/* Mobile Search */}
           <div className="relative" ref={mobileSearchDropdownRef}>
-            <form
-              onSubmit={handleSearchSubmit}
-              className="flex items-center font-sans"
-            >
+            <form onSubmit={handleSearchSubmit} className="flex items-center font-sans">
               <input
                 type="text"
                 placeholder="Search"
@@ -514,19 +482,14 @@ export default function Navbar({
                     </button>
                   </div>
                 ) : (
-                  <div className="p-3 text-center text-[10px] text-gray-400">
-                    No products found
-                  </div>
+                  <div className="p-3 text-center text-[10px] text-gray-400">No products found</div>
                 )}
               </div>
             )}
           </div>
 
           {/* Mobile Font Sizing Controls */}
-          <div
-            className="flex items-center gap-1"
-            title={`Text Size: ${currentFontSize}px`}
-          >
+          <div className="flex items-center gap-1" title={`Text Size: ${currentFontSize}px`}>
             <span className="text-gray-500 text-[11px] select-none">Text</span>
             <button
               onClick={increaseFont}
@@ -581,9 +544,7 @@ export default function Navbar({
                   href={item.link}
                   onClick={() => setActiveTab(item.name)}
                   className={`flex items-center gap-1 font-sans text-[14px] font-bold tracking-normal transition ${
-                    isActive
-                      ? "text-[#C86218] font-bold"
-                      : "text-[#0C356A] hover:text-[#C86218]"
+                    isActive ? "text-[#C86218] font-bold" : "text-[#0C356A] hover:text-[#C86218]"
                   }`}
                 >
                   {item.name}
@@ -591,9 +552,7 @@ export default function Navbar({
                     <ChevronDown
                       size={14}
                       className={
-                        isActive
-                          ? "text-[#C86218]"
-                          : "text-gray-500 group-hover:text-[#C86218]"
+                        isActive ? "text-[#C86218]" : "text-gray-500 group-hover:text-[#C86218]"
                       }
                     />
                   )}
@@ -613,11 +572,7 @@ export default function Navbar({
                           </p>
                         </div>
                         <Link
-                          href={
-                            currentBrand
-                              ? `/products/${currentBrand.id}`
-                              : "/products"
-                          }
+                          href={currentBrand ? `/products/${currentBrand.id}` : "/products"}
                           onClick={() => setOpenDropdown(null)}
                           className="shrink-0 rounded-full border border-white/30 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wide text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#0C356A]"
                         >
@@ -634,9 +589,7 @@ export default function Navbar({
                                 <Link
                                   key={brand.id}
                                   href={`/products/${brand.id}`}
-                                  onMouseEnter={() =>
-                                    setActiveBrandId(brand.id)
-                                  }
+                                  onMouseEnter={() => setActiveBrandId(brand.id)}
                                   onClick={() => {
                                     setActiveBrandId(brand.id);
                                     setOpenDropdown(null);
@@ -744,11 +697,7 @@ export default function Navbar({
         <div className="fixed inset-0 z-50 bg-white flex flex-col h-full w-full overflow-y-auto animate-in slide-in-from-right duration-200">
           {/* Header Bar inside Mobile Overlay */}
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 bg-white sticky top-0 z-10 shadow-xs">
-            <Link
-              href="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center"
-            >
+            <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
               <img
                 src={logoSrc}
                 alt="JAI DEVA OIL CO."
@@ -779,9 +728,7 @@ export default function Navbar({
                       <div key={idx} className="border-b border-gray-100 pb-2">
                         <button
                           type="button"
-                          onClick={() =>
-                            setMobileProductsOpen(!mobileProductsOpen)
-                          }
+                          onClick={() => setMobileProductsOpen(!mobileProductsOpen)}
                           className={`w-full flex items-center justify-between text-base font-extrabold py-2.5 transition-colors text-left cursor-pointer ${
                             isActive || mobileProductsOpen
                               ? "text-[#C86218]"
@@ -822,8 +769,7 @@ export default function Navbar({
                             </div>
                             <div className="flex flex-col gap-1.5 max-h-72 overflow-y-auto pr-1">
                               {brandList.map((brand, bIdx) => {
-                                const isBrandOpen =
-                                  mobileSelectedBrand === brand.id;
+                                const isBrandOpen = mobileSelectedBrand === brand.id;
                                 return (
                                   <div
                                     key={brand.id}
@@ -832,9 +778,7 @@ export default function Navbar({
                                     <button
                                       type="button"
                                       onClick={() =>
-                                        setMobileSelectedBrand(
-                                          isBrandOpen ? null : brand.id,
-                                        )
+                                        setMobileSelectedBrand(isBrandOpen ? null : brand.id)
                                       }
                                       className="flex w-full items-center justify-between px-2.5 py-2 text-left text-xs font-bold text-[#0C356A] hover:text-[#C86218]"
                                     >
@@ -847,9 +791,7 @@ export default function Navbar({
                                       <ChevronDown
                                         size={14}
                                         className={`text-gray-400 transition-transform ${
-                                          isBrandOpen
-                                            ? "rotate-180 text-[#C86218]"
-                                            : ""
+                                          isBrandOpen ? "rotate-180 text-[#C86218]" : ""
                                         }`}
                                       />
                                     </button>
@@ -877,10 +819,7 @@ export default function Navbar({
                                             className="flex items-center justify-between py-1 text-[11px] font-medium text-gray-600 hover:text-[#C86218]"
                                           >
                                             <span>{cat.name}</span>
-                                            <ChevronRight
-                                              size={12}
-                                              className="text-gray-400"
-                                            />
+                                            <ChevronRight size={12} className="text-gray-400" />
                                           </Link>
                                         ))}
                                       </div>
@@ -905,9 +844,7 @@ export default function Navbar({
                           setMobileProductsOpen(false);
                         }}
                         className={`flex items-center justify-between text-base font-extrabold py-2.5 transition-colors ${
-                          isActive
-                            ? "text-[#C86218]"
-                            : "text-[#0C356A] hover:text-[#C86218]"
+                          isActive ? "text-[#C86218]" : "text-[#0C356A] hover:text-[#C86218]"
                         }`}
                       >
                         <span>{item.name}</span>
@@ -928,8 +865,7 @@ export default function Navbar({
                 CONTACT US / LOCATE DEALER
               </Link>
               <div className="text-center text-xs text-gray-500 font-medium">
-                Direct Contact:{" "}
-                <span className="font-bold text-gray-800">+91 98765 43210</span>
+                Direct Contact: <span className="font-bold text-gray-800">+91 98765 43210</span>
               </div>
             </div>
           </div>

@@ -11,11 +11,7 @@ export interface BrandItem {
 
 export default function TrustedClientsSection() {
   const { pages } = useCMSStore();
-  const {
-    title,
-    subtitle,
-    clients = [],
-  } = pages["home"]?.TrustedClientsSection || {};
+  const { title, subtitle, clients = [] } = pages["home"]?.TrustedClientsSection || {};
 
   if (!Array.isArray(clients) || clients.length === 0) {
     return null;
@@ -35,12 +31,7 @@ export default function TrustedClientsSection() {
   }
 
   // Quadruple clone for a completely seamless infinite loop
-  const marqueeBrands = [
-    ...brandsSource,
-    ...brandsSource,
-    ...brandsSource,
-    ...brandsSource,
-  ];
+  const marqueeBrands = [...brandsSource, ...brandsSource, ...brandsSource, ...brandsSource];
 
   return (
     <section

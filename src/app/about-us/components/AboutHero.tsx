@@ -11,10 +11,7 @@ interface AboutHeroProps {
 
 export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
   const { pages } = useCMSStore();
-  const HeadingTag = getHeadingTag(
-    pages["about-us"]?.seo?.headingOptions,
-    "h1",
-  );
+  const HeadingTag = getHeadingTag(pages["about-us"]?.seo?.headingOptions, "h1");
   const { heading, tagline, description, altText, bannerImage } =
     pages["about-us"]?.AboutHero || {};
 
@@ -42,9 +39,7 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
           )}
 
           {tagline && (
-            <p className="mt-3 text-base font-semibold text-[#F4B24D] sm:text-lg">
-              {tagline}
-            </p>
+            <p className="mt-3 text-base font-semibold text-[#F4B24D] sm:text-lg">{tagline}</p>
           )}
 
           {description && (

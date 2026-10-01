@@ -25,9 +25,7 @@ export function CategorySidebar({
 
   const subCategoryGroups = useMemo(() => {
     if (!products) return [];
-    const catProducts = products.filter(
-      (p) => !categorySlug || p.categorySlug === categorySlug,
-    );
+    const catProducts = products.filter((p) => !categorySlug || p.categorySlug === categorySlug);
     const groupMap = new Map<string, { title: string; count: number }>();
     catProducts.forEach((p) => {
       const title = p.subCategoryTitle || "Featured Products";
@@ -112,8 +110,8 @@ export function CategorySidebar({
           Need help?
         </p>
         <p className="text-xs text-gray-600 leading-relaxed">
-          Our technical team is available to help you select the right lubricant
-          for your application.
+          Our technical team is available to help you select the right lubricant for your
+          application.
         </p>
         <Link
           href="/contact-us"

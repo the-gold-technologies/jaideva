@@ -23,15 +23,9 @@ interface OurTeamStructureProps {
   onOpenEnquiry?: (subject?: string) => void;
 }
 
-export default function OurTeamStructureSection({
-  onOpenEnquiry,
-}: OurTeamStructureProps) {
+export default function OurTeamStructureSection({ onOpenEnquiry }: OurTeamStructureProps) {
   const { pages } = useCMSStore();
-  const {
-    heading,
-    description,
-    cards = [],
-  } = pages["about-us"]?.OurTeamStructureSection || {};
+  const { heading, description, cards = [] } = pages["about-us"]?.OurTeamStructureSection || {};
 
   if (!heading && (!Array.isArray(cards) || cards.length === 0)) return null;
 

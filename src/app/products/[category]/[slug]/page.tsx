@@ -32,8 +32,7 @@ export default function ProductDetailPage() {
   const [downloadPdfType, setDownloadPdfType] = useState<"TDS" | "MSDS">("TDS");
   const [downloadPdfUrl, setDownloadPdfUrl] = useState("");
 
-  const { productDetails, products, fetchProductBySlug, fetchProducts } =
-    useCMSStore();
+  const { productDetails, products, fetchProductBySlug, fetchProducts } = useCMSStore();
 
   useEffect(() => {
     if (productSlug) {
@@ -44,9 +43,7 @@ export default function ProductDetailPage() {
     }
   }, [productSlug, categorySlug, fetchProductBySlug, fetchProducts]);
 
-  const product =
-    productDetails[productSlug] ||
-    products?.find((p) => p.slug === productSlug);
+  const product = productDetails[productSlug] || products?.find((p) => p.slug === productSlug);
 
   const handleOpenEnquiry = (prodName?: string) => {
     setEnquiryProduct(prodName || product?.name || "");

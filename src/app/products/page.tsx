@@ -52,12 +52,7 @@ async function resolveProductRedirect(searchQuery?: string): Promise<string> {
       const sub = (p.subCategoryTitle || "").toLowerCase();
       const desc = (p.description || "").toLowerCase();
       const specs = (p.specsText || "").toLowerCase();
-      return (
-        name.includes(q) ||
-        sub.includes(q) ||
-        desc.includes(q) ||
-        specs.includes(q)
-      );
+      return name.includes(q) || sub.includes(q) || desc.includes(q) || specs.includes(q);
     });
 
     const targetBrandSlug = matchedProduct?.categorySlug || defaultSlug;
@@ -76,8 +71,7 @@ export default async function AllProductsPage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const query =
-    typeof searchParams?.search === "string" ? searchParams.search : undefined;
+  const query = typeof searchParams?.search === "string" ? searchParams.search : undefined;
 
   const destination = await resolveProductRedirect(query);
   redirect(destination);

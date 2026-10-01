@@ -65,9 +65,7 @@ export default function ContactFormSection() {
   // Dynamic SEO Heading
   const HeadingTag = getHeadingTag(pageSEO["contact-us"]?.headingOptions, "h1");
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -136,9 +134,7 @@ export default function ContactFormSection() {
               )}
 
               {description && (
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {description}
-                </p>
+                <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
               )}
             </div>
 
@@ -174,9 +170,7 @@ export default function ContactFormSection() {
                     <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                       Proprietor
                     </div>
-                    <p className="text-sm font-semibold text-gray-800 mt-0.5">
-                      {proprietor}
-                    </p>
+                    <p className="text-sm font-semibold text-gray-800 mt-0.5">{proprietor}</p>
                   </div>
                 </div>
               )}
@@ -228,9 +222,7 @@ export default function ContactFormSection() {
                     <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                       Working Hours
                     </div>
-                    <p className="text-sm font-medium text-gray-800 mt-0.5">
-                      {workingHours}
-                    </p>
+                    <p className="text-sm font-medium text-gray-800 mt-0.5">{workingHours}</p>
                   </div>
                 </div>
               )}
@@ -267,9 +259,7 @@ export default function ContactFormSection() {
                   </h2>
                 )}
                 {formSubtitle && (
-                  <p className="text-gray-500 text-xs sm:text-sm mt-1">
-                    {formSubtitle}
-                  </p>
+                  <p className="text-gray-500 text-xs sm:text-sm mt-1">{formSubtitle}</p>
                 )}
               </div>
             )}
@@ -283,9 +273,8 @@ export default function ContactFormSection() {
                   Enquiry Submitted Successfully!
                 </h3>
                 <p className="text-sm text-gray-600 max-w-sm mx-auto leading-relaxed">
-                  Thank you for contacting{" "}
-                  {companyName ? <strong>{companyName}</strong> : "us"}. We will
-                  get back to you shortly.
+                  Thank you for contacting {companyName ? <strong>{companyName}</strong> : "us"}. We
+                  will get back to you shortly.
                 </p>
                 <button
                   type="button"
@@ -387,8 +376,7 @@ export default function ContactFormSection() {
                 {/* Message */}
                 <div>
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
-                    Your Message / Requirement Details{" "}
-                    <span className="text-[#C86218]">*</span>
+                    Your Message / Requirement Details <span className="text-[#C86218]">*</span>
                   </label>
                   <textarea
                     name="message"
@@ -404,8 +392,7 @@ export default function ContactFormSection() {
                 {/* Visual CAPTCHA */}
                 <div>
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
-                    Security Verification{" "}
-                    <span className="text-[#C86218]">*</span>
+                    Security Verification <span className="text-[#C86218]">*</span>
                   </label>
                   <CaptchaInput
                     code={code}

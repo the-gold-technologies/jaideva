@@ -10,16 +10,8 @@ interface SEOMetaProps {
 }
 
 export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
-  const {
-    globalSEO,
-    fetchGlobalSEO,
-    pages,
-    pageSEO,
-    productDetails,
-    blogPosts,
-    products,
-    blogs,
-  } = useCMSStore();
+  const { globalSEO, fetchGlobalSEO, pages, pageSEO, productDetails, blogPosts, products, blogs } =
+    useCMSStore();
 
   const isHome = pageSlug === "home";
   const activeSEO: PageSEO | null =
@@ -34,9 +26,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
 
   useEffect(() => {
     // 1. Determine Title strictly from CMS data
-    const title = isHome
-      ? globalSEO?.siteTitle || ""
-      : activeSEO?.metaTitle || "";
+    const title = isHome ? globalSEO?.siteTitle || "" : activeSEO?.metaTitle || "";
 
     if (title) {
       document.title = title;
@@ -49,9 +39,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
       content: string | null | undefined,
     ) => {
       if (!content) return;
-      let tag = document.querySelector<HTMLMetaElement>(
-        `meta[${attr}="${key}"]`,
-      );
+      let tag = document.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
       if (!tag) {
         tag = document.createElement("meta");
         tag.setAttribute(attr, key);
@@ -80,8 +68,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
     const keywords = activeSEO?.targetKeywords || "";
 
     const currentUrl =
-      activeSEO?.canonicalUrl ||
-      (typeof window !== "undefined" ? window.location.href : "");
+      activeSEO?.canonicalUrl || (typeof window !== "undefined" ? window.location.href : "");
 
     if (description) {
       setMetaTag("name", "description", description);
@@ -90,11 +77,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
       setMetaTag("name", "keywords", keywords);
     }
     if (typeof activeSEO?.noIndex === "boolean") {
-      setMetaTag(
-        "name",
-        "robots",
-        activeSEO.noIndex ? "noindex, nofollow" : "index, follow",
-      );
+      setMetaTag("name", "robots", activeSEO.noIndex ? "noindex, nofollow" : "index, follow");
     }
 
     if (currentUrl) {
@@ -111,11 +94,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
       setMetaTag("property", "og:description", description);
       setMetaTag("name", "twitter:description", description);
     }
-    setMetaTag(
-      "property",
-      "og:type",
-      pageSlug?.startsWith("blogs/") ? "article" : "website",
-    );
+    setMetaTag("property", "og:type", pageSlug?.startsWith("blogs/") ? "article" : "website");
     setMetaTag("name", "twitter:card", "summary_large_image");
 
     if (globalSEO?.siteTitle) {
@@ -150,9 +129,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
 
     // 7. Structured Data (JSON-LD)
     let finalSchema: any = null;
-    const rawCustomSchema = (
-      isHome ? globalSEO?.schema : activeSEO?.schema
-    )?.trim();
+    const rawCustomSchema = (isHome ? globalSEO?.schema : activeSEO?.schema)?.trim();
 
     if (rawCustomSchema) {
       try {
@@ -190,9 +167,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
         document.head.appendChild(scriptTag);
       }
       scriptTag.textContent =
-        typeof finalSchema === "string"
-          ? finalSchema
-          : JSON.stringify(finalSchema, null, 2);
+        typeof finalSchema === "string" ? finalSchema : JSON.stringify(finalSchema, null, 2);
     } else {
       const existingScript = document.getElementById("dynamic-json-ld");
       if (existingScript) {
@@ -248,27 +223,13 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
         injectHtmlWithScripts(container, globalSEO.customFooterScripts);
       }
     }
-  }, [
-    activeSEO,
-    globalSEO,
-    isHome,
-    pageSlug,
-    pages,
-    productDetails,
-    blogPosts,
-    products,
-    blogs,
-  ]);
+  }, [activeSEO, globalSEO, isHome, pageSlug, pages, productDetails, blogPosts, products, blogs]);
 
   const rawGtmId = globalSEO?.gtmId?.trim();
-  const gtmId = rawGtmId
-    ? rawGtmId.match(/GTM-[A-Z0-9]+/i)?.[0] || rawGtmId
-    : null;
+  const gtmId = rawGtmId ? rawGtmId.match(/GTM-[A-Z0-9]+/i)?.[0] || rawGtmId : null;
 
   const rawGaId = globalSEO?.googleAnalyticsId?.trim();
-  const gaId = rawGaId
-    ? rawGaId.match(/(G-[A-Z0-9]+|UA-[0-9-]+)/i)?.[0] || rawGaId
-    : null;
+  const gaId = rawGaId ? rawGaId.match(/(G-[A-Z0-9]+|UA-[0-9-]+)/i)?.[0] || rawGaId : null;
 
   return (
     <>
@@ -355,8 +316,7 @@ function generatePageSchema({
   const companyPhone = globalSEO?.phone || "+91 98765 43210";
   const companyEmail = globalSEO?.email || "sales@jaidevaoil.com";
   const companyAddress =
-    globalSEO?.address ||
-    "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India";
+    globalSEO?.address || "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India";
   const companyLogo = globalSEO?.logo || `${origin}/jaideva-logo.png`;
 
   // Base Organization Schema Node
@@ -364,8 +324,7 @@ function generatePageSchema({
     "@type": ["LocalBusiness", "AutoPartsStore"],
     "@id": `${origin}/#organization`,
     name: "Jai Deva Oil Co.",
-    alternateName:
-      "Authorized Multi-Brand Lubricants Distributor Jai Deva Oil Co.",
+    alternateName: "Authorized Multi-Brand Lubricants Distributor Jai Deva Oil Co.",
     url: origin,
     logo: companyLogo,
     image: companyLogo,
@@ -385,14 +344,7 @@ function generatePageSchema({
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
-        ],
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
         opens: "09:00",
         closes: "19:00",
       },
@@ -437,8 +389,7 @@ function generatePageSchema({
         name: "Jai Deva Oil Co.",
         url: origin,
         logo: companyLogo,
-        description:
-          "Official distributor of multi-brand industrial and automotive lubricants.",
+        description: "Official distributor of multi-brand industrial and automotive lubricants.",
       },
     };
   }
@@ -522,12 +473,9 @@ function generatePageSchema({
   if (pageSlug.startsWith("blogs/")) {
     const blogSlug = pageSlug.replace("blogs/", "").trim();
     const post = blogPosts[blogSlug] || {};
-    const articleTitle =
-      post.title || activeSEO?.metaTitle || "Technical Article";
+    const articleTitle = post.title || activeSEO?.metaTitle || "Technical Article";
     const articleDesc =
-      post.excerpt ||
-      activeSEO?.metaDescription ||
-      `Technical article on ${articleTitle}`;
+      post.excerpt || activeSEO?.metaDescription || `Technical article on ${articleTitle}`;
     const articleImage = post.coverImage || companyLogo;
 
     return {
@@ -540,8 +488,7 @@ function generatePageSchema({
       headline: articleTitle,
       description: articleDesc,
       image: articleImage,
-      datePublished:
-        post.publishDate || post.createdAt || new Date().toISOString(),
+      datePublished: post.publishDate || post.createdAt || new Date().toISOString(),
       author: {
         "@type": "Person",
         name: post.author || "Technical Lubricants Team",
@@ -561,8 +508,7 @@ function generatePageSchema({
   if (pageSlug.startsWith("product:")) {
     const prodSlug = pageSlug.replace("product:", "").trim();
     const product = productDetails[prodSlug] || {};
-    const prodName =
-      product.name || activeSEO?.metaTitle || "Industrial Lubricant";
+    const prodName = product.name || activeSEO?.metaTitle || "Industrial Lubricant";
     const prodDesc =
       product.description ||
       product.tagline ||

@@ -2,14 +2,7 @@
 
 import React, { useEffect } from "react";
 import Link from "next/link";
-import {
-  Facebook,
-  Instagram,
-  Mail,
-  Linkedin,
-  MapPin,
-  Phone,
-} from "lucide-react";
+import { Facebook, Instagram, Mail, Linkedin, MapPin, Phone } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 
 interface FooterProps {
@@ -56,9 +49,7 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
               )}
 
               {/* Social Media */}
-              {(socialLinks.facebook ||
-                socialLinks.linkedin ||
-                socialLinks.instagram) && (
+              {(socialLinks.facebook || socialLinks.linkedin || socialLinks.instagram) && (
                 <div>
                   <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
                     Social Media
@@ -131,13 +122,8 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
                 <div className="space-y-2.5 text-sm text-slate-300">
                   {companyAddress && (
                     <div className="flex items-start gap-2.5">
-                      <MapPin
-                        size={16}
-                        className="text-[#C86218] shrink-0 mt-0.5"
-                      />
-                      <span className="leading-snug text-xs sm:text-sm">
-                        {companyAddress}
-                      </span>
+                      <MapPin size={16} className="text-[#C86218] shrink-0 mt-0.5" />
+                      <span className="leading-snug text-xs sm:text-sm">{companyAddress}</span>
                     </div>
                   )}
 
@@ -173,22 +159,13 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
           <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
             {copyrightText && <p>{copyrightText}</p>}
             <div className="flex items-center gap-6">
-              <Link
-                href="/privacy-policy"
-                className="hover:text-white transition-colors"
-              >
+              <Link href="/privacy-policy" className="hover:text-white transition-colors">
                 Privacy Policy
               </Link>
-              <a
-                href="/sitemap.xml"
-                className="hover:text-white transition-colors"
-              >
+              <a href="/sitemap.xml" className="hover:text-white transition-colors">
                 Site Map
               </a>
-              <Link
-                href="/contact-us"
-                className="hover:text-white transition-colors"
-              >
+              <Link href="/contact-us" className="hover:text-white transition-colors">
                 Contact Us
               </Link>
             </div>

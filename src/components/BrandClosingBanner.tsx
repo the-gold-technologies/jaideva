@@ -10,9 +10,7 @@ interface BrandClosingBannerProps {
   onOpenEnquiry?: (subject?: string) => void;
 }
 
-export default function BrandClosingBanner({
-  onOpenEnquiry,
-}: BrandClosingBannerProps) {
+export default function BrandClosingBanner({ onOpenEnquiry }: BrandClosingBannerProps) {
   const { pages } = useCMSStore();
   const {
     badge,
@@ -86,10 +84,7 @@ export default function BrandClosingBanner({
               </Link>
             ) : (
               <button
-                onClick={() =>
-                  onOpenEnquiry &&
-                  onOpenEnquiry("Industrial Lubrication Partnership")
-                }
+                onClick={() => onOpenEnquiry && onOpenEnquiry("Industrial Lubrication Partnership")}
                 className="inline-flex items-center justify-center gap-2 bg-[#C86218] hover:bg-[#A74D0E] text-white font-bold text-sm sm:text-base px-8 py-3.5 rounded-md shadow-md hover:shadow-lg transition-all duration-200 uppercase tracking-wider cursor-pointer"
               >
                 <span>{btnLabel}</span>

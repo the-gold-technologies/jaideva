@@ -11,11 +11,7 @@ interface EnquiryModalProps {
   initialProduct?: string;
 }
 
-export default function EnquiryModal({
-  isOpen,
-  onClose,
-  initialProduct = "",
-}: EnquiryModalProps) {
+export default function EnquiryModal({ isOpen, onClose, initialProduct = "" }: EnquiryModalProps) {
   const [name, setName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [mobile, setMobile] = useState("");
@@ -100,9 +96,7 @@ export default function EnquiryModal({
               <span className="text-[11px] font-extrabold text-[#C86218] uppercase tracking-wider block mb-1">
                 JAI DEVA OIL CO. ENQUIRY
               </span>
-              <h2 className="text-2xl font-black text-[#0C356A]">
-                Request Product Quote
-              </h2>
+              <h2 className="text-2xl font-black text-[#0C356A]">Request Product Quote</h2>
             </div>
 
             {/* Form */}
@@ -150,9 +144,7 @@ export default function EnquiryModal({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1.5">
-                    Email
-                  </label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1.5">Email</label>
                   <input
                     type="email"
                     placeholder="name@domain.com"
@@ -179,8 +171,7 @@ export default function EnquiryModal({
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1.5">
-                  Security Verification{" "}
-                  <span className="text-[#C86218]">*</span>
+                  Security Verification <span className="text-[#C86218]">*</span>
                 </label>
                 <CaptchaInput
                   code={code}
@@ -199,8 +190,7 @@ export default function EnquiryModal({
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 size={15} className="animate-spin" />{" "}
-                      Submitting...
+                      <Loader2 size={15} className="animate-spin" /> Submitting...
                     </>
                   ) : (
                     <>
@@ -214,13 +204,10 @@ export default function EnquiryModal({
         ) : (
           <div className="text-center py-6">
             <CheckCircle2 size={48} className="mx-auto text-green-500 mb-3" />
-            <h3 className="text-xl font-black text-[#0C356A] mb-1.5">
-              Enquiry Submitted!
-            </h3>
+            <h3 className="text-xl font-black text-[#0C356A] mb-1.5">Enquiry Submitted!</h3>
             <p className="text-xs sm:text-sm text-gray-600 mb-5 leading-relaxed">
-              Thank you <strong>{name}</strong>. Our Jai Deva Oil Co.
-              representative will contact you at <strong>{mobile}</strong>{" "}
-              shortly.
+              Thank you <strong>{name}</strong>. Our Jai Deva Oil Co. representative will contact
+              you at <strong>{mobile}</strong> shortly.
             </p>
             <button
               onClick={() => {

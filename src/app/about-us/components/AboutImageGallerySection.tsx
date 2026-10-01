@@ -31,9 +31,7 @@ interface AboutImageGalleryProps {
   onOpenEnquiry?: (subject?: string) => void;
 }
 
-export default function AboutImageGallerySection({
-  onOpenEnquiry,
-}: AboutImageGalleryProps) {
+export default function AboutImageGallerySection({ onOpenEnquiry }: AboutImageGalleryProps) {
   const { pages } = useCMSStore();
   const {
     eyebrow,
@@ -47,8 +45,7 @@ export default function AboutImageGallerySection({
     facilities = [],
   } = pages["about-us"]?.AboutImageGallerySection || {};
 
-  if (!heading && (!Array.isArray(facilities) || facilities.length === 0))
-    return null;
+  if (!heading && (!Array.isArray(facilities) || facilities.length === 0)) return null;
 
   return (
     <section className="py-20 bg-white text-slate-800 border-b border-slate-200">
@@ -67,9 +64,7 @@ export default function AboutImageGallerySection({
               </h2>
             )}
             {description && (
-              <p className="mt-3 text-base text-slate-600 leading-relaxed">
-                {description}
-              </p>
+              <p className="mt-3 text-base text-slate-600 leading-relaxed">{description}</p>
             )}
           </div>
 
@@ -152,9 +147,7 @@ export default function AboutImageGallerySection({
                         type="button"
                         onClick={() =>
                           onOpenEnquiry &&
-                          onOpenEnquiry(
-                            `Facility & Supply Query: ${facility.title}`
-                          )
+                          onOpenEnquiry(`Facility & Supply Query: ${facility.title}`)
                         }
                         className="text-[11px] font-black uppercase tracking-wider text-[#C86218] hover:text-[#0C356A] inline-flex items-center gap-1 transition-colors ml-auto"
                       >
@@ -186,9 +179,7 @@ export default function AboutImageGallerySection({
                   {bannerHeading}
                 </h3>
                 {bannerDescription && (
-                  <p className="mt-3 text-sm text-slate-300 leading-relaxed">
-                    {bannerDescription}
-                  </p>
+                  <p className="mt-3 text-sm text-slate-300 leading-relaxed">{bannerDescription}</p>
                 )}
               </div>
 
@@ -196,8 +187,7 @@ export default function AboutImageGallerySection({
                 <button
                   type="button"
                   onClick={() =>
-                    onOpenEnquiry &&
-                    onOpenEnquiry("Bulk Industrial Supply Consultation")
+                    onOpenEnquiry && onOpenEnquiry("Bulk Industrial Supply Consultation")
                   }
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#C86218] hover:bg-[#a94e0e] px-6 py-3.5 text-xs font-black uppercase tracking-wider text-white transition-colors shadow-lg"
                 >

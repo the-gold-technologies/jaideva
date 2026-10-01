@@ -11,15 +11,8 @@ interface BrandsCtaProps {
 
 export default function BrandsCtaSection({ onOpenEnquiry }: BrandsCtaProps) {
   const { pages } = useCMSStore();
-  const {
-    badge,
-    heading,
-    description,
-    image,
-    buttonText,
-    phoneText,
-    phoneNumber,
-  } = pages["brands"]?.BrandsCtaSection || {};
+  const { badge, heading, description, image, buttonText, phoneText, phoneNumber } =
+    pages["brands"]?.BrandsCtaSection || {};
 
   if (!heading && !image) return null;
 
@@ -58,9 +51,7 @@ export default function BrandsCtaSection({ onOpenEnquiry }: BrandsCtaProps) {
             <div className="flex flex-col gap-3.5 sm:flex-row lg:flex-col">
               <button
                 type="button"
-                onClick={() =>
-                  onOpenEnquiry && onOpenEnquiry("Brand Lubricant Consultation")
-                }
+                onClick={() => onOpenEnquiry && onOpenEnquiry("Brand Lubricant Consultation")}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#C86218] px-6 py-4 text-xs font-black uppercase tracking-wider text-white transition hover:bg-[#A74D0E] shadow-lg shadow-[#C86218]/30 cursor-pointer"
               >
                 <span>{buttonText}</span>

@@ -12,14 +12,10 @@ export function ProductSubCategoryNav() {
   const productSlug = params?.slug as string;
 
   const { productDetails, products, productCategories } = useCMSStore();
-  const product =
-    productDetails[productSlug] ||
-    products?.find((p) => p.slug === productSlug);
+  const product = productDetails[productSlug] || products?.find((p) => p.slug === productSlug);
 
   const activeCategorySlug = product?.categorySlug || categorySlug;
-  const category = productCategories?.find(
-    (c) => c.slug === activeCategorySlug,
-  );
+  const category = productCategories?.find((c) => c.slug === activeCategorySlug);
 
   const subCategoryList = useMemo(() => {
     if (!products) return [];
@@ -27,11 +23,7 @@ export function ProductSubCategoryNav() {
       (p) => !activeCategorySlug || p.categorySlug === activeCategorySlug,
     );
     const titles = Array.from(
-      new Set(
-        catProducts
-          .map((p) => p.subCategoryTitle)
-          .filter((t): t is string => Boolean(t)),
-      ),
+      new Set(catProducts.map((p) => p.subCategoryTitle).filter((t): t is string => Boolean(t))),
     );
     return titles.map((title, idx) => ({
       title,
@@ -42,8 +34,7 @@ export function ProductSubCategoryNav() {
 
   if (!subCategoryList || subCategoryList.length === 0) return null;
 
-  const currentGroupTitle =
-    product?.subCategoryTitle || product?.subtitle || category?.name;
+  const currentGroupTitle = product?.subCategoryTitle || product?.subtitle || category?.name;
 
   return (
     <div className="mt-8 pt-2">
@@ -60,8 +51,7 @@ export function ProductSubCategoryNav() {
               {rowItems.map((subGroup, cIdx) => {
                 const isCurrentGroup = Boolean(
                   currentGroupTitle &&
-                  subGroup.title.trim().toLowerCase() ===
-                    currentGroupTitle.trim().toLowerCase(),
+                  subGroup.title.trim().toLowerCase() === currentGroupTitle.trim().toLowerCase(),
                 );
                 return (
                   <Link

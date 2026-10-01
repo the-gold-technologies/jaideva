@@ -50,8 +50,7 @@ const STAGES_DATA: LogisticsStageItem[] = [
     equipmentOrModeValue: "210L Barrels • 20L Pails • 50L Kegs • Bulk Tankers",
     specCardTitle: "QUALITY THRESHOLD",
     specHeadline: "100% Tamper-Evident Bung Seals",
-    specSubtext:
-      "Refinery dispatch verification ensures contaminant-free fluid delivery.",
+    specSubtext: "Refinery dispatch verification ensures contaminant-free fluid delivery.",
     specStatus: "Passed Inspection",
     icon: Package,
     interactivePills: [
@@ -73,8 +72,7 @@ const STAGES_DATA: LogisticsStageItem[] = [
     equipmentOrModeValue: "Cash • Cheque • Demand Draft (DD) • Credit Card",
     specCardTitle: "COMMERCIAL TERMS",
     specHeadline: "Instant GST Invoicing & ITC",
-    specSubtext:
-      "100% verified tax receipts for seamless accounting and corporate auditing.",
+    specSubtext: "100% verified tax receipts for seamless accounting and corporate auditing.",
     specStatus: "Multi-Mode Verified",
     icon: CreditCard,
     interactivePills: [
@@ -96,8 +94,7 @@ const STAGES_DATA: LogisticsStageItem[] = [
     equipmentOrModeValue: "By Road (Dedicated Freight & Express Transit)",
     specCardTitle: "DISPATCH LOGISTICS",
     specHeadline: "Coordinated Plant Gate Delivery",
-    specSubtext:
-      "Scheduled delivery timing aligned with factory receiving and shift hours.",
+    specSubtext: "Scheduled delivery timing aligned with factory receiving and shift hours.",
     specStatus: "Dispatched By Road",
     icon: Truck,
     interactivePills: [
@@ -118,12 +115,10 @@ export default function BrandsLogisticsStageSection({
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  const currentStage =
-    STAGES_DATA.find((s) => s.step === activeStep) || STAGES_DATA[0];
+  const currentStage = STAGES_DATA.find((s) => s.step === activeStep) || STAGES_DATA[0];
 
   // Calculate percentage along the 3 steps
-  const progressPercentage =
-    ((activeStep - 1) / (STAGES_DATA.length - 1)) * 100;
+  const progressPercentage = ((activeStep - 1) / (STAGES_DATA.length - 1)) * 100;
 
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -339,9 +334,7 @@ export default function BrandsLogisticsStageSection({
                       type="button"
                       onClick={() =>
                         onOpenEnquiry &&
-                        onOpenEnquiry(
-                          `Logistics & Commercial Inquiry: ${currentStage.label}`,
-                        )
+                        onOpenEnquiry(`Logistics & Commercial Inquiry: ${currentStage.label}`)
                       }
                       className="inline-flex items-center justify-center gap-1.5 py-2 px-4 rounded-xl bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-black uppercase tracking-wider transition-all duration-200 shadow-sm cursor-pointer shrink-0"
                     >

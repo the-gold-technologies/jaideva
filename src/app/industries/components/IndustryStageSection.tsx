@@ -49,9 +49,7 @@ interface IndustryStageSectionProps {
   onOpenEnquiry: (productName?: string) => void;
 }
 
-export default function IndustryStageSection({
-  onOpenEnquiry,
-}: IndustryStageSectionProps) {
+export default function IndustryStageSection({ onOpenEnquiry }: IndustryStageSectionProps) {
   const { pages } = useCMSStore();
   const {
     eyebrow,
@@ -68,8 +66,7 @@ export default function IndustryStageSection({
 
   const [activeIdx, setActiveIdx] = useState(0);
 
-  if (!heading && (!Array.isArray(sectors) || sectors.length === 0))
-    return null;
+  if (!heading && (!Array.isArray(sectors) || sectors.length === 0)) return null;
 
   const activeSector = sectors[activeIdx] || sectors[0];
   if (!activeSector) return null;
@@ -152,9 +149,7 @@ export default function IndustryStageSection({
                   <ChevronRight
                     size={18}
                     className={`shrink-0 ml-2 transition-transform ${
-                      isActive
-                        ? "text-[#F4B24D] translate-x-0.5"
-                        : "text-slate-400"
+                      isActive ? "text-[#F4B24D] translate-x-0.5" : "text-slate-400"
                     }`}
                   />
                 </button>
@@ -200,19 +195,18 @@ export default function IndustryStageSection({
                 )}
 
                 {/* Covered Machinery Chips */}
-                {Array.isArray(activeSector.equipment) &&
-                  activeSector.equipment.length > 0 && (
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {activeSector.equipment.map((eq: string, i: number) => (
-                        <span
-                          key={i}
-                          className="px-3 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white text-xs font-bold border border-white/20"
-                        >
-                          ✓ {eq}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+                {Array.isArray(activeSector.equipment) && activeSector.equipment.length > 0 && (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {activeSector.equipment.map((eq: string, i: number) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1 rounded-lg bg-white/15 backdrop-blur-md text-white text-xs font-bold border border-white/20"
+                      >
+                        ✓ {eq}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -232,9 +226,7 @@ export default function IndustryStageSection({
                   {activeSector.recommendedProduct.grade && (
                     <div className="absolute top-2.5 left-2.5">
                       <span className="px-2 py-0.5 rounded bg-[#0C356A] text-white text-[10px] font-black uppercase tracking-wider">
-                        <FormattedText
-                          text={activeSector.recommendedProduct.grade}
-                        />
+                        <FormattedText text={activeSector.recommendedProduct.grade} />
                       </span>
                     </div>
                   )}
@@ -251,28 +243,21 @@ export default function IndustryStageSection({
                 <div className="flex-1 min-w-0">
                   {recommendedLabel && (
                     <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-[#C86218] mb-1">
-                      <Droplets size={14} />{" "}
-                      <FormattedText text={recommendedLabel} />
+                      <Droplets size={14} /> <FormattedText text={recommendedLabel} />
                     </div>
                   )}
                   <h4 className="text-base sm:text-lg font-black text-[#0C356A] leading-snug">
-                    <FormattedText
-                      text={activeSector.recommendedProduct.name}
-                    />
+                    <FormattedText text={activeSector.recommendedProduct.name} />
                   </h4>
                   {activeSector.recommendedProduct.highlight && (
                     <p className="mt-1.5 text-xs text-slate-600 leading-relaxed font-normal">
-                      <FormattedText
-                        text={activeSector.recommendedProduct.highlight}
-                      />
+                      <FormattedText text={activeSector.recommendedProduct.highlight} />
                     </p>
                   )}
                   {activeSector.recommendedProduct.oemMatch && (
                     <div className="mt-2 text-[11px] font-bold text-slate-500">
                       {oemPrefix && <FormattedText text={oemPrefix} />}{" "}
-                      <FormattedText
-                        text={activeSector.recommendedProduct.oemMatch}
-                      />
+                      <FormattedText text={activeSector.recommendedProduct.oemMatch} />
                     </div>
                   )}
 

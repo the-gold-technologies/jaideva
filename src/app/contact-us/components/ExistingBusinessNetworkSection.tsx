@@ -51,8 +51,7 @@ export default function ExistingBusinessNetworkSection() {
     : [];
 
   const [viewMode, setViewMode] = useState<"regional" | "google">("regional");
-  const [selectedLocation, setSelectedLocation] =
-    useState<NetworkLocation | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<NetworkLocation | null>(null);
 
   // Google Map Refs
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -93,16 +92,12 @@ export default function ExistingBusinessNetworkSection() {
       mapInstanceRef.current = map;
 
       const roadmapUrl = "https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}";
-      const satelliteUrl =
-        "https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}";
+      const satelliteUrl = "https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}";
 
-      const layer = L.tileLayer(
-        mapType === "roadmap" ? roadmapUrl : satelliteUrl,
-        {
-          subdomains: ["0", "1", "2", "3"],
-          maxZoom: 20,
-        },
-      ).addTo(map);
+      const layer = L.tileLayer(mapType === "roadmap" ? roadmapUrl : satelliteUrl, {
+        subdomains: ["0", "1", "2", "3"],
+        maxZoom: 20,
+      }).addTo(map);
 
       tileLayerRef.current = layer;
 
@@ -214,9 +209,7 @@ export default function ExistingBusinessNetworkSection() {
 
       if (locations.length > 0) {
         // Calculate bounds for all locations so every pin fits on screen
-        const bounds = L.latLngBounds(
-          locations.map((loc) => [loc.lat, loc.lng]),
-        );
+        const bounds = L.latLngBounds(locations.map((loc) => [loc.lat, loc.lng]));
         map.fitBounds(bounds, {
           padding: [40, 40],
           maxZoom: 9,
@@ -245,9 +238,7 @@ export default function ExistingBusinessNetworkSection() {
   }, [viewMode, mapType, locations]);
 
   // Quick summary counts
-  const warehouses = locations.filter((l) =>
-    l.type.includes("warehouse"),
-  );
+  const warehouses = locations.filter((l) => l.type.includes("warehouse"));
   const offices = locations.filter((l) => l.type.includes("office"));
   const fieldHubs = locations.filter((l) => l.type.includes("field"));
 
@@ -278,9 +269,7 @@ export default function ExistingBusinessNetworkSection() {
             )}
 
             {description && (
-              <p className="mt-1 text-xs sm:text-sm text-slate-600 font-normal">
-                {description}
-              </p>
+              <p className="mt-1 text-xs sm:text-sm text-slate-600 font-normal">{description}</p>
             )}
           </div>
 
@@ -331,9 +320,7 @@ export default function ExistingBusinessNetworkSection() {
               )}
 
               {/* Bottom Quick-Action Info Bar */}
-              {(quickJumpWarehouses ||
-                quickJumpOffices ||
-                quickJumpFieldHubs) && (
+              {(quickJumpWarehouses || quickJumpOffices || quickJumpFieldHubs) && (
                 <div className="w-full mt-3 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs px-2">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="font-bold text-slate-700">Quick Jump:</span>
@@ -397,9 +384,7 @@ export default function ExistingBusinessNetworkSection() {
                   onClick={() => {
                     if (mapInstanceRef.current) {
                       import("leaflet").then((L) => {
-                        const bounds = L.latLngBounds(
-                          locations.map((loc) => [loc.lat, loc.lng]),
-                        );
+                        const bounds = L.latLngBounds(locations.map((loc) => [loc.lat, loc.lng]));
                         mapInstanceRef.current.fitBounds(bounds, {
                           padding: [45, 45],
                           maxZoom: 9,
@@ -466,7 +451,8 @@ export default function ExistingBusinessNetworkSection() {
                 <div className="flex items-center gap-2 mb-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]" />
                   <span className="text-xs font-black uppercase tracking-wider text-amber-800">
-                    Field Presence ({fieldHubs.length > 0 ? `${fieldHubs.length}+ Clusters` : "Clusters"})
+                    Field Presence (
+                    {fieldHubs.length > 0 ? `${fieldHubs.length}+ Clusters` : "Clusters"})
                   </span>
                 </div>
                 <div className="text-xs font-medium text-slate-700 leading-relaxed truncate">

@@ -31,9 +31,7 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Car,
 };
 
-export default function IndustriesWeServeSection({
-  onOpenEnquiry,
-}: IndustriesWeServeSectionProps) {
+export default function IndustriesWeServeSection({ onOpenEnquiry }: IndustriesWeServeSectionProps) {
   const { pages } = useCMSStore();
   const {
     title,
@@ -50,10 +48,7 @@ export default function IndustriesWeServeSection({
   }
 
   return (
-    <section
-      id="industries"
-      className="py-14 sm:py-16 bg-[#f8fafc] text-center font-sans"
-    >
+    <section id="industries" className="py-14 sm:py-16 bg-[#f8fafc] text-center font-sans">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Heading with Underline */}
         {title && (
@@ -88,10 +83,7 @@ export default function IndustriesWeServeSection({
               return (
                 <div
                   key={ind.name || idx}
-                  onClick={() =>
-                    onOpenEnquiry &&
-                    onOpenEnquiry(`${ind.name} Industry Lubricants`)
-                  }
+                  onClick={() => onOpenEnquiry && onOpenEnquiry(`${ind.name} Industry Lubricants`)}
                   className="bg-white border border-slate-200/90 hover:border-[#C86218] rounded-xl p-4 sm:p-5 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-1 shadow-2xs hover:shadow-md cursor-pointer group"
                 >
                   <div className="w-10 h-10 rounded-lg bg-[#0C356A]/5 group-hover:bg-[#0C356A] text-[#0C356A] group-hover:text-white flex items-center justify-center mb-2.5 transition-colors">
@@ -128,8 +120,7 @@ export default function IndustriesWeServeSection({
               <button
                 type="button"
                 onClick={() =>
-                  onOpenEnquiry &&
-                  onOpenEnquiry("Industry Specific Lubrication Consultation")
+                  onOpenEnquiry && onOpenEnquiry("Industry Specific Lubrication Consultation")
                 }
                 className="inline-flex items-center justify-center gap-2 bg-[#0C356A] hover:bg-[#082142] text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-8 py-3.5 rounded shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
               >

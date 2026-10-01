@@ -40,9 +40,7 @@ interface MachineryFeatureProps {
   onOpenEnquiry?: (systemName?: string) => void;
 }
 
-export default function MachineryFeatureSection({
-  onOpenEnquiry,
-}: MachineryFeatureProps) {
+export default function MachineryFeatureSection({ onOpenEnquiry }: MachineryFeatureProps) {
   const { pages } = useCMSStore();
   const {
     eyebrow,
@@ -56,16 +54,13 @@ export default function MachineryFeatureSection({
 
   const [activeTab, setActiveTab] = useState(0);
 
-  if (!heading && (!Array.isArray(systems) || systems.length === 0))
-    return null;
+  if (!heading && (!Array.isArray(systems) || systems.length === 0)) return null;
 
   const currentSystem = systems[activeTab] || systems[0];
   if (!currentSystem) return null;
 
   const SystemIcon = resolveIcon(currentSystem.icon);
-  const benefitsList = Array.isArray(currentSystem.benefits)
-    ? currentSystem.benefits
-    : [];
+  const benefitsList = Array.isArray(currentSystem.benefits) ? currentSystem.benefits : [];
 
   return (
     <section className="py-20 bg-[#f8fafc] text-slate-800">
@@ -105,10 +100,7 @@ export default function MachineryFeatureSection({
                       : "bg-white border border-slate-200 text-slate-700 hover:border-[#C86218] hover:text-[#0C356A]"
                   }`}
                 >
-                  <TabIcon
-                    size={16}
-                    className={isSelected ? "text-[#F4B24D]" : "text-[#C86218]"}
-                  />
+                  <TabIcon size={16} className={isSelected ? "text-[#F4B24D]" : "text-[#C86218]"} />
                   <span>{sys.title}</span>
                 </button>
               );
@@ -166,10 +158,7 @@ export default function MachineryFeatureSection({
                       key={bIdx}
                       className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 font-medium"
                     >
-                      <CheckCircle2
-                        size={16}
-                        className="text-[#C86218] shrink-0 mt-0.5"
-                      />
+                      <CheckCircle2 size={16} className="text-[#C86218] shrink-0 mt-0.5" />
                       <span>
                         <FormattedText text={b} />
                       </span>
@@ -201,8 +190,7 @@ export default function MachineryFeatureSection({
                 <button
                   type="button"
                   onClick={() =>
-                    onOpenEnquiry &&
-                    onOpenEnquiry(`${currentSystem.title} - ${buttonText}`)
+                    onOpenEnquiry && onOpenEnquiry(`${currentSystem.title} - ${buttonText}`)
                   }
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-black uppercase tracking-wider transition-colors shadow-md cursor-pointer"
                 >

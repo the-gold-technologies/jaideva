@@ -15,7 +15,8 @@ export function isHindiActive(): boolean {
 
   // 1. Explicit user selection in localStorage takes absolute priority
   try {
-    const saved = localStorage.getItem("jaideva_language") || localStorage.getItem("mahalaxmi_language");
+    const saved =
+      localStorage.getItem("jaideva_language") || localStorage.getItem("mahalaxmi_language");
     if (saved === "HI") return true;
     if (saved === "EN") return false;
   } catch {}
@@ -220,7 +221,7 @@ export default function GoogleTranslator() {
             includedLanguages: "en,hi",
             autoDisplay: false,
           },
-          "google_translate_element"
+          "google_translate_element",
         );
       }
     };
@@ -228,7 +229,8 @@ export default function GoogleTranslator() {
     if (!document.getElementById("google-translate-script")) {
       const script = document.createElement("script");
       script.id = "google-translate-script";
-      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.src =
+        "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
       document.body.appendChild(script);
     }

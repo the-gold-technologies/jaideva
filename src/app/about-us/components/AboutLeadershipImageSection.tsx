@@ -19,12 +19,42 @@ interface AboutLeadershipProps {
 }
 
 const STAT_TILES = [
-  { label: "Year Established", value: "2008", desc: "16+ years continuous market leadership", icon: Calendar },
-  { label: "Proprietorship", value: "Private Firm", desc: "Wholesaler, Distributor & Trader", icon: Building2 },
-  { label: "Annual Turnover", value: "₹25 – 100 Cr", desc: "Robust commercial & supply volume", icon: TrendingUp },
-  { label: "Total Employees", value: "26 – 50 People", desc: "Lubrication engineers & operations staff", icon: Users },
-  { label: "Authorized Brands", value: "10+ Global Brands", desc: "Refinery-direct procurement channels", icon: Award },
-  { label: "Product Portfolio", value: "500+ SKUs", desc: "Engine, hydraulic, gear, cutting & greases", icon: ShieldCheck },
+  {
+    label: "Year Established",
+    value: "2008",
+    desc: "16+ years continuous market leadership",
+    icon: Calendar,
+  },
+  {
+    label: "Proprietorship",
+    value: "Private Firm",
+    desc: "Wholesaler, Distributor & Trader",
+    icon: Building2,
+  },
+  {
+    label: "Annual Turnover",
+    value: "₹25 – 100 Cr",
+    desc: "Robust commercial & supply volume",
+    icon: TrendingUp,
+  },
+  {
+    label: "Total Employees",
+    value: "26 – 50 People",
+    desc: "Lubrication engineers & operations staff",
+    icon: Users,
+  },
+  {
+    label: "Authorized Brands",
+    value: "10+ Global Brands",
+    desc: "Refinery-direct procurement channels",
+    icon: Award,
+  },
+  {
+    label: "Product Portfolio",
+    value: "500+ SKUs",
+    desc: "Engine, hydraulic, gear, cutting & greases",
+    icon: ShieldCheck,
+  },
 ];
 
 export default function AboutLeadershipImageSection({ onOpenEnquiry }: AboutLeadershipProps) {
@@ -40,9 +70,9 @@ export default function AboutLeadershipImageSection({ onOpenEnquiry }: AboutLead
             Leadership & Credibility
           </h2>
           <p className="mt-3 text-base text-slate-600 leading-relaxed">
-            Guided by visionary mentorship and backed by over a decade and a half of industry experience,
-            Jai Deva Oil Co. stands as a premier distribution bridge between top global lubricant manufacturers
-            and critical industrial operations.
+            Guided by visionary mentorship and backed by over a decade and a half of industry
+            experience, Jai Deva Oil Co. stands as a premier distribution bridge between top global
+            lubricant manufacturers and critical industrial operations.
           </p>
         </div>
 
@@ -89,16 +119,22 @@ export default function AboutLeadershipImageSection({ onOpenEnquiry }: AboutLead
 
               {/* Mentor Quote & Leadership Statement */}
               <div className="p-6 sm:p-7 relative bg-white flex-1 flex flex-col justify-between">
-                <Quote size={60} className="absolute top-3 right-4 text-[#0C356A]/5 pointer-events-none" />
+                <Quote
+                  size={60}
+                  className="absolute top-3 right-4 text-[#0C356A]/5 pointer-events-none"
+                />
 
                 <div className="space-y-3">
                   <p className="text-xs sm:text-sm text-slate-700 leading-relaxed italic border-l-2 border-[#C86218] pl-4">
-                    "Our objective has never been just selling barrels of oil; it is about guaranteeing machine reliability,
-                    minimizing costly downtime, and ensuring our industrial clients receive genuine refinery-grade lubrication on time, every time."
+                    "Our objective has never been just selling barrels of oil; it is about
+                    guaranteeing machine reliability, minimizing costly downtime, and ensuring our
+                    industrial clients receive genuine refinery-grade lubrication on time, every
+                    time."
                   </p>
                   <p className="text-xs text-slate-600 leading-relaxed pt-2">
-                    Under Mr. Goyal’s mentorship, Jai Deva Oil Co. has maintained long-standing dealer networks and industrial partnerships
-                    anchored on transparent commercial terms and technical advisory.
+                    Under Mr. Goyal’s mentorship, Jai Deva Oil Co. has maintained long-standing
+                    dealer networks and industrial partnerships anchored on transparent commercial
+                    terms and technical advisory.
                   </p>
                 </div>
 
@@ -138,9 +174,7 @@ export default function AboutLeadershipImageSection({ onOpenEnquiry }: AboutLead
                     <p className="text-xl sm:text-2xl font-black text-[#0C356A] mt-1">
                       {tile.value}
                     </p>
-                    <p className="text-xs text-slate-500 mt-1">
-                      {tile.desc}
-                    </p>
+                    <p className="text-xs text-slate-500 mt-1">{tile.desc}</p>
                   </div>
                 );
               })}
@@ -158,19 +192,31 @@ export default function AboutLeadershipImageSection({ onOpenEnquiry }: AboutLead
                 <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-slate-300">
                   <div className="flex items-start gap-2">
                     <CheckCircle2 size={16} className="text-[#F4B24D] shrink-0 mt-0.5" />
-                    <span><strong>100% Genuine Seals:</strong> Zero counterfeit risk through factory direct procurement.</span>
+                    <span>
+                      <strong>100% Genuine Seals:</strong> Zero counterfeit risk through factory
+                      direct procurement.
+                    </span>
                   </div>
                   <div className="flex items-start gap-2">
                     <CheckCircle2 size={16} className="text-[#F4B24D] shrink-0 mt-0.5" />
-                    <span><strong>Viscosity Cross-Referencing:</strong> Expert technical mapping between OEM specs.</span>
+                    <span>
+                      <strong>Viscosity Cross-Referencing:</strong> Expert technical mapping between
+                      OEM specs.
+                    </span>
                   </div>
                   <div className="flex items-start gap-2">
                     <CheckCircle2 size={16} className="text-[#F4B24D] shrink-0 mt-0.5" />
-                    <span><strong>Emergency Stock Reserves:</strong> Dedicated buffer warehouses for high-demand grades.</span>
+                    <span>
+                      <strong>Emergency Stock Reserves:</strong> Dedicated buffer warehouses for
+                      high-demand grades.
+                    </span>
                   </div>
                   <div className="flex items-start gap-2">
                     <CheckCircle2 size={16} className="text-[#F4B24D] shrink-0 mt-0.5" />
-                    <span><strong>Direct Dispatch Logistics:</strong> Regional delivery networks covering 40+ manufacturing cities.</span>
+                    <span>
+                      <strong>Direct Dispatch Logistics:</strong> Regional delivery networks
+                      covering 40+ manufacturing cities.
+                    </span>
                   </div>
                 </div>
               </div>

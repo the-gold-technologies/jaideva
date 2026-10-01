@@ -30,13 +30,26 @@ const ICON_MAP: Record<string, React.ElementType> = {
   Award,
 };
 
-function resolveIcon(iconKey: string): React.ElementType {
-  const key = typeof iconKey === "string" ? iconKey.trim() : "";
+function resolveIcon(iconKey: any): React.ElementType {
+  if (typeof iconKey !== "string") return ShieldCheck;
+  const key = iconKey.trim();
   return ICON_MAP[key] || ICON_MAP[key.toLowerCase()] || ShieldCheck;
 }
 
 export default function BrandsPillarsSection() {
   const { pages } = useCMSStore();
+  const rawData = pages["brands"]?.BrandsPillarsSection;
+  const sectionData =
+    typeof rawData === "string"
+      ? (() => {
+          try {
+            return JSON.parse(rawData);
+          } catch {
+            return {};
+          }
+        })()
+      : rawData || {};
+
   const {
     eyebrow,
     heading,
@@ -49,18 +62,19 @@ export default function BrandsPillarsSection() {
     guaranteeHeadline,
     guaranteeDesc,
     pillars = [],
-  } = pages["brands"]?.BrandsPillarsSection || {};
+  } = sectionData;
 
   const sidePhoto = image || sideImage;
 
-  if (!heading && (!Array.isArray(pillars) || pillars.length === 0))
+  if (!heading && (!Array.isArray(pillars) || pillars.length === 0)) {
     return null;
+  }
 
   return (
     <section className="py-20 bg-white font-sans border-t border-slate-200">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Heading & Pillars */}
+          {/* Left Column: Heading & 4 Pillars */}
           <div className="lg:col-span-7">
             {eyebrow && (
               <span className="inline-block text-xs font-black tracking-[0.25em] uppercase mb-2 text-[#C86218]">
@@ -68,38 +82,40 @@ export default function BrandsPillarsSection() {
               </span>
             )}
             {heading && (
-              <h2 className="text-3xl sm:text-4xl font-black text-[#0C356A] uppercase tracking-[-0.02em] leading-tight mb-4">
+              <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-[-0.03em] text-[#0C356A] leading-tight">
                 <FormattedText text={heading} />
               </h2>
             )}
             {description && (
-              <p className="text-slate-600 text-base leading-relaxed mb-8 max-w-2xl">
+              <p className="mt-3 max-w-xl text-base text-slate-600 leading-relaxed">
                 <FormattedText text={description} />
               </p>
             )}
 
             {Array.isArray(pillars) && pillars.length > 0 && (
-              <div className="grid sm:grid-cols-2 gap-6">
+              <div className="mt-8 space-y-4">
                 {pillars.map((pillar: any, index: number) => {
                   const IconComp = resolveIcon(pillar.icon);
                   return (
                     <div
-                      key={index}
-                      className="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-[#C86218] hover:bg-white hover:shadow-md transition-all group"
+                      key={pillar.title || index}
+                      className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 hover:border-[#C86218]/40 hover:bg-white transition-all flex items-start gap-4 shadow-2xs"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-[#0C356A] text-white flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#0C356A]/10 text-[#0C356A]">
                         <IconComp size={20} />
                       </div>
-                      {pillar.title && (
-                        <h3 className="text-base font-bold text-[#0C356A] group-hover:text-[#C86218] transition-colors mb-1.5">
-                          <FormattedText text={pillar.title} />
-                        </h3>
-                      )}
-                      {pillar.description && (
-                        <p className="text-xs text-slate-600 leading-relaxed">
-                          <FormattedText text={pillar.description} />
-                        </p>
-                      )}
+                      <div>
+                        {pillar.title && (
+                          <h3 className="text-base font-extrabold text-[#0C356A]">
+                            <FormattedText text={pillar.title} />
+                          </h3>
+                        )}
+                        {pillar.description && (
+                          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1">
+                            <FormattedText text={pillar.description} />
+                          </p>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
@@ -107,17 +123,18 @@ export default function BrandsPillarsSection() {
             )}
           </div>
 
-          {/* Right Column: Visual Feature & Guarantee Badge */}
+          {/* Right Column: Engine Oil & Warehouse Photography Showcase */}
           {sidePhoto && (
             <div className="lg:col-span-5">
               <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl group">
                 <img
                   src={sidePhoto}
-                  alt={heading || "Refinery warehouse distribution"}
+                  alt={heading || "Sealed motor oil barrels and warehouse distribution"}
                   className="w-full h-[460px] object-cover object-center group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0C356A]/90 via-[#0C356A]/25 to-transparent" />
 
+                {/* Floating Verified Badge */}
                 {verifiedBadge && (
                   <div className="absolute top-4 left-4">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#0C356A] text-xs font-black uppercase tracking-wider shadow-sm">
@@ -127,6 +144,7 @@ export default function BrandsPillarsSection() {
                   </div>
                 )}
 
+                {/* Bottom Inset Card */}
                 {(guaranteeHeadline || guaranteeTitle || guaranteeDesc) && (
                   <div className="absolute bottom-4 left-4 right-4 p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/60 shadow-lg text-slate-800">
                     <div className="flex items-center justify-between gap-2 mb-1">
@@ -142,14 +160,10 @@ export default function BrandsPillarsSection() {
                       )}
                     </div>
                     {guaranteeHeadline && (
-                      <div className="text-sm font-bold text-[#0C356A]">
-                        {guaranteeHeadline}
-                      </div>
+                      <div className="text-sm font-bold text-[#0C356A]">{guaranteeHeadline}</div>
                     )}
                     {guaranteeDesc && (
-                      <p className="text-xs text-slate-500 mt-1">
-                        {guaranteeDesc}
-                      </p>
+                      <p className="text-xs text-slate-500 mt-1">{guaranteeDesc}</p>
                     )}
                   </div>
                 )}

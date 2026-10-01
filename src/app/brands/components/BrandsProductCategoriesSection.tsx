@@ -15,8 +15,7 @@ export default function BrandsProductCategoriesSection() {
     categories = [],
   } = pages["brands"]?.BrandsProductCategoriesSection || {};
 
-  if (!heading && (!Array.isArray(categories) || categories.length === 0))
-    return null;
+  if (!heading && (!Array.isArray(categories) || categories.length === 0)) return null;
 
   return (
     <section className="py-20 bg-slate-50 font-sans border-t border-slate-200">

@@ -62,10 +62,7 @@ export default function Home() {
       />
 
       {/* 2. Homepage Hero */}
-      <HomeHero
-        onOpenEnquiry={handleOpenEnquiry}
-        onOpenDistributor={handleOpenDistributor}
-      />
+      <HomeHero onOpenEnquiry={handleOpenEnquiry} onOpenDistributor={handleOpenDistributor} />
 
       {/* 4. OUR PRODUCT RANGE (Original Circular Icon UI Design) */}
       <ProductsServicesSection />

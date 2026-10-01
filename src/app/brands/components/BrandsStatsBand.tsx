@@ -14,10 +14,7 @@ export default function BrandsStatsBand() {
       <div className="mx-auto max-w-6xl px-5 sm:px-8 lg:px-12">
         <div className="grid grid-cols-2 gap-y-8 md:grid-cols-4 divide-y sm:divide-y-0 md:divide-x divide-slate-200/80">
           {stats.map((stat: { value: string; label: string }, idx: number) => (
-            <div
-              key={`${stat.label}-${idx}`}
-              className="text-center px-4 pt-4 sm:pt-0"
-            >
+            <div key={`${stat.label}-${idx}`} className="text-center px-4 pt-4 sm:pt-0">
               <p className="text-4xl font-black text-[#0C356A] sm:text-5xl tracking-tight">
                 {stat.value}
               </p>

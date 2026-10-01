@@ -11,9 +11,7 @@ export function ProductBreadcrumb() {
   const productSlug = params?.slug as string;
 
   const { productDetails, products, productCategories } = useCMSStore();
-  const product =
-    productDetails[productSlug] ||
-    products?.find((p) => p.slug === productSlug);
+  const product = productDetails[productSlug] || products?.find((p) => p.slug === productSlug);
 
   const activeCategorySlug = product?.categorySlug || categorySlug;
   const category = productCategories?.find((c) => c.slug === activeCategorySlug);
@@ -29,10 +27,7 @@ export function ProductBreadcrumb() {
         {category && (
           <>
             <span className="text-gray-400">/</span>
-            <Link
-              href={`/products/${category.slug}`}
-              className="text-[#337ab7] hover:underline"
-            >
+            <Link href={`/products/${category.slug}`} className="text-[#337ab7] hover:underline">
               {category.name}
             </Link>
           </>

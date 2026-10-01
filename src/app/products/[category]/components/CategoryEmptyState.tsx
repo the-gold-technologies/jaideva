@@ -10,10 +10,7 @@ interface CategoryEmptyStateProps {
   categorySlug: string;
 }
 
-export function CategoryEmptyState({
-  searchQuery,
-  categorySlug,
-}: CategoryEmptyStateProps) {
+export function CategoryEmptyState({ searchQuery, categorySlug }: CategoryEmptyStateProps) {
   const { productCategories } = useCMSStore();
   const category = productCategories?.find((c) => c.slug === categorySlug);
   const categoryName = category?.name || "products";
@@ -21,9 +18,7 @@ export function CategoryEmptyState({
   if (searchQuery) {
     return (
       <div className="py-16 px-6 bg-white rounded-2xl border border-gray-200 text-center max-w-md mx-auto my-8 w-full shadow-sm">
-        <h3 className="text-base font-bold text-[#002b5c] uppercase">
-          No matching products found
-        </h3>
+        <h3 className="text-base font-bold text-[#002b5c] uppercase">No matching products found</h3>
         <p className="text-xs text-gray-500 mt-2 leading-relaxed">
           We couldn&apos;t find any {categoryName} matching &ldquo;{searchQuery}&rdquo;.
         </p>
@@ -44,9 +39,7 @@ export function CategoryEmptyState({
       <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-5">
         <Droplet size={28} className="text-gray-400" />
       </div>
-      <p className="text-gray-500 text-sm">
-        No products found in this category.
-      </p>
+      <p className="text-gray-500 text-sm">No products found in this category.</p>
     </div>
   );
 }

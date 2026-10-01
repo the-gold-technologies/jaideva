@@ -9,16 +9,10 @@ interface ProductsServicesProps {
   onSelectCategory?: (category: string) => void;
 }
 
-export default function ProductsServicesSection({
-  onSelectCategory,
-}: ProductsServicesProps) {
+export default function ProductsServicesSection({ onSelectCategory }: ProductsServicesProps) {
   const { pages } = useCMSStore();
 
-  const {
-    title,
-    subtitle,
-    items = [],
-  } = pages["home"]?.ProductsServicesSection || {};
+  const { title, subtitle, items = [] } = pages["home"]?.ProductsServicesSection || {};
 
   if (!title && items.length === 0) {
     return null;
@@ -79,10 +73,7 @@ export default function ProductsServicesSection({
   };
 
   return (
-    <section
-      id="products"
-      className="py-10 sm:py-12 bg-[#f8fafc] text-center font-sans"
-    >
+    <section id="products" className="py-10 sm:py-12 bg-[#f8fafc] text-center font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Title with Underline */}
         {title && (

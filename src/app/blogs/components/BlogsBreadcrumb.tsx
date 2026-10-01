@@ -15,7 +15,10 @@ export default function BlogsBreadcrumb({ postTitle }: BlogsBreadcrumbProps) {
           Home
         </Link>
         <span className="text-gray-400">/</span>
-        <Link href="/blogs" className={`hover:text-[#C86218] transition-colors ${!postTitle ? "text-[#C86218] font-semibold" : ""}`}>
+        <Link
+          href="/blogs"
+          className={`hover:text-[#C86218] transition-colors ${!postTitle ? "text-[#C86218] font-semibold" : ""}`}
+        >
           Blogs
         </Link>
         {postTitle && (

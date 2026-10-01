@@ -7,14 +7,9 @@ import { FormattedText } from "@/components/FormattedText";
 
 export default function AboutJaiDevaContent() {
   const { pages } = useCMSStore();
-  const {
-    title,
-    subtitle,
-    paragraphs = [],
-  } = pages["about-us"]?.AboutJaiDevaContent || {};
+  const { title, subtitle, paragraphs = [] } = pages["about-us"]?.AboutJaiDevaContent || {};
 
-  if (!title && (!Array.isArray(paragraphs) || paragraphs.length === 0))
-    return null;
+  if (!title && (!Array.isArray(paragraphs) || paragraphs.length === 0)) return null;
 
   return (
     <section

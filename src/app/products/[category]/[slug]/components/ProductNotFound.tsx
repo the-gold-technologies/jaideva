@@ -30,12 +30,8 @@ export function ProductNotFound({
         setLanguage={setLanguage}
       />
       <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <h1 className="text-3xl font-extrabold text-[#002b5c] mb-4">
-          Product Not Found
-        </h1>
-        <p className="text-gray-600 mb-8">
-          The requested lubricant product could not be located.
-        </p>
+        <h1 className="text-3xl font-extrabold text-[#002b5c] mb-4">Product Not Found</h1>
+        <p className="text-gray-600 mb-8">The requested lubricant product could not be located.</p>
         <Link
           href="/products"
           className="inline-flex items-center gap-2 bg-[#002b5c] text-white font-bold px-6 py-3 rounded-lg hover:bg-[#C86218] transition"

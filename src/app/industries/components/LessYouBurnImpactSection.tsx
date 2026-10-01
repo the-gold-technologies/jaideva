@@ -1,13 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  ArrowRight,
-  TrendingDown,
-  ThermometerSnowflake,
-  Clock,
-  Award,
-} from "lucide-react";
+import { ArrowRight, TrendingDown, ThermometerSnowflake, Clock, Award } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
 
@@ -31,9 +25,7 @@ interface LessYouBurnImpactProps {
   onOpenEnquiry: (subject?: string) => void;
 }
 
-export default function LessYouBurnImpactSection({
-  onOpenEnquiry,
-}: LessYouBurnImpactProps) {
+export default function LessYouBurnImpactSection({ onOpenEnquiry }: LessYouBurnImpactProps) {
   const { pages } = useCMSStore();
   const {
     badge,
@@ -43,8 +35,7 @@ export default function LessYouBurnImpactSection({
     pillars = [],
   } = pages["industries"]?.LessYouBurnImpactSection || {};
 
-  if (!heading && (!Array.isArray(pillars) || pillars.length === 0))
-    return null;
+  if (!heading && (!Array.isArray(pillars) || pillars.length === 0)) return null;
 
   return (
     <section className="relative isolate overflow-hidden bg-[#071f3b] text-white py-20 border-y border-white/10 font-sans">

@@ -28,9 +28,7 @@ export default function LubesHeadquarterSection() {
             {badge && (
               <>
                 <br />
-                <span className="border-b-[3px] border-[#002b5c] pb-1 inline-block">
-                  {badge}
-                </span>
+                <span className="border-b-[3px] border-[#002b5c] pb-1 inline-block">{badge}</span>
               </>
             )}
           </h2>
@@ -39,34 +37,24 @@ export default function LubesHeadquarterSection() {
         <div className="text-gray-700 text-sm md:text-base leading-relaxed space-y-1 font-normal font-sans">
           {proprietor && (
             <p>
-              <strong className="font-bold text-gray-900">Proprietor:</strong>{" "}
-              {proprietor}
+              <strong className="font-bold text-gray-900">Proprietor:</strong> {proprietor}
             </p>
           )}
           {servingRegion && (
             <p>
-              <strong className="font-bold text-gray-900">
-                Serving Region:
-              </strong>{" "}
-              {servingRegion}
+              <strong className="font-bold text-gray-900">Serving Region:</strong> {servingRegion}
             </p>
           )}
           {establishment && (
             <p>
-              <strong className="font-bold text-gray-900">
-                Establishment:
-              </strong>{" "}
-              {establishment}
+              <strong className="font-bold text-gray-900">Establishment:</strong> {establishment}
             </p>
           )}
           {(phone || email) && (
             <p className="pt-2">
               {phone && (
                 <>
-                  <strong className="font-bold text-gray-900">
-                    Direct Contact:
-                  </strong>{" "}
-                  {phone}
+                  <strong className="font-bold text-gray-900">Direct Contact:</strong> {phone}
                 </>
               )}
               {phone && email && " | "}

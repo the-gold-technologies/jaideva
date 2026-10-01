@@ -30,14 +30,9 @@ function getEventBadge(item: any): string {
     return "Exhibition";
   if (title.includes("meet") || title.includes("discussion") || title.includes("oem"))
     return "Stakeholders";
-  if (
-    title.includes("army") ||
-    title.includes("laboratory") ||
-    title.includes("inauguration")
-  )
+  if (title.includes("army") || title.includes("laboratory") || title.includes("inauguration"))
     return "Defence Lab";
-  if (title.includes("road safety") || title.includes("safety"))
-    return "CSR & Safety";
+  if (title.includes("road safety") || title.includes("safety")) return "CSR & Safety";
   if (title.includes("world road")) return "Global Summit";
   return "Corporate";
 }
@@ -234,7 +229,7 @@ export default function EventsContent() {
             <div className="flex-[5.8] min-h-0">{renderCard(block1Items[5], 5)}</div>
             <div className="flex-[4.2] min-h-0">{renderCard(block1Items[6], 6)}</div>
           </div>
-        </div>
+        </div>,
       );
 
       // Remaining items after Block 1 (items 7 to total)
@@ -271,7 +266,7 @@ export default function EventsContent() {
                 <div className="flex-[5.0] min-h-0">{renderCard(chunk[4], start + 4)}</div>
                 <div className="flex-[5.0] min-h-0">{renderCard(chunk[5], start + 5)}</div>
               </div>
-            </div>
+            </div>,
           );
           currentIdx += 6;
           blockNum += 1;
@@ -294,7 +289,7 @@ export default function EventsContent() {
               <div className="flex flex-col gap-5 md:gap-6 h-full min-h-0">
                 <div className="flex-1 min-h-0">{renderCard(chunk[4], start + 4)}</div>
               </div>
-            </div>
+            </div>,
           );
           currentIdx += 5;
         } else if (remaining === 4) {
@@ -308,7 +303,7 @@ export default function EventsContent() {
                   {renderCard(item, start + i)}
                 </div>
               ))}
-            </div>
+            </div>,
           );
           currentIdx += 4;
         } else if (remaining === 3) {
@@ -322,7 +317,7 @@ export default function EventsContent() {
                   {renderCard(item, start + i)}
                 </div>
               ))}
-            </div>
+            </div>,
           );
           currentIdx += 3;
         } else if (remaining === 2) {
@@ -336,7 +331,7 @@ export default function EventsContent() {
                   {renderCard(item, start + i)}
                 </div>
               ))}
-            </div>
+            </div>,
           );
           currentIdx += 2;
         } else if (remaining === 1) {
@@ -346,7 +341,7 @@ export default function EventsContent() {
           blocks.push(
             <div key={`desktop-block-${blockNum}`} className="w-full mb-6">
               <div className="aspect-[21/9] w-full">{renderCard(item, start)}</div>
-            </div>
+            </div>,
           );
           currentIdx += 1;
         }
@@ -368,7 +363,7 @@ export default function EventsContent() {
               <div className="flex-1 min-h-0">{renderCard(displayedItems[4], 4)}</div>
               <div className="flex-1 min-h-0">{renderCard(displayedItems[5], 5)}</div>
             </div>
-          </div>
+          </div>,
         );
       } else if (total === 5) {
         blocks.push(
@@ -384,7 +379,7 @@ export default function EventsContent() {
             <div className="flex flex-col gap-5 md:gap-6 h-full min-h-0">
               <div className="flex-1 min-h-0">{renderCard(displayedItems[4], 4)}</div>
             </div>
-          </div>
+          </div>,
         );
       } else if (total === 4) {
         blocks.push(
@@ -394,7 +389,7 @@ export default function EventsContent() {
                 {renderCard(item, i)}
               </div>
             ))}
-          </div>
+          </div>,
         );
       } else if (total === 3) {
         blocks.push(
@@ -404,7 +399,7 @@ export default function EventsContent() {
                 {renderCard(item, i)}
               </div>
             ))}
-          </div>
+          </div>,
         );
       } else if (total === 2) {
         blocks.push(
@@ -414,13 +409,13 @@ export default function EventsContent() {
                 {renderCard(item, i)}
               </div>
             ))}
-          </div>
+          </div>,
         );
       } else if (total === 1) {
         blocks.push(
           <div key="dt-small-1" className="w-full mb-6">
             <div className="aspect-[21/9] w-full">{renderCard(displayedItems[0], 0)}</div>
-          </div>
+          </div>,
         );
       }
     }
@@ -494,8 +489,7 @@ export default function EventsContent() {
               <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 font-medium">
                 <Sparkles size={16} className="text-[#C86218]" />
                 <span>
-                  Showing{" "}
-                  <strong className="text-[#002b5c]">{displayedItems.length}</strong> of{" "}
+                  Showing <strong className="text-[#002b5c]">{displayedItems.length}</strong> of{" "}
                   <strong className="text-[#002b5c]">{filteredItems.length}</strong> event moments
                 </span>
               </div>
@@ -596,8 +590,7 @@ export default function EventsContent() {
                   {filteredItems[lightboxIndex].title}
                 </p>
                 {filteredItems[lightboxIndex].altText &&
-                  filteredItems[lightboxIndex].altText !==
-                    filteredItems[lightboxIndex].title && (
+                  filteredItems[lightboxIndex].altText !== filteredItems[lightboxIndex].title && (
                     <p className="text-gray-400 text-xs mt-1">
                       {filteredItems[lightboxIndex].altText}
                     </p>

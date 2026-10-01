@@ -44,9 +44,7 @@ function resolveIcon(iconKey: unknown): React.ElementType {
   return (
     (key && ICON_MAP[key]) ||
     (key && ICON_MAP[key.toLowerCase()]) ||
-    (typeof iconKey === "function"
-      ? (iconKey as React.ElementType)
-      : CheckCircle2)
+    (typeof iconKey === "function" ? (iconKey as React.ElementType) : CheckCircle2)
   );
 }
 

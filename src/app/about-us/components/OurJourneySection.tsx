@@ -1,15 +1,7 @@
 "use client";
 
 import React from "react";
-import {
-  Calendar,
-  Layers,
-  Boxes,
-  ShieldCheck,
-  Users,
-  Clock,
-  CheckCircle2,
-} from "lucide-react";
+import { Calendar, Layers, Boxes, ShieldCheck, Users, Clock, CheckCircle2 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
 
@@ -35,29 +27,18 @@ function resolveIcon(iconKey: unknown): React.ElementType {
   return (
     (key && ICON_MAP[key]) ||
     (key && ICON_MAP[key.toLowerCase()]) ||
-    (typeof iconKey === "function"
-      ? (iconKey as React.ElementType)
-      : CheckCircle2)
+    (typeof iconKey === "function" ? (iconKey as React.ElementType) : CheckCircle2)
   );
 }
 
 export default function OurJourneySection() {
   const { pages } = useCMSStore();
-  const {
-    eyebrow,
-    heading,
-    intro,
-    milestones = [],
-  } = pages["about-us"]?.OurJourneySection || {};
+  const { eyebrow, heading, intro, milestones = [] } = pages["about-us"]?.OurJourneySection || {};
 
-  if (!heading && (!Array.isArray(milestones) || milestones.length === 0))
-    return null;
+  if (!heading && (!Array.isArray(milestones) || milestones.length === 0)) return null;
 
   return (
-    <section
-      id="our-journey"
-      className="max-w-6xl mx-auto px-4 md:px-8 py-14 sm:py-20 font-sans"
-    >
+    <section id="our-journey" className="max-w-6xl mx-auto px-4 md:px-8 py-14 sm:py-20 font-sans">
       {/* Header */}
       <div className="mb-12 text-center md:text-left">
         {eyebrow && (
@@ -105,9 +86,7 @@ export default function OurJourneySection() {
                   {/* Card */}
                   <div
                     className={`flex-1 pl-2 md:pl-0 ${
-                      isEven
-                        ? "md:pr-[calc(50%+2rem)] md:text-right"
-                        : "md:pl-[calc(50%+2rem)]"
+                      isEven ? "md:pr-[calc(50%+2rem)] md:text-right" : "md:pl-[calc(50%+2rem)]"
                     }`}
                   >
                     <div className="inline-block w-full rounded-2xl border border-slate-200 bg-white p-5 md:p-6 hover:border-[#C86218] transition-colors shadow-2xs">

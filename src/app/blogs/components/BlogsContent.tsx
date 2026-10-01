@@ -119,7 +119,10 @@ export default function BlogsContent() {
                   className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#002b5c] group-hover:text-[#C86218] transition-all group-hover:gap-3"
                 >
                   <span>Read Full Guide</span>
-                  <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                  <ArrowRight
+                    size={14}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
                 </Link>
 
                 <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
