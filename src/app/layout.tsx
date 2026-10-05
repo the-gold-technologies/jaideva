@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import GoogleTranslator from "@/components/GoogleTranslator";
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
 
 export default function RootLayout({
   children,
@@ -33,7 +40,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>
+      <body className={openSans.className}>
         <GoogleTranslator />
         {children}
       </body>
