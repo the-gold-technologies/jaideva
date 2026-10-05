@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { X, Send, CheckCircle2, Loader2, Building, MapPin, Phone, Mail, User } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
+import { CaptchaInput, useCaptcha } from "@/components/CaptchaWidget";
 
 interface DistributorModalProps {
   isOpen: boolean;
@@ -53,11 +54,7 @@ const LUBE_TYPES = [
   "Other Partnership",
 ];
 
-export default function DistributorModal({
-  isOpen,
-  onClose,
-  initialType = "Industrial Lube Distributor (ILD)",
-}: DistributorModalProps) {
+export default function DistributorModal({ isOpen, onClose, initialType }: DistributorModalProps) {
   const [name, setName] = useState("");
   const [firmName, setFirmName] = useState("");
   const [phone, setPhone] = useState("");
@@ -74,6 +71,14 @@ export default function DistributorModal({
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const {
+    code: captchaCode,
+    input: captchaInput,
+    setInput: setCaptchaInput,
+    refresh: refreshCaptcha,
+    isValid: captchaValid,
+  } = useCaptcha();
+
   const { submitDistributorLead } = useCMSStore();
 
   useEffect(() => {
@@ -82,15 +87,26 @@ export default function DistributorModal({
     }
   }, [initialType]);
 
+  useEffect(() => {
+    if (isOpen) {
+      refreshCaptcha();
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaValid) {
+      setErrorMessage("Please enter the correct verification code.");
+      return;
+    }
+
     setIsSubmitting(true);
     setErrorMessage("");
 
     try {
-      await submitDistributorLead({
+      const res = await submitDistributorLead({
         name,
         firmName,
         phone,
@@ -103,10 +119,15 @@ export default function DistributorModal({
         investmentCapacity,
         message: message || undefined,
       });
-      setIsSubmitted(true);
+
+      if (res && res.success === false) {
+        setErrorMessage(res.error || "Failed to submit application. Please try again.");
+      } else {
+        setIsSubmitted(true);
+      }
     } catch (err: any) {
       console.error("Distributor submission error:", err);
-      setIsSubmitted(true);
+      setErrorMessage("Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -120,6 +141,8 @@ export default function DistributorModal({
     setEmail("");
     setCity("");
     setMessage("");
+    setCaptchaInput("");
+    refreshCaptcha();
     onClose();
   };
 
@@ -335,13 +358,27 @@ export default function DistributorModal({
                 />
               </div>
 
+              {/* Security Verification / Visual CAPTCHA */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                  Security Verification <span className="text-[#C86218]">*</span>
+                </label>
+                <CaptchaInput
+                  code={captchaCode}
+                  value={captchaInput}
+                  onChange={setCaptchaInput}
+                  isValid={captchaValid}
+                  onRefresh={refreshCaptcha}
+                />
+              </div>
+
               {errorMessage && <p className="text-xs text-red-600 font-semibold">{errorMessage}</p>}
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-[#C86218] hover:bg-[#A74D0E] disabled:opacity-70 text-white text-xs sm:text-sm font-bold uppercase tracking-wider py-3.5 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={isSubmitting || !captchaValid}
+                  className="w-full bg-[#C86218] hover:bg-[#A74D0E] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold uppercase tracking-wider py-3.5 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
