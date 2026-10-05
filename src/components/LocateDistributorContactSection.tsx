@@ -7,16 +7,12 @@ import { FormattedText } from "@/components/FormattedText";
 
 interface ContactSectionProps {
   onOpenEnquiry?: (productName?: string) => void;
-  onOpenDistributor?: (type?: string) => void;
 }
 
-export default function LocateDistributorContactSection({
-  onOpenEnquiry,
-  onOpenDistributor,
-}: ContactSectionProps) {
+export default function LocateDistributorContactSection({ onOpenEnquiry }: ContactSectionProps) {
   const { pages } = useCMSStore();
 
-  const { contactTitle, companyName, address, phone, email, workingHours, btn1Text, btn2Text } =
+  const { contactTitle, companyName, address, phone, email, workingHours, btn1Text } =
     pages["home"]?.LocateDistributorSection || {};
 
   if (!phone && !email && !address) {
@@ -81,30 +77,15 @@ export default function LocateDistributorContactSection({
             </div>
 
             {/* Action Buttons */}
-            {(btn1Text || btn2Text) && (
+            {btn1Text && (
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:w-48 lg:shrink-0">
-                {btn1Text && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onOpenEnquiry && onOpenEnquiry("Jai Deva Oil Co. Direct Contact")
-                    }
-                    className="w-full bg-[#C86218] hover:bg-[#A74D0E] text-white font-bold py-3 px-4 rounded text-xs uppercase tracking-wider shadow-sm transition-all text-center cursor-pointer"
-                  >
-                    {btn1Text}
-                  </button>
-                )}
-                {btn2Text && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      onOpenDistributor && onOpenDistributor("Industrial Lube Distributor (ILD)")
-                    }
-                    className="w-full bg-[#0C356A] hover:bg-[#082142] text-white font-bold py-3 px-4 rounded text-xs uppercase tracking-wider shadow-sm transition-all text-center cursor-pointer"
-                  >
-                    {btn2Text}
-                  </button>
-                )}
+                <button
+                  type="button"
+                  onClick={() => onOpenEnquiry && onOpenEnquiry("Jai Deva Oil Co. Direct Contact")}
+                  className="w-full bg-[#C86218] hover:bg-[#A74D0E] text-white font-bold py-3 px-4 rounded text-xs uppercase tracking-wider shadow-sm transition-all text-center cursor-pointer"
+                >
+                  {btn1Text}
+                </button>
               </div>
             )}
           </div>

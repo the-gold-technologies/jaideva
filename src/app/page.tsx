@@ -85,7 +85,6 @@ export default function Home() {
       {/* 14. Locate Distributor & Contact Details Grid */}
       <LocateDistributorContactSection
         onOpenEnquiry={handleOpenEnquiry}
-        onOpenDistributor={handleOpenDistributor}
       />
 
       {/* 15. Dark Navy Footer & Sticky Enquiry Button */}

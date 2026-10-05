@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { X, Download, CheckCircle2, FileText, Loader2 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
+import { CaptchaInput, useCaptcha } from "@/components/CaptchaWidget";
 
 interface DownloadModalProps {
   isOpen: boolean;
@@ -27,22 +28,34 @@ export default function DownloadModal({
   const [isDownloaded, setIsDownloaded] = useState(false);
 
   const { submitEnquiry } = useCMSStore();
+  const {
+    code: captchaCode,
+    input: captchaInput,
+    setInput: setCaptchaInput,
+    refresh: refreshCaptcha,
+    isValid: captchaValid,
+  } = useCaptcha();
 
   useEffect(() => {
     if (isOpen) {
       setIsDownloaded(false);
+      refreshCaptcha();
     }
-  }, [isOpen]);
+  }, [isOpen, refreshCaptcha]);
 
   if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaValid) {
+      return;
+    }
     setIsSubmitting(true);
 
     try {
       await submitEnquiry({
         name,
+        company,
         phone: mobile,
         email: email || undefined,
         product: `${productName} (${pdfType} Download)`,
@@ -55,13 +68,43 @@ export default function DownloadModal({
       setIsDownloaded(true);
     }
 
-    // Trigger PDF download simulation / file fetch
-    const link = document.createElement("a");
-    link.href = pdfUrl || "#";
-    link.download = `${productName.replace(/\s+/g, "_")}_${pdfType}.pdf`;
-    document.body.appendChild(link);
-    // In real app, link.click() downloads the asset
-    document.body.removeChild(link);
+    // Trigger actual PDF download
+    if (pdfUrl && pdfUrl !== "#") {
+      try {
+        const response = await fetch(pdfUrl);
+        if (response.ok) {
+          const blob = await response.blob();
+          const blobUrl = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = blobUrl;
+          link.download = `${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(blobUrl);
+        } else {
+          // Direct fallback
+          const link = document.createElement("a");
+          link.href = pdfUrl;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          link.download = `${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } catch {
+        // Fallback for CORS or network issues
+        const link = document.createElement("a");
+        link.href = pdfUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.download = `${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
   };
 
   return (
@@ -144,10 +187,11 @@ export default function DownloadModal({
 
               <div>
                 <label className="block text-xs font-bold text-gray-700 mb-1.5">
-                  Company / Organization Name
+                  Company / Organization Name <span className="text-[#C86218]">*</span>
                 </label>
                 <input
                   type="text"
+                  required
                   placeholder="e.g. Industrial Enterprises / Manufacturing Ltd."
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
@@ -155,11 +199,25 @@ export default function DownloadModal({
                 />
               </div>
 
+              {/* Security CAPTCHA */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                  Security Verification <span className="text-[#C86218]">*</span>
+                </label>
+                <CaptchaInput
+                  code={captchaCode}
+                  value={captchaInput}
+                  onChange={setCaptchaInput}
+                  isValid={captchaValid}
+                  onRefresh={refreshCaptcha}
+                />
+              </div>
+
               <div className="pt-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full bg-[#C86218] hover:bg-[#A74D0E] disabled:opacity-70 text-white text-xs sm:text-sm font-bold uppercase tracking-wider py-3 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
+                  disabled={isSubmitting || !captchaValid}
+                  className="w-full bg-[#C86218] hover:bg-[#A74D0E] disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold uppercase tracking-wider py-3 rounded-lg transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>
@@ -185,6 +243,19 @@ export default function DownloadModal({
               </strong>{" "}
               is downloading to your device.
             </p>
+            {pdfUrl && pdfUrl !== "#" && (
+              <div className="mb-5">
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download={`${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C86218] hover:text-[#A74D0E] underline transition-colors"
+                >
+                  <Download size={14} /> Click here if download didn&apos;t start automatically
+                </a>
+              </div>
+            )}
             <button
               onClick={() => {
                 setIsDownloaded(false);
