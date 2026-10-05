@@ -24,6 +24,7 @@ export default function DownloadModal({
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
+  const [submittedName, setSubmittedName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
 
@@ -36,12 +37,29 @@ export default function DownloadModal({
     isValid: captchaValid,
   } = useCaptcha();
 
+  const resetForm = () => {
+    setName("");
+    setMobile("");
+    setEmail("");
+    setCompany("");
+    setCaptchaInput("");
+    refreshCaptcha();
+  };
+
+  const handleClose = () => {
+    resetForm();
+    setIsDownloaded(false);
+    setSubmittedName("");
+    onClose();
+  };
+
   useEffect(() => {
     if (isOpen) {
+      resetForm();
       setIsDownloaded(false);
-      refreshCaptcha();
+      setSubmittedName("");
     }
-  }, [isOpen, refreshCaptcha]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -51,10 +69,12 @@ export default function DownloadModal({
       return;
     }
     setIsSubmitting(true);
+    const leadName = name;
+    setSubmittedName(leadName);
 
     try {
       await submitEnquiry({
-        name,
+        name: leadName,
         company,
         phone: mobile,
         email: email || undefined,
@@ -65,6 +85,7 @@ export default function DownloadModal({
       console.error("Download lead capture error:", err);
     } finally {
       setIsSubmitting(false);
+      resetForm();
       setIsDownloaded(true);
     }
 
@@ -88,7 +109,7 @@ export default function DownloadModal({
   return (
     <div
       className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4"
-      onClick={onClose}
+      onClick={handleClose}
     >
       <div
         className="bg-white rounded-2xl max-w-md w-full p-6 sm:p-7 relative shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95 duration-150"
@@ -96,7 +117,7 @@ export default function DownloadModal({
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleClose}
           className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 p-1 rounded-lg transition-colors cursor-pointer"
           aria-label="Close Modal"
         >
@@ -215,7 +236,7 @@ export default function DownloadModal({
             <CheckCircle2 size={44} className="mx-auto text-green-500 mb-3" />
             <h3 className="text-xl font-extrabold text-[#002b5c] mb-1">Download Started!</h3>
             <p className="text-xs text-gray-600 mb-6 leading-relaxed">
-              Thank you <strong>{name}</strong>. The technical document{" "}
+              Thank you <strong>{submittedName || "there"}</strong>. The technical document{" "}
               <strong>
                 {productName} ({pdfType})
               </strong>{" "}
@@ -223,10 +244,7 @@ export default function DownloadModal({
             </p>
             <div className="pt-2">
               <button
-                onClick={() => {
-                  setIsDownloaded(false);
-                  onClose();
-                }}
+                onClick={handleClose}
                 className="bg-[#002b5c] hover:bg-[#001f42] text-white text-xs font-bold px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
               >
                 Done & Close
