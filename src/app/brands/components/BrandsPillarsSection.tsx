@@ -71,7 +71,7 @@ export default function BrandsPillarsSection() {
   }
 
   return (
-    <section className="py-20 bg-white font-sans border-t border-slate-200">
+    <section className="py-20 bg-white font-sans">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Heading & 4 Pillars */}
