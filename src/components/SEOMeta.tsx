@@ -25,8 +25,10 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
   }, [globalSEO, fetchGlobalSEO]);
 
   useEffect(() => {
-    // 1. Determine Title strictly from CMS data
-    const title = isHome ? globalSEO?.siteTitle || "" : activeSEO?.metaTitle || "";
+    // 1. Determine Title strictly from CMS data (No default data)
+    const title = isHome
+      ? activeSEO?.metaTitle || globalSEO?.siteTitle || ""
+      : activeSEO?.metaTitle || "";
 
     if (title) {
       document.title = title;
@@ -60,15 +62,14 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
       link.setAttribute("href", href);
     };
 
-    // 3. Description & Keywords strictly from CMS
+    // 3. Description & Keywords strictly from CMS (No default data)
     const description = isHome
-      ? globalSEO?.siteDescription || ""
+      ? activeSEO?.metaDescription || globalSEO?.siteDescription || ""
       : activeSEO?.metaDescription || "";
 
     const keywords = activeSEO?.targetKeywords || "";
 
-    const currentUrl =
-      activeSEO?.canonicalUrl || (typeof window !== "undefined" ? window.location.href : "");
+    const currentUrl = (activeSEO?.canonicalUrl || "").trim();
 
     if (description) {
       setMetaTag("name", "description", description);
@@ -144,8 +145,8 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
           .replace(/<\/script>/gi, "")
           .trim();
       }
-    } else {
-      // Automatically generate contextual JSON-LD structured data for this page
+    } else if (!isHome) {
+      // Automatically generate contextual JSON-LD structured data for non-home pages only
       finalSchema = generatePageSchema({
         pageSlug,
         activeSEO,

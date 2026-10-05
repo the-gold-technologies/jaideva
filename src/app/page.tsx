@@ -83,9 +83,7 @@ export default function Home() {
       <BrandClosingBanner onOpenEnquiry={handleOpenEnquiry} />
 
       {/* 14. Locate Distributor & Contact Details Grid */}
-      <LocateDistributorContactSection
-        onOpenEnquiry={handleOpenEnquiry}
-      />
+      <LocateDistributorContactSection onOpenEnquiry={handleOpenEnquiry} />
 
       {/* 15. Dark Navy Footer & Sticky Enquiry Button */}
       <Footer onOpenEnquiry={handleOpenEnquiry} />
