@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { X, Download, CheckCircle2, FileText, Loader2 } from "lucide-react";
-import { useCMSStore } from "@/store/useCMSStore";
+import { useCMSStore, getApiBaseUrl } from "@/store/useCMSStore";
 import { CaptchaInput, useCaptcha } from "@/components/CaptchaWidget";
 
 interface DownloadModalProps {
@@ -68,41 +68,19 @@ export default function DownloadModal({
       setIsDownloaded(true);
     }
 
-    // Trigger actual PDF download
+    // Trigger direct file download to device without opening external Cloudinary tabs
     if (pdfUrl && pdfUrl !== "#") {
-      try {
-        const response = await fetch(pdfUrl);
-        if (response.ok) {
-          const blob = await response.blob();
-          const blobUrl = window.URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = blobUrl;
-          link.download = `${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          window.URL.revokeObjectURL(blobUrl);
-        } else {
-          // Direct fallback
-          const link = document.createElement("a");
-          link.href = pdfUrl;
-          link.target = "_blank";
-          link.rel = "noopener noreferrer";
-          link.download = `${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
-      } catch {
-        // Fallback for CORS or network issues
-        const link = document.createElement("a");
-        link.href = pdfUrl;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        link.download = `${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+      const baseUrl = getApiBaseUrl();
+      const safeFilename = `${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`;
+      const downloadEndpoint = `${baseUrl}/api/download?url=${encodeURIComponent(pdfUrl)}&name=${encodeURIComponent(safeFilename)}`;
+
+      const link = document.createElement("a");
+      link.href = downloadEndpoint;
+      link.setAttribute("download", safeFilename);
+      document.body.appendChild(link);
+      link.click();
+      if (link.parentNode) {
+        link.parentNode.removeChild(link);
       }
     }
   };
@@ -243,28 +221,17 @@ export default function DownloadModal({
               </strong>{" "}
               is downloading to your device.
             </p>
-            {pdfUrl && pdfUrl !== "#" && (
-              <div className="mb-5">
-                <a
-                  href={pdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  download={`${productName.replace(/[^a-zA-Z0-9_-]/g, "_")}_${pdfType}.pdf`}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#C86218] hover:text-[#A74D0E] underline transition-colors"
-                >
-                  <Download size={14} /> Click here if download didn&apos;t start automatically
-                </a>
-              </div>
-            )}
-            <button
-              onClick={() => {
-                setIsDownloaded(false);
-                onClose();
-              }}
-              className="bg-[#002b5c] hover:bg-[#001f42] text-white text-xs font-bold px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
-            >
-              Done & Close
-            </button>
+            <div className="pt-2">
+              <button
+                onClick={() => {
+                  setIsDownloaded(false);
+                  onClose();
+                }}
+                className="bg-[#002b5c] hover:bg-[#001f42] text-white text-xs font-bold px-6 py-2.5 rounded-lg transition-colors cursor-pointer"
+              >
+                Done & Close
+              </button>
+            </div>
           </div>
         )}
       </div>
