@@ -89,6 +89,7 @@ export interface CMSProduct {
   categoryName?: string;
   subCategoryTitle?: string;
   tagline?: string;
+  descriptionTitle?: string;
   description?: string;
   containerImage?: string;
   coverImage?: string;
@@ -97,11 +98,15 @@ export interface CMSProduct {
   tdsPdfUrl?: string;
   msdsUrl?: string;
   msdsPdfUrl?: string;
+  applicationAreasTitle?: string;
   applicationAreas?: string;
   applications?: string[];
+  performanceBenefitsTitle?: string;
   performanceBenefits?: string[];
+  specialFeaturesTitle?: string;
   specialFeatures?: string[];
   specsText?: string;
+  propertiesTableTitle?: string;
   propertiesTable?: Array<{
     property: string;
     value?: string;

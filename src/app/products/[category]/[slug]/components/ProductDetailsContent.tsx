@@ -36,7 +36,8 @@ export function ProductDetailsContent({
       {product.description && (
         <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
           <h3 className="text-base sm:text-lg font-bold text-[#002b5c] mb-2 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#C86218]" /> Description
+            <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
+            {product.descriptionTitle || "Description"}
           </h3>
           <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans font-normal">
             <FormattedText text={product.description} />
@@ -50,7 +51,8 @@ export function ProductDetailsContent({
         {product.applicationAreas && (
           <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col">
             <h3 className="text-base sm:text-lg font-bold text-[#C86218] mb-3 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#002b5c]" /> Application Areas:
+              <span className="w-2 h-2 rounded-full bg-[#002b5c]" />{" "}
+              {product.applicationAreasTitle || "Application Areas"}
             </h3>
             <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans">
               <FormattedText text={product.applicationAreas} />
@@ -62,7 +64,8 @@ export function ProductDetailsContent({
         {product.performanceBenefits && product.performanceBenefits.length > 0 && (
           <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col">
             <h3 className="text-base sm:text-lg font-bold text-[#C86218] mb-3 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#002b5c]" /> Performance Benefits:
+              <span className="w-2 h-2 rounded-full bg-[#002b5c]" />{" "}
+              {product.performanceBenefitsTitle || "Performance Benefits"}
             </h3>
             <ul className="space-y-2.5">
               {product.performanceBenefits.map((benefit, bIdx) => (
@@ -83,7 +86,8 @@ export function ProductDetailsContent({
       {product.specialFeatures && product.specialFeatures.length > 0 && (
         <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
           <h3 className="text-base sm:text-lg font-bold text-[#002b5c] mb-3 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#C86218]" /> Special Features:
+            <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
+            {product.specialFeaturesTitle || "Special Features"}
           </h3>
           <ul className="space-y-2">
             {product.specialFeatures.map((feat, fIdx) => (
@@ -100,7 +104,8 @@ export function ProductDetailsContent({
         <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs pt-4">
           <div className="px-6 pb-3">
             <h3 className="text-base sm:text-lg font-bold text-[#002b5c] flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#C86218]" /> Physico-Chemical Properties
+              <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
+              {product.propertiesTableTitle || "Physico-Chemical Properties"}
             </h3>
           </div>
           <div className="overflow-x-auto">
