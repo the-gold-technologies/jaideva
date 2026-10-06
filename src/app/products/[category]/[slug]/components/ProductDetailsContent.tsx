@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useParams } from "next/navigation";
-import { FileText } from "lucide-react";
+import { FileText, CheckCircle2, Zap, Layers, FlaskConical, MessageSquareDot } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
 
@@ -34,14 +34,20 @@ export function ProductDetailsContent({
     <div className="space-y-6 mb-12">
       {/* Description */}
       {product.description && (
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-          <h3 className="text-base sm:text-lg font-bold text-[#002b5c] mb-2 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
-            {product.descriptionTitle || "Description"}
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans font-normal">
-            <FormattedText text={product.description} />
-          </p>
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="flex items-center gap-3 px-6 pt-5 pb-4 border-b border-slate-100">
+            <div className="w-8 h-8 rounded-lg bg-[#002b5c]/10 flex items-center justify-center shrink-0">
+              <Layers size={16} className="text-[#002b5c]" />
+            </div>
+            <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
+              {product.descriptionTitle || "Product Description"}
+            </h3>
+          </div>
+          <div className="px-6 py-5">
+            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans font-normal">
+              <FormattedText text={product.description} />
+            </p>
+          </div>
         </div>
       )}
 
@@ -49,32 +55,42 @@ export function ProductDetailsContent({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Application Areas */}
         {product.applicationAreas && (
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col">
-            <h3 className="text-base sm:text-lg font-bold text-[#C86218] mb-3 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#002b5c]" />{" "}
-              {product.applicationAreasTitle || "Application Areas"}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans">
-              <FormattedText text={product.applicationAreas} />
-            </p>
+          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
+            <div className="flex items-center gap-3 px-6 pt-5 pb-4 border-b border-slate-100">
+              <div className="w-8 h-8 rounded-lg bg-[#C86218]/10 flex items-center justify-center shrink-0">
+                <Zap size={16} className="text-[#C86218]" />
+              </div>
+              <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
+                {product.applicationAreasTitle || "Application Areas"}
+              </h3>
+            </div>
+            <div className="px-6 py-5 flex-1">
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-sans">
+                <FormattedText text={product.applicationAreas} />
+              </p>
+            </div>
           </div>
         )}
 
         {/* Performance Benefits */}
         {product.performanceBenefits && product.performanceBenefits.length > 0 && (
-          <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs flex flex-col">
-            <h3 className="text-base sm:text-lg font-bold text-[#C86218] mb-3 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#002b5c]" />{" "}
-              {product.performanceBenefitsTitle || "Performance Benefits"}
-            </h3>
-            <ul className="space-y-2.5">
+          <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm flex flex-col">
+            <div className="flex items-center gap-3 px-6 pt-5 pb-4 border-b border-slate-100">
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+                <CheckCircle2 size={16} className="text-emerald-600" />
+              </div>
+              <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
+                {product.performanceBenefitsTitle || "Performance Benefits"}
+              </h3>
+            </div>
+            <ul className="px-6 py-5 space-y-2.5 flex-1">
               {product.performanceBenefits.map((benefit, bIdx) => (
                 <li
                   key={bIdx}
                   className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700"
                 >
-                  <span className="text-[#C86218] font-bold text-sm leading-none mt-0.5">•</span>
-                  <span>{benefit}</span>
+                  <CheckCircle2 size={15} className="text-emerald-500 mt-0.5 shrink-0" />
+                  <span className="leading-snug">{benefit}</span>
                 </li>
               ))}
             </ul>
@@ -84,59 +100,77 @@ export function ProductDetailsContent({
 
       {/* Special Features */}
       {product.specialFeatures && product.specialFeatures.length > 0 && (
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-xs">
-          <h3 className="text-base sm:text-lg font-bold text-[#002b5c] mb-3 flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
-            {product.specialFeaturesTitle || "Special Features"}
-          </h3>
-          <ul className="space-y-2">
-            {product.specialFeatures.map((feat, fIdx) => (
-              <li key={fIdx} className="text-xs sm:text-sm text-slate-700">
-                {feat}
-              </li>
-            ))}
-          </ul>
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          <div className="flex items-center gap-3 px-6 pt-5 pb-4 border-b border-slate-100">
+            <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0">
+              <FlaskConical size={16} className="text-amber-600" />
+            </div>
+            <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
+              {product.specialFeaturesTitle || "Special Features"}
+            </h3>
+          </div>
+          <div className="px-6 py-5">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
+              {product.specialFeatures.map((feat, fIdx) => (
+                <li
+                  key={fIdx}
+                  className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700"
+                >
+                  <span className="w-5 h-5 rounded-full bg-[#C86218]/10 flex items-center justify-center shrink-0 mt-0.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C86218]" />
+                  </span>
+                  <span className="leading-snug">{feat}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       )}
 
       {/* Physico-Chemical Properties Table */}
       {product.propertiesTable && product.propertiesTable.length > 0 && (
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs pt-4">
-          <div className="px-6 pb-3">
-            <h3 className="text-base sm:text-lg font-bold text-[#002b5c] flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#C86218]" />{" "}
+        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+          {/* Table Header */}
+          <div className="flex items-center gap-3 px-6 pt-5 pb-4 border-b border-slate-100">
+            <div className="w-8 h-8 rounded-lg bg-[#002b5c]/10 flex items-center justify-center shrink-0">
+              <FlaskConical size={16} className="text-[#002b5c]" />
+            </div>
+            <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
               {product.propertiesTableTitle || "Physico-Chemical Properties"}
             </h3>
           </div>
+
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-sans border-collapse">
-              <thead>
-                <tr className="bg-[#002b5c] text-white">
-                  <th
-                    colSpan={hasMultiCols ? colCount + 1 : 2}
-                    className="py-3 px-4 text-center font-extrabold uppercase border-b border-[#002b5c]"
-                  >
-                    {product.name}
-                  </th>
-                </tr>
-                {hasMultiCols && (
-                  <tr className="bg-[#002b5c] text-white border-t border-white/20">
-                    <th className="py-2 px-4 border-r border-white/20"></th>
+              {/* Column headers (for multi-grade products) */}
+              {hasMultiCols && (
+                <thead>
+                  <tr className="bg-[#002b5c]/5 border-b border-slate-200">
+                    <th className="py-2.5 px-5 font-bold text-[#002b5c] border-r border-slate-200 text-[11px] uppercase tracking-wider w-[220px]">
+                      Property
+                    </th>
                     {product.tableHeaders!.map((hdr, hIdx) => (
                       <th
                         key={hIdx}
-                        className="py-2 px-4 text-center font-bold border-r border-white/20 last:border-r-0"
+                        className="py-2.5 px-5 text-center font-bold text-[#002b5c] border-r border-slate-200 last:border-r-0 text-[11px] uppercase tracking-wider"
                       >
                         {hdr}
                       </th>
                     ))}
                   </tr>
-                )}
-              </thead>
+                </thead>
+              )}
               <tbody>
                 {product.propertiesTable.map((row, rIdx) => (
-                  <tr key={rIdx} className={rIdx % 2 === 0 ? "bg-white" : "bg-slate-50"}>
-                    <td className="py-2.5 px-4 font-semibold text-slate-700 border-b border-r border-slate-200">
+                  <tr
+                    key={rIdx}
+                    className={`border-b border-slate-100 last:border-b-0 transition-colors ${
+                      rIdx % 2 === 0
+                        ? "bg-white hover:bg-slate-50/70"
+                        : "bg-slate-50/60 hover:bg-slate-50"
+                    }`}
+                  >
+                    <td className="py-2.5 px-5 font-semibold text-slate-700 border-r border-slate-200 text-[12px] w-[220px]">
                       {row.property}
                     </td>
 
@@ -145,7 +179,7 @@ export function ProductDetailsContent({
                         row.values.map((v, vIdx) => (
                           <td
                             key={vIdx}
-                            className="py-2.5 px-4 text-slate-900 font-bold border-b border-r border-slate-200 last:border-r-0 text-center"
+                            className="py-2.5 px-5 text-slate-800 font-bold border-r border-slate-100 last:border-r-0 text-center text-[12px]"
                           >
                             {v}
                           </td>
@@ -153,13 +187,13 @@ export function ProductDetailsContent({
                       ) : (
                         <td
                           colSpan={colCount}
-                          className="py-2.5 px-4 text-slate-900 font-bold border-b border-slate-200 text-center"
+                          className="py-2.5 px-5 text-slate-800 font-bold border-slate-100 text-center text-[12px]"
                         >
                           {row.value}
                         </td>
                       )
                     ) : (
-                      <td className="py-2.5 px-4 text-slate-900 font-bold border-b border-slate-200 text-center">
+                      <td className="py-2.5 px-5 text-slate-800 font-bold text-[12px]">
                         {row.value}
                       </td>
                     )}
@@ -172,30 +206,43 @@ export function ProductDetailsContent({
       )}
 
       {/* Action Buttons: TDS, MSDS, & Inquire */}
-      <div className="pt-4 flex flex-wrap items-center gap-3">
-        <button
-          type="button"
-          onClick={() => onOpenDownload("TDS")}
-          className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg flex items-center gap-2 shadow-xs transition cursor-pointer"
-        >
-          <FileText size={15} /> Download PDF (TDS)
-        </button>
+      <div className="bg-gradient-to-r from-[#002b5c]/5 via-slate-50 to-[#C86218]/5 border border-slate-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-2.5">
+          <MessageSquareDot size={18} className="text-[#C86218]" />
+          <div>
+            <p className="text-xs font-bold text-[#002b5c] uppercase tracking-wide">
+              Need More Info?
+            </p>
+            <p className="text-[11px] text-slate-500 font-medium">
+              Download technical sheets or reach out directly.
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={() => onOpenDownload("TDS")}
+            className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-[11px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm hover:shadow-md transition-all cursor-pointer"
+          >
+            <FileText size={14} /> Download TDS
+          </button>
 
-        <button
-          type="button"
-          onClick={() => onOpenDownload("MSDS")}
-          className="bg-[#002b5c] hover:bg-[#001f42] text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg flex items-center gap-2 shadow-xs transition cursor-pointer"
-        >
-          <FileText size={15} /> Download MSDS PDF
-        </button>
+          <button
+            type="button"
+            onClick={() => onOpenDownload("MSDS")}
+            className="bg-[#002b5c] hover:bg-[#001f42] text-white text-[11px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm hover:shadow-md transition-all cursor-pointer"
+          >
+            <FileText size={14} /> Download MSDS
+          </button>
 
-        <button
-          type="button"
-          onClick={() => onOpenEnquiry(product.name)}
-          className="bg-slate-800 hover:bg-black text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 rounded-lg transition cursor-pointer"
-        >
-          Inquire Product
-        </button>
+          <button
+            type="button"
+            onClick={() => onOpenEnquiry(product.name)}
+            className="bg-white hover:bg-slate-50 text-[#002b5c] border border-slate-300 text-[11px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg transition-all cursor-pointer shadow-sm hover:shadow-md"
+          >
+            Inquire Product
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import GoogleTranslator from "@/components/GoogleTranslator";
+import FirstTimePopupModal from "@/components/sections/FirstTimePopupModal";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -43,6 +44,7 @@ export default function RootLayout({
       <body className={openSans.className}>
         <GoogleTranslator />
         {children}
+        <FirstTimePopupModal />
       </body>
     </html>
   );

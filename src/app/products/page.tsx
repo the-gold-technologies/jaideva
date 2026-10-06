@@ -16,7 +16,7 @@ interface ProductRecord {
 }
 
 async function resolveProductRedirect(searchQuery?: string): Promise<string> {
-  const cmsUrl = process.env.NEXT_PUBLIC_CMS_URL || "http://localhost:3001";
+  const cmsUrl = process.env.NEXT_PUBLIC_CMS_URL || "";
 
   try {
     // 1. Fetch categories from CMS

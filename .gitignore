@@ -39,3 +39,10 @@ Thumbs.db
 .vscode/
 .prettierrc*
 .prettierignore
+
+# AI agents & assistants
+.agents/
+.agent/
+AGENTS.md
+agents.md
+
