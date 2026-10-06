@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Clock, Calendar, ArrowRight } from "lucide-react";
-import { useCMSStore, CMSBlogPost, getHeadingTag } from "@/store/useCMSStore";
+import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
 
 export default function BlogsContent() {
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");

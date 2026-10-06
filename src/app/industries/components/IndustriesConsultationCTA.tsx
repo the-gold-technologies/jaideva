@@ -2,16 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  ShieldCheck,
-  PhoneCall,
-  Clock,
-  Send,
-  Headphones,
-  Award,
-  CheckCircle2,
-} from "lucide-react";
+import { ShieldCheck, PhoneCall, Clock, Send, Headphones, Award, CheckCircle2 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { X, Send, CheckCircle2, Loader2, Building, MapPin, Phone, Mail, User } from "lucide-react";
+import { X, Send, CheckCircle2, Loader2, Phone } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { CaptchaInput, useCaptcha } from "@/components/CaptchaWidget";
 

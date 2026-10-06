@@ -10,7 +10,6 @@ import {
   Maximize2,
   Tag,
   Sparkles,
-  Camera,
 } from "lucide-react";
 import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
 

@@ -3,16 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import "leaflet/dist/leaflet.css";
-import {
-  Navigation,
-  Warehouse,
-  Building2,
-  MapPin,
-  ExternalLink,
-  Layers,
-  Map as MapIcon,
-  Maximize2,
-} from "lucide-react";
+import { Navigation, Warehouse, MapPin, Map as MapIcon, Maximize2 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 
 export type PinType = "warehouse" | "office" | "field";
