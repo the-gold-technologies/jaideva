@@ -90,7 +90,9 @@ export function ProductDetailsContent({
                   className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700"
                 >
                   <CheckCircle2 size={15} className="text-emerald-500 mt-0.5 shrink-0" />
-                  <span className="leading-snug">{benefit}</span>
+                  <span className="leading-snug">
+                    <FormattedText text={benefit} />
+                  </span>
                 </li>
               ))}
             </ul>
@@ -119,7 +121,9 @@ export function ProductDetailsContent({
                   <span className="w-5 h-5 rounded-full bg-[#C86218]/10 flex items-center justify-center shrink-0 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#C86218]" />
                   </span>
-                  <span className="leading-snug">{feat}</span>
+                  <span className="leading-snug">
+                    <FormattedText text={feat} />
+                  </span>
                 </li>
               ))}
             </ul>

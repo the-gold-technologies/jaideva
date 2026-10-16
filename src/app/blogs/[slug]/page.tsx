@@ -10,6 +10,7 @@ import BlogsBreadcrumb from "@/app/blogs/components/BlogsBreadcrumb";
 import { Calendar, Clock, User, ArrowLeft, Tag, CheckCircle2, Send } from "lucide-react";
 import { useCMSStore, PageSEO } from "@/store/useCMSStore";
 import SEOMeta from "@/components/SEOMeta";
+import { FormattedText } from "@/components/FormattedText";
 
 export default function BlogDetailPage() {
   const params = useParams();
@@ -171,7 +172,7 @@ export default function BlogDetailPage() {
         {/* Intro Highlight Box */}
         {intro && (
           <div className="bg-[#f8f9fa] border-l-4 border-[#002b5c] p-6 rounded-r-xl mb-10 text-gray-700 text-sm md:text-base leading-relaxed italic font-sans">
-            &ldquo;{intro}&rdquo;
+            &ldquo;<FormattedText text={intro} />&rdquo;
           </div>
         )}
 
@@ -181,12 +182,12 @@ export default function BlogDetailPage() {
             {sections.map((section: any, idx: number) => (
               <div key={idx} className="space-y-4">
                 <h2 className="text-xl md:text-2xl font-bold text-[#002b5c] tracking-tight">
-                  {section.heading}
+                  <FormattedText text={section.heading} />
                 </h2>
                 {section.paragraphs &&
                   section.paragraphs.map((p: string, pIdx: number) => (
                     <p key={pIdx} className="text-gray-700">
-                      {p}
+                      <FormattedText text={p} />
                     </p>
                   ))}
 
@@ -195,7 +196,9 @@ export default function BlogDetailPage() {
                     {section.bulletPoints.map((point: string, bIdx: number) => (
                       <li key={bIdx} className="flex items-start gap-3 text-gray-700">
                         <CheckCircle2 size={18} className="text-[#C86218] shrink-0 mt-1" />
-                        <span>{point}</span>
+                        <span>
+                          <FormattedText text={point} />
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -241,7 +244,9 @@ export default function BlogDetailPage() {
         {conclusion && (
           <div className="pt-6 border-t border-gray-200 text-gray-700 text-sm md:text-base leading-relaxed mb-12">
             <h3 className="text-lg font-bold text-[#002b5c] mb-2">Conclusion</h3>
-            <p>{conclusion}</p>
+            <p>
+              <FormattedText text={conclusion} />
+            </p>
           </div>
         )}
 

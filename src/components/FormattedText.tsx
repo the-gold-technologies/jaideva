@@ -6,94 +6,82 @@ import Link from "next/link";
 interface FormattedTextProps {
   text: string;
   className?: string;
+  linkClassName?: string;
 }
 
-export function FormattedText({ text, className = "" }: FormattedTextProps) {
+export function FormattedText({
+  text,
+  className = "",
+  linkClassName = "text-[#C86218] hover:underline font-semibold",
+}: FormattedTextProps) {
   if (!text || typeof text !== "string") return null;
 
-  // Regex matching markdown links [text](url), bold **text**, or HTML <a> tags
-  const regex = /(\[[^\]]+\]\([^\)]+\)|\*\*[^\*]+\*\*|<a\s+[^>]*>.*?<\/a>)/gi;
-  const parts = text.split(regex);
+  const parts: React.ReactNode[] = [];
+  // Matches markdown links [label](url) or bold **bold text**
+  const regex = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = regex.exec(text)) !== null) {
+    const matchIndex = match.index;
+    const [fullMatch, linkText, linkUrl, boldText] = match;
+
+    // Append preceding text
+    if (matchIndex > lastIndex) {
+      parts.push(text.substring(lastIndex, matchIndex));
+    }
+
+    // Append link or bold text
+    if (linkText !== undefined && linkUrl !== undefined) {
+      const trimmedUrl = linkUrl.trim();
+      const isInternal = trimmedUrl.startsWith("/") || trimmedUrl.startsWith("#");
+      const isAction = trimmedUrl.startsWith("mailto:") || trimmedUrl.startsWith("tel:");
+
+      if (isInternal) {
+        parts.push(
+          <Link
+            key={`link-${matchIndex}`}
+            href={trimmedUrl}
+            className={linkClassName}
+          >
+            {linkText}
+          </Link>
+        );
+      } else {
+        parts.push(
+          <a
+            key={`link-${matchIndex}`}
+            href={trimmedUrl}
+            target={isAction ? undefined : "_blank"}
+            rel={isAction ? undefined : "noopener noreferrer"}
+            className={linkClassName}
+          >
+            {linkText}
+          </a>
+        );
+      }
+    } else if (boldText !== undefined) {
+      parts.push(
+        <strong key={`bold-${matchIndex}`} className="font-bold text-inherit">
+          {boldText}
+        </strong>
+      );
+    }
+
+    lastIndex = regex.lastIndex;
+  }
+
+  // Append remaining text
+  if (lastIndex < text.length) {
+    parts.push(text.substring(lastIndex));
+  }
 
   return (
-    <span className={className}>
-      {parts.map((part, index) => {
-        if (!part) return null;
-
-        // 1. Markdown link: [label](url)
-        const mdLinkMatch = part.match(/^\[([^\]]+)\]\(([^\)]+)\)$/);
-        if (mdLinkMatch) {
-          const [, label, url] = mdLinkMatch;
-          const isInternal = url.startsWith("/") || url.startsWith("#");
-
-          if (isInternal) {
-            return (
-              <Link
-                key={index}
-                href={url}
-                className="text-[#C86218] font-semibold hover:underline transition-colors inline"
-              >
-                {label}
-              </Link>
-            );
-          }
-
-          return (
-            <a
-              key={index}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#C86218] font-semibold hover:underline transition-colors inline"
-            >
-              {label}
-            </a>
-          );
-        }
-
-        // 2. HTML <a> tag: <a href="...">...</a>
-        const htmlLinkMatch = part.match(/^<a\s+[^>]*href=["']([^"']*)["'][^>]*>(.*?)<\/a>$/i);
-        if (htmlLinkMatch) {
-          const [, url, label] = htmlLinkMatch;
-          const isInternal = url.startsWith("/") || url.startsWith("#");
-
-          if (isInternal) {
-            return (
-              <Link
-                key={index}
-                href={url}
-                className="text-[#C86218] font-semibold hover:underline transition-colors inline"
-              >
-                {label}
-              </Link>
-            );
-          }
-
-          return (
-            <a
-              key={index}
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#C86218] font-semibold hover:underline transition-colors inline"
-            >
-              {label}
-            </a>
-          );
-        }
-
-        // 3. Bold text: **text**
-        const boldMatch = part.match(/^\*\*([^\*]+)\*\*$/);
-        if (boldMatch) {
-          return (
-            <strong key={index} className="font-bold text-gray-900">
-              {boldMatch[1]}
-            </strong>
-          );
-        }
-
-        return <React.Fragment key={index}>{part}</React.Fragment>;
-      })}
+    <span className={`whitespace-pre-line ${className}`.trim()}>
+      {parts.length > 0 ? parts : text}
     </span>
   );
 }
+
+export const LinkText = FormattedText;
+

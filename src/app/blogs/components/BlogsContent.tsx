@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Clock, Calendar, ArrowRight } from "lucide-react";
 import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
+import { FormattedText } from "@/components/FormattedText";
 
 export default function BlogsContent() {
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
@@ -33,7 +34,7 @@ export default function BlogsContent() {
         </HeadingTag>
         {cmsContent?.introText && (
           <p className="mt-2 text-sm md:text-base text-gray-600 max-w-3xl">
-            {cmsContent.introText}
+            <FormattedText text={cmsContent.introText} />
           </p>
         )}
       </div>
@@ -110,7 +111,7 @@ export default function BlogsContent() {
 
                 {/* Excerpt */}
                 <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3 mb-5 font-normal">
-                  {post.excerpt}
+                  <FormattedText text={post?.excerpt ?? ""} />
                 </p>
               </div>
 

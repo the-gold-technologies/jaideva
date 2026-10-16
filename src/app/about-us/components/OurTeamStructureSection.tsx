@@ -3,6 +3,7 @@
 import React from "react";
 import { Factory, Globe2, Bike, Cog, ArrowRight, Sparkles } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
+import { FormattedText } from "@/components/FormattedText";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Factory,
@@ -44,10 +45,9 @@ export default function OurTeamStructureSection({ onOpenEnquiry }: OurTeamStruct
               </h2>
             )}
             {description && (
-              <p
-                className="mt-2.5 text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal"
-                dangerouslySetInnerHTML={{ __html: description }}
-              />
+              <p className="mt-2.5 text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal">
+                <FormattedText text={description} />
+              </p>
             )}
           </div>
 

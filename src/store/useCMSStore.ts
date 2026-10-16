@@ -247,25 +247,6 @@ export const getApiBaseUrl = (): string => {
 // In-flight promise cache to prevent duplicate simultaneous API calls
 const inFlightRequests = new Map<string, Promise<any>>();
 
-// TTL cache: stores { data, timestamp } per key so we avoid hitting the CMS again
-// within CACHE_TTL_MS milliseconds (5 minutes).
-const CACHE_TTL_MS = 5 * 60 * 1000;
-const ttlCache = new Map<string, { data: any; ts: number }>();
-
-function getCached(key: string): any | null {
-  const entry = ttlCache.get(key);
-  if (!entry) return null;
-  if (Date.now() - entry.ts > CACHE_TTL_MS) {
-    ttlCache.delete(key);
-    return null;
-  }
-  return entry.data;
-}
-
-function setCached(key: string, data: any) {
-  ttlCache.set(key, { data, ts: Date.now() });
-}
-
 export const useCMSStore = create<CMSStoreState & CMSStoreActions>((set, get) => ({
   pages: {},
   pageSEO: {},
@@ -287,18 +268,13 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>((set, get) =>
     }));
   },
 
-  fetchPage: async (slug: string) => {
+  fetchPage: async (slug: string, forceRefresh: boolean = false) => {
     const cachedPage = get().pages[slug];
-    if (cachedPage) {
+    if (cachedPage && !forceRefresh && process.env.NODE_ENV === "production") {
       return cachedPage;
     }
 
     const key = "page:" + slug;
-
-    // Return immediately if we already fetched this within the TTL window
-    const ttl = getCached(key);
-    if (ttl) return ttl;
-
     if (inFlightRequests.has(key)) {
       return inFlightRequests.get(key);
     }
@@ -313,7 +289,7 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>((set, get) =>
         const baseUrl = getApiBaseUrl();
         const endpointSlug = slug.startsWith("/") ? slug.slice(1) : slug;
         const response = await fetch(`${baseUrl}/api/${endpointSlug}`, {
-          next: { revalidate: 60 },
+          cache: "no-store",
         });
 
         if (!response.ok) {
@@ -349,9 +325,6 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>((set, get) =>
           isLoading: { ...state.isLoading, [slug]: false },
         }));
 
-        // Store in TTL cache so next navigation reuses this data for 5 min
-        setCached(key, normalizedData);
-
         return normalizedData;
       } catch (error: any) {
         const errorMessage = error.message || "An unexpected error occurred";
@@ -375,10 +348,6 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>((set, get) =>
     if (cachedLinks && cachedLinks.length > 0) {
       return cachedLinks;
     }
-
-    const navKey = "navLinks";
-    const ttl = getCached(navKey);
-    if (ttl) return ttl;
 
     const key = "navLinks";
     if (inFlightRequests.has(key)) {

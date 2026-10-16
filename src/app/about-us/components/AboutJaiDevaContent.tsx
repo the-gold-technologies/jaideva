@@ -15,10 +15,10 @@ export default function AboutJaiDevaContent() {
     founderNote,
     estBadge,
     image,
-    paragraphs = [],
+    paragraph,
   } = pages["about-us"]?.AboutJaiDevaContent || {};
 
-  if (!title && paragraphs.length === 0 && !image) return null;
+  if (!title && !paragraph && !image) return null;
 
   const hasImage = Boolean(image);
 
@@ -53,13 +53,9 @@ export default function AboutJaiDevaContent() {
             </div>
           )}
 
-          {paragraphs.length > 0 && (
-            <div className="space-y-3.5 text-gray-700 text-sm md:text-base leading-relaxed font-sans">
-              {paragraphs.map((p: string, idx: number) => (
-                <p key={idx}>
-                  <FormattedText text={p} />
-                </p>
-              ))}
+          {paragraph && (
+            <div className="text-gray-700 text-sm md:text-base leading-relaxed font-sans">
+              <FormattedText text={paragraph} />
             </div>
           )}
         </div>

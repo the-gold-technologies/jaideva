@@ -12,6 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
+import { FormattedText } from "@/components/FormattedText";
 
 // Helper to determine contextual badge tag for each event photo
 function getEventBadge(item: any): string {
@@ -439,7 +440,7 @@ export default function EventsContent() {
       {/* Intro Description */}
       {intro && (
         <p className="text-gray-700 text-sm md:text-base leading-relaxed mb-8 max-w-5xl font-sans">
-          {intro}
+          <FormattedText text={intro} />
         </p>
       )}
 

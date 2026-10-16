@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
 import { CaptchaInput, useCaptcha } from "@/components/CaptchaWidget";
+import { FormattedText } from "@/components/FormattedText";
 
 export default function ContactFormSection() {
   const { pages, pageSEO, submitEnquiry } = useCMSStore();
@@ -134,7 +135,9 @@ export default function ContactFormSection() {
               )}
 
               {description && (
-                <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  <FormattedText text={description} />
+                </p>
               )}
             </div>
 

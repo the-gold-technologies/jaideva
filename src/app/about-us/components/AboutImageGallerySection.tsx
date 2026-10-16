@@ -11,6 +11,7 @@ import {
   Layers,
 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
+import { FormattedText } from "@/components/FormattedText";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   Building2,
@@ -64,7 +65,9 @@ export default function AboutImageGallerySection({ onOpenEnquiry }: AboutImageGa
               </h2>
             )}
             {description && (
-              <p className="mt-3 text-base text-slate-600 leading-relaxed">{description}</p>
+              <p className="mt-3 text-base text-slate-600 leading-relaxed">
+                <FormattedText text={description} />
+              </p>
             )}
           </div>
 
@@ -127,7 +130,7 @@ export default function AboutImageGallerySection({ onOpenEnquiry }: AboutImageGa
                   {/* Card Body */}
                   <div className="p-6 flex-1 flex flex-col justify-between">
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                      {facility.desc}
+                      <FormattedText text={facility.desc} />
                     </p>
 
                     <div className="mt-5 pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-2">
@@ -180,7 +183,9 @@ export default function AboutImageGallerySection({ onOpenEnquiry }: AboutImageGa
                   {bannerHeading}
                 </h3>
                 {bannerDescription && (
-                  <p className="mt-3 text-sm text-slate-300 leading-relaxed">{bannerDescription}</p>
+                  <p className="mt-3 text-sm text-slate-300 leading-relaxed">
+                    <FormattedText text={bannerDescription} />
+                  </p>
                 )}
               </div>
 

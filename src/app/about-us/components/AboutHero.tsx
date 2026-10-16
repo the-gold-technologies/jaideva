@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight, Factory } from "lucide-react";
 import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
+import { FormattedText } from "@/components/FormattedText";
 
 interface AboutHeroProps {
   onOpenEnquiry?: (subject?: string) => void;
@@ -55,23 +56,25 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
           {badge && (
             <div className="mb-5 inline-flex items-center gap-2 border-l-4 border-[#F4B24D] pl-3 text-xs font-bold uppercase tracking-[0.2em] text-[#F4B24D]">
               <Factory size={15} />
-              {badge}
+              <FormattedText text={badge} />
             </div>
           )}
 
           {heading && (
             <HeadingTag className="text-3xl font-black uppercase leading-[1.08] tracking-tight sm:text-4xl md:text-5xl">
-              {heading}
+              <FormattedText text={heading} />
             </HeadingTag>
           )}
 
           {tagline && (
-            <p className="mt-3 text-base font-semibold text-[#F4B24D] sm:text-lg">{tagline}</p>
+            <p className="mt-3 text-base font-semibold text-[#F4B24D] sm:text-lg">
+              <FormattedText text={tagline} />
+            </p>
           )}
 
           {description && (
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-200 sm:text-base">
-              {description}
+              <FormattedText text={description} />
             </p>
           )}
 

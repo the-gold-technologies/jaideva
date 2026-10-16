@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ChevronRight, Phone, ArrowRight } from "lucide-react";
 import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
+import { FormattedText } from "@/components/FormattedText";
 
 interface CategoryHeroProps {
   onOpenEnquiry?: () => void;
@@ -57,13 +58,13 @@ export function CategoryHero({ onOpenEnquiry }: CategoryHeroProps) {
 
             {category.shortDesc && (
               <p className="mt-3 text-base md:text-lg font-semibold text-[#F4B24D]">
-                {category.shortDesc}
+                <FormattedText text={category.shortDesc} />
               </p>
             )}
 
             {category.fullDesc && (
               <p className="mt-4 text-sm md:text-base leading-7 text-slate-200 max-w-2xl">
-                {category.fullDesc}
+                <FormattedText text={category.fullDesc} />
               </p>
             )}
 
