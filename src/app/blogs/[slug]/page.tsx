@@ -50,9 +50,21 @@ export default function BlogDetailPage() {
     setIsEnquiryOpen(true);
   };
 
+  const blogSEO: PageSEO = useMemo(() => {
+    return {
+      metaTitle: post?.metaTitle || null,
+      metaDescription: post?.metaDescription || null,
+      targetKeywords: post?.targetKeywords || null,
+      canonicalUrl: post?.canonicalUrl || null,
+      schema: post?.schema || null,
+      headingOptions: post?.headingOptions || null,
+    };
+  }, [post]);
+
   if (!post) {
     return (
       <main className="min-h-screen bg-white text-gray-800 font-sans flex flex-col justify-between">
+        <SEOMeta pageSlug={`blogs/${slug}`} customSEO={blogSEO} />
         <Navbar
           fontSizeMultiplier={fontSizeMultiplier}
           setFontSizeMultiplier={setFontSizeMultiplier}
@@ -88,17 +100,6 @@ export default function BlogDetailPage() {
     : post.recommendedProducts || [];
 
   const rawHtmlContent = typeof post.content === "string" ? post.content : null;
-
-  const blogSEO: PageSEO = useMemo(() => {
-    return {
-      metaTitle: post?.metaTitle || null,
-      metaDescription: post?.metaDescription || null,
-      targetKeywords: post?.targetKeywords || null,
-      canonicalUrl: post?.canonicalUrl || null,
-      schema: post?.schema || null,
-      headingOptions: post?.headingOptions || null,
-    };
-  }, [post]);
 
   return (
     <main

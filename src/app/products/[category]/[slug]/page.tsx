@@ -62,26 +62,29 @@ export default function ProductDetailPage() {
     setIsDownloadOpen(true);
   };
 
+  const productSEO: PageSEO = {
+    metaTitle: product?.metaTitle || null,
+    metaDescription: product?.metaDescription || null,
+    targetKeywords: product?.targetKeywords || null,
+    canonicalUrl: product?.canonicalUrl || null,
+    schema: product?.schema || null,
+    headingOptions: product?.headingOptions || null,
+  };
+
   if (!product) {
     return (
-      <ProductNotFound
-        fontSizeMultiplier={fontSizeMultiplier}
-        setFontSizeMultiplier={setFontSizeMultiplier}
-        language={language}
-        setLanguage={setLanguage}
-        onOpenEnquiry={() => setIsEnquiryOpen(true)}
-      />
+      <>
+        <SEOMeta pageSlug={`product:${productSlug}`} customSEO={productSEO} />
+        <ProductNotFound
+          fontSizeMultiplier={fontSizeMultiplier}
+          setFontSizeMultiplier={setFontSizeMultiplier}
+          language={language}
+          setLanguage={setLanguage}
+          onOpenEnquiry={() => setIsEnquiryOpen(true)}
+        />
+      </>
     );
   }
-
-  const productSEO: PageSEO = {
-    metaTitle: product.metaTitle || null,
-    metaDescription: product.metaDescription || null,
-    targetKeywords: product.targetKeywords || null,
-    canonicalUrl: product.canonicalUrl || null,
-    schema: product.schema || null,
-    headingOptions: product.headingOptions || null,
-  };
 
   return (
     <main

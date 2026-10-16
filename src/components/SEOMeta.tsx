@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import Script from "next/script";
 import { useCMSStore, PageSEO } from "@/store/useCMSStore";
 
@@ -23,6 +23,35 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
       fetchGlobalSEO().catch(console.error);
     }
   }, [globalSEO, fetchGlobalSEO]);
+
+  // Derive JSON-LD Structured Data:
+  // For home: use CMS globalSEO?.schema (or activeSEO?.schema) if provided; otherwise generate default Organization/WebSite schema.
+  // For subpages: use CMS activeSEO?.schema if provided; otherwise generate default contextual page schema.
+  const schemaString = useMemo(() => {
+    const rawCustomSchema = (
+      isHome ? globalSEO?.schema || activeSEO?.schema : activeSEO?.schema
+    )?.trim();
+
+    if (rawCustomSchema) {
+      const parsed = parseCustomSchema(rawCustomSchema);
+      if (parsed) {
+        return formatSchemaString(parsed);
+      }
+    }
+
+    const generated = generatePageSchema({
+      pageSlug,
+      activeSEO,
+      globalSEO,
+      pages,
+      productDetails,
+      blogPosts,
+      products,
+      blogs,
+    });
+
+    return formatSchemaString(generated);
+  }, [isHome, globalSEO, activeSEO, pageSlug, pages, productDetails, blogPosts, products, blogs]);
 
   useEffect(() => {
     // 1. Determine Title strictly from CMS data (No default data)
@@ -128,38 +157,8 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
       }
     }
 
-    // 7. Structured Data (JSON-LD)
-    let finalSchema: any = null;
-    const rawCustomSchema = (isHome ? globalSEO?.schema : activeSEO?.schema)?.trim();
-
-    if (rawCustomSchema) {
-      try {
-        const cleaned = rawCustomSchema
-          .replace(/<script[^>]*>/gi, "")
-          .replace(/<\/script>/gi, "")
-          .trim();
-        finalSchema = JSON.parse(cleaned);
-      } catch {
-        finalSchema = rawCustomSchema
-          .replace(/<script[^>]*>/gi, "")
-          .replace(/<\/script>/gi, "")
-          .trim();
-      }
-    } else if (!isHome) {
-      // Automatically generate contextual JSON-LD structured data for non-home pages only
-      finalSchema = generatePageSchema({
-        pageSlug,
-        activeSEO,
-        globalSEO,
-        pages,
-        productDetails,
-        blogPosts,
-        products,
-        blogs,
-      });
-    }
-
-    if (finalSchema) {
+    // 7. Structured Data (JSON-LD) DOM sync
+    if (schemaString) {
       let scriptTag = document.getElementById("dynamic-json-ld");
       if (!scriptTag) {
         scriptTag = document.createElement("script");
@@ -167,8 +166,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
         scriptTag.setAttribute("type", "application/ld+json");
         document.head.appendChild(scriptTag);
       }
-      scriptTag.textContent =
-        typeof finalSchema === "string" ? finalSchema : JSON.stringify(finalSchema, null, 2);
+      scriptTag.textContent = schemaString;
     } else {
       const existingScript = document.getElementById("dynamic-json-ld");
       if (existingScript) {
@@ -224,7 +222,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
         injectHtmlWithScripts(container, globalSEO.customFooterScripts);
       }
     }
-  }, [activeSEO, globalSEO, isHome, pageSlug, pages, productDetails, blogPosts, products, blogs]);
+  }, [activeSEO, globalSEO, isHome, pageSlug, schemaString]);
 
   const rawGtmId = globalSEO?.gtmId?.trim();
   const gtmId = rawGtmId ? rawGtmId.match(/GTM-[A-Z0-9]+/i)?.[0] || rawGtmId : null;
@@ -234,6 +232,15 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
 
   return (
     <>
+      {/* Structured Data (JSON-LD Schema Markup) */}
+      {schemaString && (
+        <script
+          id="dynamic-json-ld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: schemaString }}
+        />
+      )}
+
       {/* Google Tag Manager (GTM) Native Scripts */}
       {gtmId && (
         <>
@@ -290,6 +297,48 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
 }
 
 /**
+ * Safely parses custom schema string provided by the user in the CMS
+ */
+function parseCustomSchema(rawSchema: string | null | undefined): any | null {
+  if (!rawSchema) return null;
+  const trimmed = rawSchema.trim();
+  if (!trimmed) return null;
+
+  const cleaned = trimmed
+    .replace(/^<script[^>]*>/i, "")
+    .replace(/<\/script>$/i, "")
+    .trim();
+
+  if (!cleaned) return null;
+
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    return cleaned;
+  }
+}
+
+/**
+ * Formats a schema object or string into a valid JSON-LD string
+ */
+function formatSchemaString(schema: any): string {
+  if (!schema) return "";
+  if (typeof schema === "string") {
+    try {
+      const parsed = JSON.parse(schema);
+      return JSON.stringify(parsed, null, 2);
+    } catch {
+      return schema;
+    }
+  }
+  try {
+    return JSON.stringify(schema, null, 2);
+  } catch {
+    return "";
+  }
+}
+
+/**
  * Builds standard Google-compliant Schema.org JSON-LD structured data for each page
  */
 function generatePageSchema({
@@ -314,34 +363,22 @@ function generatePageSchema({
   const origin = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
 
   const companyName = globalSEO?.siteTitle || "Jai Deva Oil Co.";
-  const companyPhone = globalSEO?.phone || "+91 98765 43210";
-  const companyEmail = globalSEO?.email || "sales@jaidevaoil.com";
-  const companyAddress =
-    globalSEO?.address || "Baghpat Region & Surrounding Industrial Belts, Uttar Pradesh, India";
+  const companyPhone = globalSEO?.phone || "";
+  const companyEmail = globalSEO?.email || "";
+  const companyAddress = globalSEO?.address || "";
   const companyLogo = globalSEO?.logo || `${origin}/jaideva-logo.png`;
 
   // Base Organization Schema Node
-  const organizationNode = {
+  const organizationNode: any = {
     "@type": ["LocalBusiness", "AutoPartsStore"],
     "@id": `${origin}/#organization`,
-    name: "Jai Deva Oil Co.",
+    name: companyName,
     alternateName: "Authorized Multi-Brand Lubricants Distributor Jai Deva Oil Co.",
     url: origin,
     logo: companyLogo,
     image: companyLogo,
-    telephone: companyPhone,
-    email: companyEmail,
     priceRange: "₹₹",
-    description:
-      globalSEO?.siteDescription ||
-      "Authorized Distributors of Multi-Brand Industrial & Automotive Lubricants.",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: companyAddress,
-      addressLocality: "Baghpat",
-      addressRegion: "Uttar Pradesh",
-      addressCountry: "IN",
-    },
+    description: globalSEO?.siteDescription || "",
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",
@@ -351,6 +388,20 @@ function generatePageSchema({
       },
     ],
   };
+
+  if (companyPhone) {
+    organizationNode.telephone = companyPhone;
+  }
+  if (companyEmail) {
+    organizationNode.email = companyEmail;
+  }
+  if (companyAddress) {
+    organizationNode.address = {
+      "@type": "PostalAddress",
+      streetAddress: companyAddress,
+      addressCountry: "IN",
+    };
+  }
 
   // 1. Home / Landing Page Schema
   if (pageSlug === "home") {
@@ -380,18 +431,10 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "AboutPage",
-      name: activeSEO?.metaTitle || "About Us | Jai Deva Oil Co.",
-      description:
-        activeSEO?.metaDescription ||
-        "Authorized Distributors of Multi-Brand Industrial & Automotive Lubricants.",
+      name: activeSEO?.metaTitle || "",
+      description: activeSEO?.metaDescription || "",
       url: `${origin}/about-us`,
-      mainEntity: {
-        "@type": "Organization",
-        name: "Jai Deva Oil Co.",
-        url: origin,
-        logo: companyLogo,
-        description: "Official distributor of multi-brand industrial and automotive lubricants.",
-      },
+      mainEntity: organizationNode,
     };
   }
 
@@ -400,10 +443,8 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "ContactPage",
-      name: activeSEO?.metaTitle || "Contact Us | Jai Deva Oil Co.",
-      description:
-        activeSEO?.metaDescription ||
-        "Get in touch with Jai Deva Oil Co. for bulk industrial oils, greases, and lubricant supply enquiries.",
+      name: activeSEO?.metaTitle || "",
+      description: activeSEO?.metaDescription || "",
       url: `${origin}/contact-us`,
       mainEntity: organizationNode,
     };
@@ -414,10 +455,8 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      name: activeSEO?.metaTitle || "Privacy Policy | Jai Deva Oil Co.",
-      description:
-        activeSEO?.metaDescription ||
-        "Read the Privacy Policy of Jai Deva Oil Co. lubricants distribution.",
+      name: activeSEO?.metaTitle || "",
+      description: activeSEO?.metaDescription || "",
       url: `${origin}/privacy-policy`,
     };
   }
@@ -427,10 +466,8 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: activeSEO?.metaTitle || "Events & Gallery | Jai Deva Oil Co.",
-      description:
-        activeSEO?.metaDescription ||
-        "Explore industrial meets, dealer conventions, exhibitions, and technical lubrication seminars.",
+      name: activeSEO?.metaTitle || "",
+      description: activeSEO?.metaDescription || "",
       url: `${origin}/events`,
     };
   }
@@ -440,11 +477,21 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: activeSEO?.metaTitle || "Multi-Brand Lubricants Portfolio | Jai Deva Oil Co.",
-      description:
-        activeSEO?.metaDescription ||
-        "Explore authorized multi-brand lubricant portfolios covering industrial oils, automotive lubricants, and greases.",
+      name: activeSEO?.metaTitle || "",
+      description: activeSEO?.metaDescription || "",
       url: `${origin}/brands`,
+      mainEntity: organizationNode,
+    };
+  }
+
+  // Industries Overview Page Schema
+  if (pageSlug === "industries") {
+    return {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: activeSEO?.metaTitle || "",
+      description: activeSEO?.metaDescription || "",
+      url: `${origin}/industries`,
       mainEntity: organizationNode,
     };
   }
@@ -455,16 +502,14 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "Blog",
-      name: activeSEO?.metaTitle || "Industrial Lubrication Insights & Blog",
-      description:
-        activeSEO?.metaDescription ||
-        "Technical guides, automotive lubrication tips, and industrial oil insights from Jai Deva Oil Co.",
+      name: activeSEO?.metaTitle || "",
+      description: activeSEO?.metaDescription || "",
       url: `${origin}/blogs`,
       blogPost: blogList.map((b: any) => ({
         "@type": "BlogPosting",
-        headline: b.title,
-        url: `${origin}/blogs/${b.slug}`,
-        datePublished: b.publishDate || b.createdAt,
+        headline: b.title || "",
+        url: `${origin}/blogs/${b.slug || ""}`,
+        datePublished: b.publishDate || b.createdAt || "",
         image: b.coverImage || companyLogo,
       })),
     };
@@ -474,9 +519,11 @@ function generatePageSchema({
   if (pageSlug.startsWith("blogs/")) {
     const blogSlug = pageSlug.replace("blogs/", "").trim();
     const post = blogPosts[blogSlug] || {};
-    const articleTitle = post.title || activeSEO?.metaTitle || "Technical Article";
-    const articleDesc =
-      post.excerpt || activeSEO?.metaDescription || `Technical article on ${articleTitle}`;
+    const fallbackTitle = blogSlug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+    const articleTitle = post.title || activeSEO?.metaTitle || fallbackTitle;
+    const articleDesc = post.excerpt || activeSEO?.metaDescription || "";
     const articleImage = post.coverImage || companyLogo;
 
     return {
@@ -489,19 +536,12 @@ function generatePageSchema({
       headline: articleTitle,
       description: articleDesc,
       image: articleImage,
-      datePublished: post.publishDate || post.createdAt || new Date().toISOString(),
+      datePublished: post.publishDate || post.createdAt || "",
       author: {
         "@type": "Person",
-        name: post.author || "Technical Lubricants Team",
+        name: post.author || "",
       },
-      publisher: {
-        "@type": "Organization",
-        name: "Jai Deva Oil Co.",
-        logo: {
-          "@type": "ImageObject",
-          url: companyLogo,
-        },
-      },
+      publisher: organizationNode,
     };
   }
 
@@ -509,13 +549,12 @@ function generatePageSchema({
   if (pageSlug.startsWith("product:")) {
     const prodSlug = pageSlug.replace("product:", "").trim();
     const product = productDetails[prodSlug] || {};
-    const prodName = product.name || activeSEO?.metaTitle || "Industrial Lubricant";
-    const prodDesc =
-      product.description ||
-      product.tagline ||
-      activeSEO?.metaDescription ||
-      `Buy genuine ${prodName} lubricants and oils from Jai Deva Oil Co.`;
-    const prodImage = product.image || companyLogo;
+    const fallbackName = prodSlug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+    const prodName = product.name || activeSEO?.metaTitle || fallbackName;
+    const prodDesc = product.description || product.tagline || activeSEO?.metaDescription || "";
+    const prodImage = product.coverImage || product.containerImage || companyLogo;
 
     return {
       "@context": "https://schema.org",
@@ -525,21 +564,17 @@ function generatePageSchema({
       description: prodDesc,
       brand: {
         "@type": "Brand",
-        name: product.brand || "Industrial Lubricants",
+        name: product.categoryName || "HP Lubricants",
       },
-      category: product.categorySlug || "Industrial Lubricants",
+      category: product.categorySlug || "",
       sku: product.slug || prodSlug,
       offers: {
         "@type": "Offer",
-        url: `${origin}/products/${product.categorySlug || "industrial-oils"}/${prodSlug}`,
+        url: `${origin}/products/${product.categorySlug || "hp-lubricants"}/${prodSlug}`,
         priceCurrency: "INR",
         price: "0",
-        priceValidUntil: "2027-12-31",
         availability: "https://schema.org/InStock",
-        seller: {
-          "@type": "Organization",
-          name: "Jai Deva Oil Co.",
-        },
+        seller: organizationNode,
       },
     };
   }
@@ -550,19 +585,17 @@ function generatePageSchema({
     return {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: activeSEO?.metaTitle || "Industrial Lubricants & Oils Catalog",
-      description:
-        activeSEO?.metaDescription ||
-        "Browse the full catalogue of genuine engine oils, gear oils, hydraulic oils, and greases from Jai Deva Oil Co.",
+      name: activeSEO?.metaTitle || "",
+      description: activeSEO?.metaDescription || "",
       url: `${origin}/${pageSlug}`,
       mainEntity: {
         "@type": "ItemList",
         itemListElement: prodList.map((p: any, idx: number) => ({
           "@type": "ListItem",
           position: idx + 1,
-          name: p.name,
-          url: `${origin}/products/${p.categorySlug || "industrial-oils"}/${p.slug}`,
-          image: p.image || companyLogo,
+          name: p.name || "",
+          url: `${origin}/products/${p.categorySlug || "hp-lubricants"}/${p.slug || ""}`,
+          image: p.coverImage || p.containerImage || companyLogo,
         })),
       },
     };
