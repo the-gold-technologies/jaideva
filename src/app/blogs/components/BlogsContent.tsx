@@ -69,6 +69,8 @@ export default function BlogsContent() {
               <img
                 src={post.coverImage || "/blogs-banner.jpg"}
                 alt={post.title}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-108"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 pointer-events-none" />

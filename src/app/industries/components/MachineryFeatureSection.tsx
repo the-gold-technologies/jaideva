@@ -116,6 +116,8 @@ export default function MachineryFeatureSection({ onOpenEnquiry }: MachineryFeat
               <img
                 src={currentSystem.image}
                 alt={currentSystem.title}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover object-center"
               />
             )}

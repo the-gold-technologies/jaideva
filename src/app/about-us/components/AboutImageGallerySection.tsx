@@ -93,6 +93,7 @@ export default function AboutImageGallerySection({ onOpenEnquiry }: AboutImageGa
                       alt={facility.title}
                       className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
+                      decoding="async"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#071f3b] via-[#071f3b]/40 to-transparent" />
 

@@ -40,12 +40,16 @@ export default function ProductsServicesSection({ onSelectCategory }: ProductsSe
                 <img
                   src={baseImage}
                   alt={name}
+                  loading="lazy"
+                  decoding="async"
                   className="h-full w-full rounded-full object-contain p-3 transition-opacity duration-300 group-hover:opacity-0"
                 />
                 {hoverImage && (
                   <img
                     src={hoverImage}
                     alt={name}
+                    loading="lazy"
+                    decoding="async"
                     className="absolute inset-0 h-full w-full rounded-full object-contain p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                   />
                 )}

@@ -72,6 +72,8 @@ export function CategoryProductSection({
               <img
                 src={group.coverImage}
                 alt={group.title}
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover transition-transform duration-700 group/card-hover:scale-105"
               />
             ) : (

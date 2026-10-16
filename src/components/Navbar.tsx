@@ -522,6 +522,8 @@ export default function Navbar({
           <img
             src={logoSrc}
             alt="JAI DEVA OIL CO."
+            fetchPriority="high"
+            decoding="async"
             className="h-12 w-auto object-contain sm:h-14 lg:h-[72px]"
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/jaideva-logo.png";
@@ -701,6 +703,8 @@ export default function Navbar({
               <img
                 src={logoSrc}
                 alt="JAI DEVA OIL CO."
+                loading="lazy"
+                decoding="async"
                 className="h-12 w-auto object-contain"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = "/jaideva-logo.png";

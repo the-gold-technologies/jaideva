@@ -236,6 +236,8 @@ export default function FirstTimePopupModal() {
             <img
               src={popupImage}
               alt="Announcement banner"
+              loading="lazy"
+              decoding="async"
               className="w-full h-auto min-h-[380px] sm:min-h-[440px] md:min-h-[500px] max-h-[85vh] object-cover rounded-3xl select-none block"
             />
           </div>
@@ -279,6 +281,8 @@ export default function FirstTimePopupModal() {
             <img
               src={popupImage}
               alt="Promotional banner"
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover object-center block"
             />
           </div>

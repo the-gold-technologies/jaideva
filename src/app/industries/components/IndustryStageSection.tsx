@@ -165,6 +165,8 @@ export default function IndustryStageSection({ onOpenEnquiry }: IndustryStageSec
                 <img
                   src={activeSector.plantImage}
                   alt={activeSector.name}
+                  loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 h-full w-full object-cover object-center brightness-[0.5] transition-all duration-700"
                 />
               )}
@@ -219,6 +221,8 @@ export default function IndustryStageSection({ onOpenEnquiry }: IndustryStageSec
                     <img
                       src={activeSector.oilImage || activeSector.plantImage}
                       alt={activeSector.recommendedProduct.name}
+                      loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover object-center"
                     />
                   )}

@@ -28,6 +28,8 @@ export function CategoryHero({ onOpenEnquiry }: CategoryHeroProps) {
         <img
           src={category.coverImage}
           alt={category.name}
+          fetchPriority="high"
+          decoding="async"
           className="pointer-events-none absolute inset-0 h-full w-full object-cover object-center"
         />
       )}
@@ -99,6 +101,8 @@ export function CategoryHero({ onOpenEnquiry }: CategoryHeroProps) {
                     <img
                       src={heroProduct.containerImage}
                       alt={heroProduct.name}
+                      fetchPriority="high"
+                      decoding="async"
                       className="w-full h-56 md:h-72 object-cover object-center"
                     />
                   )}

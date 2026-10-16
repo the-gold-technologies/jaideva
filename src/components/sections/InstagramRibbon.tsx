@@ -183,6 +183,7 @@ export default function InstagramRibbon({ data }: InstagramRibbonProps) {
                         alt={post.caption}
                         className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                         loading="lazy"
+                        decoding="async"
                       />
                       <div className="absolute inset-0 bg-[#0C356A]/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center text-white p-6 text-center select-none">
                         <Instagram className="w-8 h-8 mb-3 transform translate-y-3 group-hover:translate-y-0 transition-transform duration-500 ease-out" />

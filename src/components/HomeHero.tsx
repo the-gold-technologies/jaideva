@@ -63,6 +63,8 @@ export default function HomeHero({ onOpenEnquiry, onOpenDistributor }: HomeHeroP
         <img
           src={bgImage}
           alt="Hero Background"
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
         />
       )}
@@ -134,6 +136,8 @@ export default function HomeHero({ onOpenEnquiry, onOpenDistributor }: HomeHeroP
               <img
                 src={productImage}
                 alt="Featured lubricant product"
+                fetchPriority="high"
+                decoding="async"
                 className="max-h-[460px] w-full object-cover"
               />
             </div>

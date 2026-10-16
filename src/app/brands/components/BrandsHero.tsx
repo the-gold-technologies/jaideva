@@ -29,6 +29,8 @@ export default function BrandsHero({ onOpenEnquiry }: BrandsHeroProps) {
         <img
           src={bannerImage}
           alt={heading || "Brands hero"}
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
         />
       )}

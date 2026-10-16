@@ -305,6 +305,8 @@ export default function ExistingBusinessNetworkSection() {
                   <img
                     src={regionalMapImage}
                     alt={heading || "Operating Region Map"}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-auto max-h-[460px] sm:max-h-[500px] object-contain"
                   />
                 </div>

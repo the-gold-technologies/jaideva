@@ -24,6 +24,8 @@ export default function BrandsCtaSection({ onOpenEnquiry }: BrandsCtaProps) {
             <img
               src={image}
               alt="Engine oil and synthetic lubricants"
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 h-full w-full object-cover object-right opacity-30 mix-blend-luminosity"
             />
           )}

@@ -158,7 +158,13 @@ export default function BlogDetailPage() {
         {/* Feature Cover Image */}
         {post.coverImage && (
           <div className="w-full h-72 md:h-[480px] overflow-hidden rounded-2xl mb-10 shadow-md bg-gray-100">
-            <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
+            <img
+              src={post.coverImage}
+              alt={post.title}
+              fetchPriority="high"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
           </div>
         )}
 
@@ -271,6 +277,8 @@ export default function BlogDetailPage() {
                     <img
                       src={rel.coverImage || "/blogs-banner.jpg"}
                       alt={rel.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>

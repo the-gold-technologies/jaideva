@@ -42,6 +42,8 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
                     <img
                       src={logoSrc}
                       alt={globalSEO?.siteTitle || "Jai Deva Oil Co."}
+                      loading="lazy"
+                      decoding="async"
                       className="h-10 w-auto object-contain"
                     />
                   </div>

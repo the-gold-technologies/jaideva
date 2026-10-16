@@ -145,6 +145,7 @@ export default function EventsContent() {
           alt={item.altText || item.title || "Event Image"}
           className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
           loading="lazy"
+          decoding="async"
         />
 
         {/* Gradient hover overlay with title */}
@@ -186,6 +187,7 @@ export default function EventsContent() {
             alt={item.altText || item.title || "Event Image"}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
+            decoding="async"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-end p-4">
             <p className="text-white text-xs font-semibold line-clamp-2">{item.title}</p>
@@ -557,6 +559,8 @@ export default function EventsContent() {
                   "Event Photo"
                 }
                 className="w-full h-auto max-h-[75vh] object-contain select-none pointer-events-none"
+                loading="lazy"
+                decoding="async"
               />
 
               {/* Prev Button */}

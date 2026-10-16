@@ -29,6 +29,8 @@ export default function LocateDistributorContactSection({ onOpenEnquiry }: Conta
               <img
                 src="/jaideva-logo.png"
                 alt={companyName || contactTitle || "Jai Deva Oil Co."}
+                loading="lazy"
+                decoding="async"
                 className="h-14 sm:h-16 w-auto object-contain"
               />
             </div>

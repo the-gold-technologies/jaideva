@@ -74,6 +74,7 @@ export default function AboutJaiDevaContent() {
                   alt={founderName || subtitle || title || ""}
                   className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
+                  decoding="async"
                 />
                 {/* Subtle gradient to ensure bottom text is legible */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#071f3b]/90 via-[#071f3b]/15 to-transparent pointer-events-none" />

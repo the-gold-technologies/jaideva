@@ -71,6 +71,7 @@ export default function TrustedClientsSection() {
                 alt={brand.name}
                 className="h-10 sm:h-12 max-w-[160px] sm:max-w-[200px] w-auto object-contain"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           ))}

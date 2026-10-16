@@ -64,6 +64,8 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
               <img
                 src={productImage}
                 alt={product.name}
+                loading="lazy"
+                decoding="async"
                 className="max-h-72 object-contain mx-auto transition-transform duration-300 group-hover:scale-105"
               />
             )}
