@@ -18,7 +18,7 @@ import { FormattedText } from "@/components/FormattedText";
 function getEventBadge(item: any): string {
   if (item.category) return item.category;
   if (item.badge) return item.badge;
-  const title = (item.title || item.altText || "").toLowerCase();
+  const title = (item.title || "").toLowerCase();
   if (title.includes("award")) return "Awards";
   if (title.includes("launch")) return "Product Launch";
   if (
@@ -143,7 +143,7 @@ export default function EventsContent() {
         {/* Full coverage image */}
         <img
           src={item.image}
-          alt={item.altText || item.title || "Event Image"}
+          alt={item.title || ""}
           className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
           loading="lazy"
           decoding="async"
@@ -185,7 +185,7 @@ export default function EventsContent() {
         >
           <img
             src={item.image}
-            alt={item.altText || item.title || "Event Image"}
+            alt={item.title || ""}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy"
             decoding="async"

@@ -40,10 +40,9 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 function resolveIcon(iconKey: unknown): React.ElementType {
-  const key = typeof iconKey === "string" ? iconKey.trim() : "";
+  const key = typeof iconKey === "string" ? iconKey.trim().toLowerCase() : "";
   return (
     (key && ICON_MAP[key]) ||
-    (key && ICON_MAP[key.toLowerCase()]) ||
     (typeof iconKey === "function" ? (iconKey as React.ElementType) : CheckCircle2)
   );
 }
@@ -58,7 +57,7 @@ export default function AboutWhyChooseSection() {
 
   const whyChooseTitle = sectionData.whyChooseTitle || sectionData.title;
   const whyChooseSubtitle = sectionData.whyChooseSubtitle || sectionData.subtitle;
-  const whyChooseItems = sectionData.whyChooseItems || sectionData.items || [];
+  const whyChooseItems = sectionData.whyChooseItems || [];
 
   if (!whyChooseTitle && (!Array.isArray(whyChooseItems) || whyChooseItems.length === 0))
     return null;
@@ -84,7 +83,7 @@ export default function AboutWhyChooseSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChooseItems.map((item: any, index: number) => {
               const IconComp = resolveIcon(item.icon);
-              const descText = item.description || item.desc || "";
+              const descText = item.description || "";
 
               return (
                 <div

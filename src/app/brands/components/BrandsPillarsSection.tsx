@@ -33,7 +33,8 @@ const ICON_MAP: Record<string, React.ElementType> = {
 function resolveIcon(iconKey: any): React.ElementType {
   if (typeof iconKey !== "string") return ShieldCheck;
   const key = iconKey.trim();
-  return ICON_MAP[key] || ICON_MAP[key.toLowerCase()] || ShieldCheck;
+  const k = key.toLowerCase();
+  return ICON_MAP[k] || ShieldCheck;
 }
 
 export default function BrandsPillarsSection() {

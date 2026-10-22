@@ -7,16 +7,8 @@ import { FormattedText } from "@/components/FormattedText";
 
 export default function AboutJaiDevaContent() {
   const { pages } = useCMSStore();
-  const {
-    title,
-    subtitle,
-    founderName,
-    founderRole,
-    founderNote,
-    estBadge,
-    image,
-    paragraph,
-  } = pages["about-us"]?.AboutJaiDevaContent || {};
+  const { title, subtitle, founderName, founderRole, founderNote, estBadge, image, paragraph } =
+    pages["about-us"]?.AboutJaiDevaContent || {};
 
   if (!title && !paragraph && !image) return null;
 
@@ -67,7 +59,7 @@ export default function AboutJaiDevaContent() {
               <div className="relative aspect-[4/5] w-full overflow-hidden">
                 <img
                   src={image}
-                  alt={founderName || subtitle || title || ""}
+                  alt={founderName || ""}
                   className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                   loading="lazy"
                   decoding="async"

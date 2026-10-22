@@ -42,7 +42,8 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 function resolveIcon(iconKey: unknown): React.ElementType {
   const key = typeof iconKey === "string" ? iconKey.trim() : "";
-  return ICON_MAP[key] || ICON_MAP[key.toLowerCase()] || Factory;
+  const k = key.toLowerCase();
+  return ICON_MAP[k] || Factory;
 }
 
 interface IndustryStageSectionProps {

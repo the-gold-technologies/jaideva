@@ -33,7 +33,8 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 function resolveIcon(iconKey: unknown): React.ElementType {
   const key = typeof iconKey === "string" ? iconKey.trim() : "";
-  return ICON_MAP[key] || ICON_MAP[key.toLowerCase()] || Cog;
+  const k = key.toLowerCase();
+  return ICON_MAP[k] || Cog;
 }
 
 interface MachineryFeatureProps {

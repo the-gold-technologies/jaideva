@@ -21,7 +21,7 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
   const companyPhone = globalSEO?.phone || "";
   const companyEmail = globalSEO?.email || "";
   const companyAddress = globalSEO?.address || "";
-  const logoSrc = socialLinks.footerLogo || globalSEO?.logo || "";
+  const logoSrc = socialLinks.footerLogo || "";
 
   const quickLinks = [
     { name: "Products", href: "/products" },

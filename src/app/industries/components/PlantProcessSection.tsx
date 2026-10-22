@@ -22,7 +22,8 @@ const ICON_MAP: Record<string, React.ElementType> = {
 
 function resolveIcon(iconKey: unknown): React.ElementType {
   const key = typeof iconKey === "string" ? iconKey.trim() : "";
-  return ICON_MAP[key] || ICON_MAP[key.toLowerCase()] || TestTube2;
+  const k = key.toLowerCase();
+  return ICON_MAP[k] || TestTube2;
 }
 
 interface PlantProcessProps {

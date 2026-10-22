@@ -19,8 +19,8 @@ export default function ProductsServicesSection({ onSelectCategory }: ProductsSe
   }
 
   const renderProductTile = (item: any, idx: number) => {
-    const itemId = item.id || item.slug || `cat-${idx}`;
-    const link = item.link || `/products/${item.slug || itemId}`;
+    const itemId = item.slug || `cat-${idx}`;
+    const link = item.link || `/products/${itemId}`;
     const name = item.name || item.title;
     const baseImage = item.img;
     const hoverImage = item.hoverImg;

@@ -25,7 +25,8 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 function resolveIcon(iconKey: string): React.ElementType {
-  return ICON_MAP[iconKey] || ICON_MAP[iconKey?.toLowerCase()] || Warehouse;
+  const k = (iconKey || "").toLowerCase();
+  return ICON_MAP[k] || Warehouse;
 }
 
 interface AboutImageGalleryProps {

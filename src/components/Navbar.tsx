@@ -94,9 +94,8 @@ export default function Navbar({
           name: p.name,
           slug: p.slug,
           categorySlug: p.categorySlug || "hp-lubricants",
-          subCategoryTitle:
-            p.subCategoryTitle || p.subtitle || p.categoryName || "Industrial Lubricant",
-          description: p.description || p.specsText || "",
+          subCategoryTitle: p.subCategoryTitle || "",
+          description: p.description || "",
         });
       });
     }
@@ -191,9 +190,7 @@ export default function Navbar({
 
   // Google Translator language integration
   const detectedLanguage = useLanguage();
-  const [currentLanguage, setCurrentLanguage] = useState<"EN" | "HI">(
-    language || detectedLanguage || "EN",
-  );
+  const [currentLanguage, setCurrentLanguage] = useState<"EN" | "HI">(language || "EN");
 
   useEffect(() => {
     setCurrentLanguage(detectedLanguage);
@@ -232,7 +229,7 @@ export default function Navbar({
     return [];
   }, [productCategories, products]);
 
-  const currentBrand = brandList.find((b) => b.id === activeBrandId) || brandList[0] || null;
+  const currentBrand = brandList.find((b) => b.id === activeBrandId) || null;
 
   const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
 

@@ -23,10 +23,9 @@ const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 function resolveIcon(iconKey: unknown): React.ElementType {
-  const key = typeof iconKey === "string" ? iconKey.trim() : "";
+  const key = typeof iconKey === "string" ? iconKey.trim().toLowerCase() : "";
   return (
     (key && ICON_MAP[key]) ||
-    (key && ICON_MAP[key.toLowerCase()]) ||
     (typeof iconKey === "function" ? (iconKey as React.ElementType) : CheckCircle2)
   );
 }

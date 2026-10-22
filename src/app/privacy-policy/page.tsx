@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage() {
   const HeadingTag = getHeadingTag(currentSEO?.headingOptions, "h1");
 
   const cmsPrivacy = pages["privacy-policy"];
-  const title = cmsPrivacy?.title || "PRIVACY POLICY";
+  const title = cmsPrivacy?.title || "";
   const lastUpdated = cmsPrivacy?.lastUpdated;
   const rawHtmlContent = cmsPrivacy?.content;
   const pageLoading = isLoading["privacy-policy"] && !cmsPrivacy;

@@ -23,7 +23,8 @@ const TRUST_ICON_MAP: Record<string, React.ElementType> = {
 
 function resolveTrustIcon(iconKey: unknown): React.ElementType {
   const key = typeof iconKey === "string" ? iconKey.trim() : "";
-  return TRUST_ICON_MAP[key] || TRUST_ICON_MAP[key.toLowerCase()] || Clock;
+  const k = key.toLowerCase();
+  return TRUST_ICON_MAP[k] || Clock;
 }
 
 interface IndustriesConsultationCTAProps {
@@ -53,7 +54,7 @@ export default function IndustriesConsultationCTA({
 
   if (!heading && options.length === 0) return null;
 
-  const currentSector = chosenSector || options[0] || "";
+  const currentSector = chosenSector || "";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

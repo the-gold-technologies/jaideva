@@ -89,8 +89,8 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
                   {ctaPrimaryText} <ArrowRight size={14} />
                 </a>
               )}
-              {ctaSecondaryText && (
-                ctaSecondaryUrl ? (
+              {ctaSecondaryText &&
+                (ctaSecondaryUrl ? (
                   <Link
                     href={ctaSecondaryUrl}
                     className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b]"
@@ -100,7 +100,7 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
                 ) : onOpenEnquiry ? (
                   <button
                     type="button"
-                    onClick={() => onOpenEnquiry(badge || heading || "")}
+                    onClick={() => onOpenEnquiry(heading || "")}
                     className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b]"
                   >
                     {ctaSecondaryText}
@@ -112,8 +112,7 @@ export default function AboutHero({ onOpenEnquiry }: AboutHeroProps) {
                   >
                     {ctaSecondaryText}
                   </Link>
-                )
-              )}
+                ))}
             </div>
           )}
         </div>

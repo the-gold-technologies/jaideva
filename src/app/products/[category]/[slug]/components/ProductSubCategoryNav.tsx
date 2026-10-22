@@ -34,7 +34,7 @@ export function ProductSubCategoryNav() {
 
   if (!subCategoryList || subCategoryList.length === 0) return null;
 
-  const currentGroupTitle = product?.subCategoryTitle || product?.subtitle || category?.name;
+  const currentGroupTitle = product?.subCategoryTitle || "";
 
   return (
     <div className="mt-8 pt-2">

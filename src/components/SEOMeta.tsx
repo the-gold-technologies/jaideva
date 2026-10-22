@@ -14,8 +14,7 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
     useCMSStore();
 
   const isHome = pageSlug === "home";
-  const activeSEO: PageSEO | null =
-    customSEO || pages[pageSlug]?.seo || pageSEO?.[pageSlug] || null;
+  const activeSEO: PageSEO = customSEO?.metaTitle ? customSEO : pageSEO?.[pageSlug] || {};
 
   // Auto fetch global SEO if not loaded yet
   useEffect(() => {
@@ -24,13 +23,28 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
     }
   }, [globalSEO, fetchGlobalSEO]);
 
+  let title = activeSEO.metaTitle || "";
+  if (isHome && !title) {
+    title = globalSEO?.siteTitle || "";
+  }
+
+  let description = activeSEO.metaDescription || "";
+  if (isHome && !description) {
+    description = globalSEO?.siteDescription || "";
+  }
+
+  const keywords = activeSEO.targetKeywords || "";
+  const currentUrl = (activeSEO.canonicalUrl || "").trim();
+
   // Derive JSON-LD Structured Data:
   // For home: use CMS globalSEO?.schema (or activeSEO?.schema) if provided; otherwise generate default Organization/WebSite schema.
   // For subpages: use CMS activeSEO?.schema if provided; otherwise generate default contextual page schema.
   const schemaString = useMemo(() => {
-    const rawCustomSchema = (
-      isHome ? globalSEO?.schema || activeSEO?.schema : activeSEO?.schema
-    )?.trim();
+    let customSchema = activeSEO.schema || "";
+    if (isHome && !customSchema) {
+      customSchema = globalSEO?.schema || "";
+    }
+    const rawCustomSchema = customSchema.trim();
 
     if (rawCustomSchema) {
       const parsed = parseCustomSchema(rawCustomSchema);
@@ -54,11 +68,6 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
   }, [isHome, globalSEO, activeSEO, pageSlug, pages, productDetails, blogPosts, products, blogs]);
 
   useEffect(() => {
-    // 1. Determine Title strictly from CMS data (No default data)
-    const title = isHome
-      ? activeSEO?.metaTitle || globalSEO?.siteTitle || ""
-      : activeSEO?.metaTitle || "";
-
     if (title) {
       document.title = title;
     }
@@ -90,15 +99,6 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
       }
       link.setAttribute("href", href);
     };
-
-    // 3. Description & Keywords strictly from CMS (No default data)
-    const description = isHome
-      ? activeSEO?.metaDescription || globalSEO?.siteDescription || ""
-      : activeSEO?.metaDescription || "";
-
-    const keywords = activeSEO?.targetKeywords || "";
-
-    const currentUrl = (activeSEO?.canonicalUrl || "").trim();
 
     if (description) {
       setMetaTag("name", "description", description);
@@ -232,6 +232,22 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
 
   return (
     <>
+      {/* Native Head Meta Tags for SSR / Search Engine Crawlers */}
+      {title && <title>{title}</title>}
+      {description && <meta name="description" content={description} />}
+      {keywords && <meta name="keywords" content={keywords} />}
+      {typeof activeSEO?.noIndex === "boolean" && (
+        <meta name="robots" content={activeSEO.noIndex ? "noindex, nofollow" : "index, follow"} />
+      )}
+      {currentUrl && <link rel="canonical" href={currentUrl} />}
+      {title && <meta property="og:title" content={title} />}
+      {description && <meta property="og:description" content={description} />}
+      {currentUrl && <meta property="og:url" content={currentUrl} />}
+      <meta property="og:type" content={pageSlug?.startsWith("blogs/") ? "article" : "website"} />
+      <meta name="twitter:card" content="summary_large_image" />
+      {title && <meta name="twitter:title" content={title} />}
+      {description && <meta name="twitter:description" content={description} />}
+
       {/* Structured Data (JSON-LD Schema Markup) */}
       {schemaString && (
         <script
@@ -362,11 +378,11 @@ function generatePageSchema({
 }) {
   const origin = (process.env.NEXT_PUBLIC_SITE_URL || "").replace(/\/$/, "");
 
-  const companyName = globalSEO?.siteTitle || "Jai Deva Oil Co.";
+  const companyName = globalSEO?.siteTitle || "";
   const companyPhone = globalSEO?.phone || "";
   const companyEmail = globalSEO?.email || "";
   const companyAddress = globalSEO?.address || "";
-  const companyLogo = globalSEO?.logo || `${origin}/jaideva-logo.png`;
+  const companyLogo = globalSEO?.logo || "";
 
   // Base Organization Schema Node
   const organizationNode: any = {
@@ -509,7 +525,7 @@ function generatePageSchema({
         "@type": "BlogPosting",
         headline: b.title || "",
         url: `${origin}/blogs/${b.slug || ""}`,
-        datePublished: b.publishDate || b.createdAt || "",
+        datePublished: b.publishDate || "",
         image: b.coverImage || companyLogo,
       })),
     };
@@ -519,11 +535,9 @@ function generatePageSchema({
   if (pageSlug.startsWith("blogs/")) {
     const blogSlug = pageSlug.replace("blogs/", "").trim();
     const post = blogPosts[blogSlug] || {};
-    const fallbackTitle = blogSlug
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-    const articleTitle = post.title || activeSEO?.metaTitle || fallbackTitle;
-    const articleDesc = post.excerpt || activeSEO?.metaDescription || "";
+    const fallbackTitle = blogSlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    const articleTitle = post.title || "";
+    const articleDesc = post.excerpt || "";
     const articleImage = post.coverImage || companyLogo;
 
     return {
@@ -536,7 +550,7 @@ function generatePageSchema({
       headline: articleTitle,
       description: articleDesc,
       image: articleImage,
-      datePublished: post.publishDate || post.createdAt || "",
+      datePublished: post.publishDate || "",
       author: {
         "@type": "Person",
         name: post.author || "",
@@ -549,12 +563,10 @@ function generatePageSchema({
   if (pageSlug.startsWith("product:")) {
     const prodSlug = pageSlug.replace("product:", "").trim();
     const product = productDetails[prodSlug] || {};
-    const fallbackName = prodSlug
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-    const prodName = product.name || activeSEO?.metaTitle || fallbackName;
-    const prodDesc = product.description || product.tagline || activeSEO?.metaDescription || "";
-    const prodImage = product.coverImage || product.containerImage || companyLogo;
+    const fallbackName = prodSlug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+    const prodName = product.name || "";
+    const prodDesc = product.description || "";
+    const prodImage = product.containerImage || "";
 
     return {
       "@context": "https://schema.org",
@@ -594,8 +606,8 @@ function generatePageSchema({
           "@type": "ListItem",
           position: idx + 1,
           name: p.name || "",
-          url: `${origin}/products/${p.categorySlug || "hp-lubricants"}/${p.slug || ""}`,
-          image: p.coverImage || p.containerImage || companyLogo,
+          url: `${origin}/products/${p.categorySlug || ""}/${p.slug || ""}`,
+          image: p.containerImage || "",
         })),
       },
     };
@@ -606,7 +618,7 @@ function generatePageSchema({
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: activeSEO?.metaTitle || companyName,
-    description: activeSEO?.metaDescription || globalSEO?.siteDescription || "",
+    description: activeSEO?.metaDescription || "",
     url: `${origin}/${pageSlug}`,
   };
 }

@@ -42,11 +42,16 @@ export default function ProductDetailPage() {
       fetchProducts(categorySlug).catch(console.error);
     }
   }, [productSlug, categorySlug, fetchProductBySlug, fetchProducts]);
-
-  const product = productDetails[productSlug] || products?.find((p) => p.slug === productSlug);
+  const product: any = useMemo(() => {
+    if (productDetails[productSlug]) return productDetails[productSlug];
+    if (products && products.length > 0) {
+      return products.find((p) => p.slug === productSlug) || null;
+    }
+    return null;
+  }, [productDetails, products, productSlug]);
 
   const handleOpenEnquiry = (prodName?: string) => {
-    setEnquiryProduct(prodName || product?.name || "");
+    setEnquiryProduct(prodName || "");
     setIsEnquiryOpen(true);
   };
 
@@ -54,22 +59,21 @@ export default function ProductDetailPage() {
     if (!product) return;
     setDownloadProductName(product.name);
     setDownloadPdfType(pdfType);
-    setDownloadPdfUrl(
-      pdfType === "TDS"
-        ? product.tdsPdfUrl || product.pdfUrl || ""
-        : product.msdsPdfUrl || product.msdsUrl || "",
-    );
+    setDownloadPdfUrl(pdfType === "TDS" ? product.pdfUrl || "" : product.msdsUrl || "");
     setIsDownloadOpen(true);
   };
 
-  const productSEO: PageSEO = {
-    metaTitle: product?.metaTitle || null,
-    metaDescription: product?.metaDescription || null,
-    targetKeywords: product?.targetKeywords || null,
-    canonicalUrl: product?.canonicalUrl || null,
-    schema: product?.schema || null,
-    headingOptions: product?.headingOptions || null,
-  };
+  const productSEO: PageSEO = useMemo(
+    () => ({
+      metaTitle: product?.metaTitle || "",
+      metaDescription: product?.metaDescription || "",
+      targetKeywords: product?.targetKeywords || "",
+      canonicalUrl: product?.canonicalUrl || "",
+      schema: product?.schema || "",
+      headingOptions: product?.headingOptions || "",
+    }),
+    [product],
+  );
 
   if (!product) {
     return (

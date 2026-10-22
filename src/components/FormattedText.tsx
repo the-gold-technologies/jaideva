@@ -39,13 +39,9 @@ export function FormattedText({
 
       if (isInternal) {
         parts.push(
-          <Link
-            key={`link-${matchIndex}`}
-            href={trimmedUrl}
-            className={linkClassName}
-          >
+          <Link key={`link-${matchIndex}`} href={trimmedUrl} className={linkClassName}>
             {linkText}
-          </Link>
+          </Link>,
         );
       } else {
         parts.push(
@@ -57,14 +53,14 @@ export function FormattedText({
             className={linkClassName}
           >
             {linkText}
-          </a>
+          </a>,
         );
       }
     } else if (boldText !== undefined) {
       parts.push(
         <strong key={`bold-${matchIndex}`} className="font-bold text-inherit">
           {boldText}
-        </strong>
+        </strong>,
       );
     }
 
@@ -84,4 +80,3 @@ export function FormattedText({
 }
 
 export const LinkText = FormattedText;
-

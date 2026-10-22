@@ -4,7 +4,7 @@ import React, { useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FileText, Search } from "lucide-react";
-import { useCMSStore } from "@/store/useCMSStore";
+import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
 
 interface ProductShowcaseCardProps {
   onOpenEnquiry: (productName?: string) => void;
@@ -40,7 +40,7 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
 
   if (!product) return null;
 
-  const currentGroupTitle = product.subCategoryTitle || product.subtitle || category?.name;
+  const currentGroupTitle = product.subCategoryTitle || "";
   const productImage = product.containerImage || product.coverImage;
 
   return (
@@ -80,9 +80,14 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
               <span className="text-[11px] font-extrabold text-[#C86218] uppercase tracking-wider block mb-1">
                 {product.subtitle || currentGroupTitle}
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-[#002b5c] tracking-tight mb-2">
-                {product.name}
-              </h2>
+              {(() => {
+                const HeadingTag = getHeadingTag(product?.headingOptions || "", "h2");
+                return (
+                  <HeadingTag className="text-2xl sm:text-3xl font-extrabold text-[#002b5c] tracking-tight mb-2">
+                    {product.name}
+                  </HeadingTag>
+                );
+              })()}
               <div className="w-12 h-1 bg-[#002b5c] rounded-full mb-4" />
 
               {/* Specifications or Key Highlights */}

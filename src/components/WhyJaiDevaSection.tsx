@@ -71,12 +71,10 @@ export default function WhyJaiDevaSection() {
         {points.length > 0 && (
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 text-left">
             {points.map((pt: any, idx: number) => {
-              const iconKey = typeof pt.icon === "string" ? pt.icon.trim() : "";
+              const iconKey = typeof pt.icon === "string" ? pt.icon.trim().toLowerCase() : "";
               const Icon =
                 (iconKey && ICON_MAP[iconKey]) ||
-                (iconKey && ICON_MAP[iconKey.toLowerCase()]) ||
-                (typeof pt.icon === "function" && pt.icon) ||
-                CheckCircle2;
+                (typeof pt.icon === "function" ? pt.icon : CheckCircle2);
               const colorClass = COLOR_STYLES[idx % COLOR_STYLES.length];
 
               return (

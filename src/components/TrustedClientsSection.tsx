@@ -21,7 +21,7 @@ export default function TrustedClientsSection() {
   const brandsSource: BrandItem[] = clients
     .filter((c: any) => c && c.logo)
     .map((c: any) => ({
-      id: c.id || c.slug || c.name,
+      id: c.id || "",
       name: c.name || "",
       logo: c.logo,
     }));

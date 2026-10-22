@@ -62,57 +62,60 @@ body {
 .blog-rich-content h2 {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #0c356a;
-  margin-top: 1.75rem;
-  margin-bottom: 0.75rem;
+  color: #002b5c;
+  margin-top: 2.25rem;
+  margin-bottom: 0.85rem;
   letter-spacing: -0.02em;
+  line-height: 1.3;
 }
 
 .blog-rich-content h3 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #0c356a;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+  color: #002b5c;
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
+  line-height: 1.4;
 }
 
 .blog-rich-content p {
   color: #374151;
-  font-size: 0.95rem;
-  line-height: 1.75;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
 }
 
 .blog-rich-content ul {
   list-style-type: disc;
-  padding-left: 1.5rem;
+  padding-left: 1.75rem;
   margin-top: 0.75rem;
-  margin-bottom: 1.25rem;
-  space-y: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .blog-rich-content ol {
   list-style-type: decimal;
-  padding-left: 1.5rem;
+  padding-left: 1.75rem;
   margin-top: 0.75rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .blog-rich-content li {
   color: #374151;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin-bottom: 0.4rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  margin-bottom: 0.5rem;
 }
 
 .blog-rich-content blockquote {
   background-color: #f8f9fa;
   border-left: 4px solid #c86218;
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   border-radius: 0 0.75rem 0.75rem 0;
   font-style: italic;
   color: #4b5563;
-  margin: 1.25rem 0;
+  margin: 1.75rem 0;
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
 .blog-rich-content a {

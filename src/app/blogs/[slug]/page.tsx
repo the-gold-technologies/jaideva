@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
 import BlogsBreadcrumb from "@/app/blogs/components/BlogsBreadcrumb";
 import { Calendar, Clock, User, ArrowLeft, Tag, CheckCircle2, Send } from "lucide-react";
-import { useCMSStore, PageSEO } from "@/store/useCMSStore";
+import { useCMSStore, PageSEO, getHeadingTag } from "@/store/useCMSStore";
 import SEOMeta from "@/components/SEOMeta";
 import { FormattedText } from "@/components/FormattedText";
 
@@ -52,12 +52,12 @@ export default function BlogDetailPage() {
 
   const blogSEO: PageSEO = useMemo(() => {
     return {
-      metaTitle: post?.metaTitle || null,
-      metaDescription: post?.metaDescription || null,
-      targetKeywords: post?.targetKeywords || null,
-      canonicalUrl: post?.canonicalUrl || null,
-      schema: post?.schema || null,
-      headingOptions: post?.headingOptions || null,
+      metaTitle: post?.metaTitle || "",
+      metaDescription: post?.metaDescription || "",
+      targetKeywords: post?.targetKeywords || "",
+      canonicalUrl: post?.canonicalUrl || "",
+      schema: post?.schema || "",
+      headingOptions: post?.headingOptions || "",
     };
   }, [post]);
 
@@ -91,15 +91,24 @@ export default function BlogDetailPage() {
 
   // Handle both Structured JSON Content and WYSIWYG HTML Content from CMS Rich Text Editor
   const isStructuredContent = typeof post.content === "object" && post.content !== null;
-  const intro = isStructuredContent ? post.content.intro : "";
+  const intro = isStructuredContent ? post.content.intro || "" : "";
   const sections =
     isStructuredContent && Array.isArray(post.content.sections) ? post.content.sections : [];
-  const conclusion = isStructuredContent ? post.content.conclusion : "";
+  const conclusion = isStructuredContent ? post.content.conclusion || "" : "";
   const recommendedProducts = isStructuredContent
-    ? post.content.recommendedProducts
+    ? post.content.recommendedProducts || []
     : post.recommendedProducts || [];
 
-  const rawHtmlContent = typeof post.content === "string" ? post.content : null;
+  const rawHtmlContent =
+    typeof post.content === "string"
+      ? post.content
+      : isStructuredContent
+        ? post.content.bodyHtml || null
+        : null;
+
+  const cleanHtmlContent = rawHtmlContent
+    ? rawHtmlContent.replace(/&nbsp;/gi, " ").replace(/\u00a0/g, " ")
+    : null;
 
   return (
     <main
@@ -130,9 +139,14 @@ export default function BlogDetailPage() {
               {post.category}
             </span>
           )}
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#002b5c] leading-tight mb-5">
-            {post.title}
-          </h1>
+          {(() => {
+            const HeadingTag = getHeadingTag(blogSEO.headingOptions, "h1");
+            return (
+              <HeadingTag className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-[#002b5c] leading-tight mb-5">
+                {post.title}
+              </HeadingTag>
+            );
+          })()}
 
           {/* Author & Publishing Meta */}
           <div className="flex flex-wrap items-center gap-6 text-xs md:text-sm text-gray-500 pb-6 border-b border-gray-200 font-medium">
@@ -171,14 +185,16 @@ export default function BlogDetailPage() {
         )}
 
         {/* Intro Highlight Box */}
-        {intro && (
+        {!rawHtmlContent && intro && (
           <div className="bg-[#f8f9fa] border-l-4 border-[#002b5c] p-6 rounded-r-xl mb-10 text-gray-700 text-sm md:text-base leading-relaxed italic font-sans">
-            &ldquo;<FormattedText text={intro} />&rdquo;
+            &ldquo;
+            <FormattedText text={intro} />
+            &rdquo;
           </div>
         )}
 
         {/* Structured Sections (if available) */}
-        {sections.length > 0 && (
+        {!rawHtmlContent && sections.length > 0 && (
           <div className="space-y-10 text-gray-800 text-sm md:text-base leading-relaxed font-sans mb-10">
             {sections.map((section: any, idx: number) => (
               <div key={idx} className="space-y-4">
@@ -210,10 +226,10 @@ export default function BlogDetailPage() {
         )}
 
         {/* Rich Text WYSIWYG HTML Content with Consistent Theme Typography */}
-        {rawHtmlContent && (
+        {cleanHtmlContent && (
           <div
-            className="blog-rich-content text-gray-800 text-sm md:text-base leading-relaxed font-sans space-y-5 mb-10"
-            dangerouslySetInnerHTML={{ __html: rawHtmlContent }}
+            className="blog-rich-content text-gray-800 text-base leading-relaxed font-sans mb-12"
+            dangerouslySetInnerHTML={{ __html: cleanHtmlContent }}
           />
         )}
 
@@ -242,7 +258,7 @@ export default function BlogDetailPage() {
         )}
 
         {/* Conclusion */}
-        {conclusion && (
+        {!rawHtmlContent && conclusion && (
           <div className="pt-6 border-t border-gray-200 text-gray-700 text-sm md:text-base leading-relaxed mb-12">
             <h3 className="text-lg font-bold text-[#002b5c] mb-2">Conclusion</h3>
             <p>
