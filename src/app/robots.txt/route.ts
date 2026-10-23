@@ -19,7 +19,7 @@ export async function GET(request: Request) {
   try {
     const apiUrl = getApiBaseUrl();
     const res = await fetch(`${apiUrl}/api/seo`, {
-      next: { revalidate: 60 },
+      cache: 'no-store',
     });
     if (res.ok) {
       const json = await res.json();
@@ -62,7 +62,7 @@ export async function GET(request: Request) {
   return new NextResponse(robotsContent, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "public, max-age=60, s-maxage=60, stale-while-revalidate=300",
+      "Cache-Control": "no-cache, no-store, must-revalidate",
     },
   });
 }
