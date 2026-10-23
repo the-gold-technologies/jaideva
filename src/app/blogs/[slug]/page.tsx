@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
 import BlogsBreadcrumb from "@/app/blogs/components/BlogsBreadcrumb";
-import { Calendar, Clock, User, ArrowLeft, Tag, CheckCircle2, Send } from "lucide-react";
+import { Calendar, Clock, User, ArrowLeft, CheckCircle2, Send } from "lucide-react";
 import { useCMSStore, PageSEO, getHeadingTag } from "@/store/useCMSStore";
 import SEOMeta from "@/components/SEOMeta";
 import { FormattedText } from "@/components/FormattedText";
@@ -94,10 +94,6 @@ export default function BlogDetailPage() {
   const intro = isStructuredContent ? post.content.intro || "" : "";
   const sections =
     isStructuredContent && Array.isArray(post.content.sections) ? post.content.sections : [];
-  const conclusion = isStructuredContent ? post.content.conclusion || "" : "";
-  const recommendedProducts = isStructuredContent
-    ? post.content.recommendedProducts || []
-    : post.recommendedProducts || [];
 
   const rawHtmlContent =
     typeof post.content === "string"
@@ -231,40 +227,6 @@ export default function BlogDetailPage() {
             className="blog-rich-content text-gray-800 text-base leading-relaxed font-sans mb-12"
             dangerouslySetInnerHTML={{ __html: cleanHtmlContent }}
           />
-        )}
-
-        {/* Recommended Products Callout Box */}
-        {recommendedProducts && recommendedProducts.length > 0 && (
-          <div className="my-12 bg-gradient-to-r from-[#002b5c] to-[#004085] text-white rounded-2xl p-6 md:p-8 shadow-md">
-            <h3 className="text-lg md:text-xl font-bold mb-3 flex items-center gap-2">
-              <Tag size={20} className="text-[#C86218]" /> Recommended Industrial Lubricants
-            </h3>
-            <p className="text-xs md:text-sm text-gray-200 mb-4">
-              Jai Deva Oil Co. supplies genuine industrial & automotive lubricants for diverse
-              operations across Uttar Pradesh and surrounding regions.
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              {recommendedProducts.map((prod: string, pIdx: number) => (
-                <button
-                  key={pIdx}
-                  onClick={() => handleOpenEnquiry(prod)}
-                  className="bg-white text-[#002b5c] hover:bg-[#C86218] hover:text-white text-xs md:text-sm font-bold uppercase px-4 py-2 rounded-lg transition-all shadow-xs cursor-pointer"
-                >
-                  Inquire {prod}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Conclusion */}
-        {!rawHtmlContent && conclusion && (
-          <div className="pt-6 border-t border-gray-200 text-gray-700 text-sm md:text-base leading-relaxed mb-12">
-            <h3 className="text-lg font-bold text-[#002b5c] mb-2">Conclusion</h3>
-            <p>
-              <FormattedText text={conclusion} />
-            </p>
-          </div>
         )}
 
         {/* Action Buttons: Back to blogs & Quick Enquiry */}
