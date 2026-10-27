@@ -19,7 +19,7 @@ export async function GET(request: Request) {
   try {
     const apiUrl = getApiBaseUrl();
     const res = await fetch(`${apiUrl}/api/seo`, {
-      cache: 'no-store',
+      cache: "no-store",
     });
     if (res.ok) {
       const json = await res.json();

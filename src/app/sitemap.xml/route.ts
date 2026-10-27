@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
     // 1. Fetch Global SEO & Sitemap Directives from CMS
     const seoRes = await fetch(`${apiUrl}/api/seo`, {
-      cache: 'no-store',
+      cache: "no-store",
     });
     const seoJson = seoRes.ok ? await seoRes.json() : null;
     const globalSEO = seoJson?.data;
@@ -87,7 +87,7 @@ export async function GET(request: Request) {
     // 3. Fetch CMS Pages (checking visibility & noIndex)
     try {
       const pagesRes = await fetch(`${apiUrl}/api/seo?type=pages`, {
-        cache: 'no-store',
+        cache: "no-store",
       });
       if (pagesRes.ok) {
         const pagesJson = await pagesRes.json();
@@ -119,7 +119,7 @@ export async function GET(request: Request) {
     // 4. Dynamic Products & Categories from CMS
     try {
       const prodRes = await fetch(`${apiUrl}/api/products`, {
-        cache: 'no-store',
+        cache: "no-store",
       });
       if (prodRes.ok) {
         const prodJson = await prodRes.json();
@@ -148,7 +148,7 @@ export async function GET(request: Request) {
     // 5. Dynamic Blog Articles from CMS
     try {
       const blogRes = await fetch(`${apiUrl}/api/blogs`, {
-        cache: 'no-store',
+        cache: "no-store",
       });
       if (blogRes.ok) {
         const blogJson = await blogRes.json();

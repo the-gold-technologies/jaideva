@@ -14,7 +14,7 @@ import Footer from "@/components/Footer";
 import EnquiryModal from "@/components/EnquiryModal";
 import DistributorModal from "@/components/DistributorModal";
 import SEOMeta from "@/components/SEOMeta";
-import InstagramRibbon from "@/components/sections/InstagramRibbon";
+
 import { useCMSStore } from "@/store/useCMSStore";
 
 export default function Home() {
@@ -82,9 +82,6 @@ export default function Home() {
 
       {/* 13. Brand Summary Closing Banner */}
       <BrandClosingBanner onOpenEnquiry={handleOpenEnquiry} />
-
-      {/* 13.5 Instagram Live Feed Ribbon */}
-      <InstagramRibbon data={pages["home"]?.InstagramRibbon} />
 
       {/* 14. Locate Distributor & Contact Details Grid */}
       <LocateDistributorContactSection onOpenEnquiry={handleOpenEnquiry} />

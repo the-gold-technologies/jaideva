@@ -158,18 +158,31 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
           </div>
 
           {/* Bottom Bar */}
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
             {copyrightText && <p>{copyrightText}</p>}
-            <div className="flex items-center gap-6">
-              <Link href="/privacy-policy" className="hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <a href="/sitemap.xml" className="hover:text-white transition-colors">
-                Site Map
-              </a>
-              <Link href="/contact-us" className="hover:text-white transition-colors">
-                Contact Us
-              </Link>
+            <div className="flex flex-col sm:items-end items-center gap-1.5">
+              <div className="flex items-center gap-6">
+                <Link href="/privacy-policy" className="hover:text-white transition-colors">
+                  Privacy Policy
+                </Link>
+                <a href="/sitemap.xml" className="hover:text-white transition-colors">
+                  Site Map
+                </a>
+                <Link href="/contact-us" className="hover:text-white transition-colors">
+                  Contact Us
+                </Link>
+              </div>
+              <p className="text-[10px] tracking-wide text-slate-500">
+                Designed &amp; Developed by{" "}
+                <a
+                  href="https://thegoldtechnologies.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-400 hover:text-white transition-colors underline-offset-2 underline decoration-slate-600"
+                >
+                  TGT
+                </a>
+              </p>
             </div>
           </div>
         </div>

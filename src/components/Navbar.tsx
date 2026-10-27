@@ -13,6 +13,7 @@ import {
   Plus,
   Minus,
   Layers,
+  Award,
 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { changeLanguage, useLanguage } from "@/components/GoogleTranslator";
@@ -40,6 +41,7 @@ export default function Navbar({
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
+  const [mobileBrandsOpen, setMobileBrandsOpen] = useState(false);
   const [mobileSelectedBrand, setMobileSelectedBrand] = useState<string | null>("hp-lubricants");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [activeBrandId, setActiveBrandId] = useState<string>("hp-lubricants");
@@ -236,7 +238,7 @@ export default function Navbar({
   const navItems = [
     { name: "HOME", link: "/" },
     { name: "ABOUT", link: "/about-us" },
-    { name: "BRANDS", link: "/brands" },
+    { name: "BRANDS", link: "/brands", hasBrandsDropdown: true },
     {
       name: "PRODUCTS",
       link: "/products",
@@ -541,21 +543,93 @@ export default function Navbar({
               >
                 <Link
                   href={item.link}
-                  onClick={() => setActiveTab(item.name)}
+                  onClick={() => {
+                    setActiveTab(item.name);
+                    setOpenDropdown(null);
+                  }}
                   className={`flex items-center gap-1 font-sans text-[14px] font-bold tracking-normal transition ${
                     isActive ? "text-[#C86218] font-bold" : "text-[#0C356A] hover:text-[#C86218]"
                   }`}
                 >
                   {item.name}
-                  {item.isMegaMenu && (
+                  {(item.isMegaMenu || item.hasBrandsDropdown) && (
                     <ChevronDown
                       size={14}
-                      className={
+                      className={`transition-transform duration-200 ${
+                        openDropdown === item.name ? "rotate-180" : ""
+                      } ${
                         isActive ? "text-[#C86218]" : "text-gray-500 group-hover:text-[#C86218]"
-                      }
+                      }`}
                     />
                   )}
                 </Link>
+
+                {/* Brands Dropdown - Styled matching Products aesthetic with scrollbar, centered under BRANDS */}
+                {item.hasBrandsDropdown && openDropdown === item.name && (
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 w-[380px]">
+                    <div className="overflow-hidden rounded-xl border border-[#dce5ef] bg-white shadow-[0_18px_45px_rgba(12,53,106,0.16)] animate-in fade-in slide-in-from-top-2 duration-150">
+                      {/* Dropdown Header */}
+                      <div className="flex items-center justify-between gap-4 bg-[#0C356A] px-4 py-3 text-white">
+                        <div>
+                          <div className="mb-0.5 flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-[0.16em] text-[#F4B24D]">
+                            <Award size={12} /> Brands
+                          </div>
+                          <p className="text-xs font-semibold text-white/90">
+                            Our Partner Brands | Authorized Portfolio
+                          </p>
+                        </div>
+                        <Link
+                          href="/brands"
+                          onClick={() => setOpenDropdown(null)}
+                          className="shrink-0 rounded-full border border-white/30 px-3 py-1 text-[10px] font-bold uppercase tracking-wide text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#0C356A]"
+                        >
+                          View all
+                        </Link>
+                      </div>
+
+                      {/* Scrollable Brands List */}
+                      <div className="p-2 bg-white">
+                        <div className="max-h-64 overflow-y-auto scrollbar-visible pr-1 flex flex-col gap-1">
+                          {brandList.length > 0 ? (
+                            brandList.map((brand, bIdx) => (
+                              <Link
+                                key={brand.id}
+                                href={`/products/${brand.id}`}
+                                onClick={() => setOpenDropdown(null)}
+                                className="group flex items-center justify-between rounded-lg border border-transparent px-3 py-2 transition hover:border-orange-200/80 hover:bg-orange-50/70"
+                              >
+                                <div className="flex items-center gap-2.5 min-w-0">
+                                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#0C356A]/5 text-[10px] font-black text-[#0C356A] group-hover:bg-[#C86218] group-hover:text-white transition-colors">
+                                    {bIdx + 1}
+                                  </span>
+                                  <div className="min-w-0">
+                                    <span className="block truncate text-xs font-bold text-[#0C356A] group-hover:text-[#C86218] transition-colors">
+                                      {brand.name}
+                                    </span>
+                                    {brand.categories.length > 0 && (
+                                      <span className="block text-[10px] text-gray-400 font-medium">
+                                        {brand.categories.length}{" "}
+                                        {brand.categories.length === 1 ? "category" : "categories"}
+                                      </span>
+                                    )}
+                                  </div>
+                                </div>
+                                <ChevronRight
+                                  size={14}
+                                  className="shrink-0 text-gray-300 group-hover:text-[#C86218] group-hover:translate-x-0.5 transition-all"
+                                />
+                              </Link>
+                            ))
+                          ) : (
+                            <div className="p-4 text-center text-xs text-gray-400">
+                              Loading brands...
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Clean 2-Column Mega Menu */}
                 {item.isMegaMenu && openDropdown === item.name && (
@@ -724,6 +798,77 @@ export default function Navbar({
               <nav className="flex flex-col gap-1">
                 {navItems.map((item, idx) => {
                   const isActive = checkIsActive(item);
+                  if (item.hasBrandsDropdown) {
+                    return (
+                      <div key={idx} className="border-b border-gray-100 pb-2">
+                        <button
+                          type="button"
+                          onClick={() => setMobileBrandsOpen(!mobileBrandsOpen)}
+                          className={`w-full flex items-center justify-between text-base font-extrabold py-2.5 transition-colors text-left cursor-pointer ${
+                            isActive || mobileBrandsOpen
+                              ? "text-[#C86218]"
+                              : "text-[#0C356A] hover:text-[#C86218]"
+                          }`}
+                        >
+                          <span>{item.name}</span>
+                          {mobileBrandsOpen ? (
+                            <ChevronDown
+                              size={20}
+                              className="text-[#C86218] transition-transform"
+                            />
+                          ) : (
+                            <ChevronRight
+                              size={20}
+                              className="text-gray-400 transition-transform"
+                            />
+                          )}
+                        </button>
+
+                        {/* Collapsible Brands for Mobile */}
+                        {mobileBrandsOpen && (
+                          <div className="pl-2 mt-1 flex flex-col gap-2 border-l-2 border-[#C86218]/70 bg-orange-50/40 p-2.5 rounded-r-lg animate-in fade-in duration-150">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[10px] font-bold uppercase text-[#C86218] tracking-wider">
+                                Authorized Brands
+                              </span>
+                              <Link
+                                href="/brands"
+                                onClick={() => {
+                                  setMobileMenuOpen(false);
+                                  setMobileBrandsOpen(false);
+                                }}
+                                className="text-[10px] font-bold text-[#0C356A] underline"
+                              >
+                                View All
+                              </Link>
+                            </div>
+                            <div className="flex flex-col gap-1.5 max-h-64 overflow-y-auto pr-1">
+                              {brandList.map((brand, bIdx) => (
+                                <Link
+                                  key={brand.id}
+                                  href={`/products/${brand.id}`}
+                                  onClick={() => {
+                                    setMobileMenuOpen(false);
+                                    setMobileBrandsOpen(false);
+                                  }}
+                                  className="flex items-center justify-between rounded-md bg-white border border-gray-200/80 px-2.5 py-2 text-xs font-bold text-[#0C356A] hover:text-[#C86218] transition-colors"
+                                >
+                                  <div className="flex items-center gap-2">
+                                    <span className="flex h-4 w-4 items-center justify-center rounded-full bg-orange-100 text-[8px] font-extrabold text-[#C86218]">
+                                      {bIdx + 1}
+                                    </span>
+                                    <span>{brand.name}</span>
+                                  </div>
+                                  <ChevronRight size={13} className="text-gray-400" />
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+
                   if (item.isMegaMenu) {
                     return (
                       <div key={idx} className="border-b border-gray-100 pb-2">
