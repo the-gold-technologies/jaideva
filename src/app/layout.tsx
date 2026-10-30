@@ -3,6 +3,7 @@ import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import GoogleTranslator from "@/components/GoogleTranslator";
 import FirstTimePopupModal from "@/components/sections/FirstTimePopupModal";
+import CookieConsent from "@/components/CookieConsent";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({
         <GoogleTranslator />
         {children}
         <FirstTimePopupModal />
+        <CookieConsent />
       </body>
     </html>
   );
