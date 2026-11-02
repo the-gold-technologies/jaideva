@@ -1,68 +1,38 @@
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { getApiBaseUrl } from "@/store/useCMSStore";
+
+export const dynamic = "force-dynamic";
 
 interface CategoryRecord {
-  id: string;
-  name: string;
   slug: string;
 }
 
 interface ProductRecord {
-  name: string;
-  slug: string;
-  categorySlug: string;
+  name?: string;
+  categorySlug?: string;
   subCategoryTitle?: string;
   specsText?: string;
   description?: string;
 }
 
-async function resolveProductRedirect(searchQuery?: string): Promise<string> {
-  const cmsUrl = process.env.NEXT_PUBLIC_CMS_URL || "";
-
+async function loadCatalog(): Promise<{
+  categories: CategoryRecord[];
+  products: ProductRecord[];
+}> {
   try {
-    // 1. Fetch categories from CMS
-    const catRes = await fetch(`${cmsUrl}/api/products/categories`, {
-      next: { revalidate: 60 },
-    });
-    const catJson = await catRes.json();
-    const categories: CategoryRecord[] =
-      catJson.success && Array.isArray(catJson.data) ? catJson.data : [];
-
-    const defaultSlug = categories[0]?.slug || "hp-lubricants";
-
-    if (!searchQuery) {
-      return `/products/${defaultSlug}`;
+    const res = await fetch(`${getApiBaseUrl()}/api/products`, { cache: "no-store" });
+    if (!res.ok) {
+      throw new Error(`CMS responded ${res.status}`);
     }
-
-    const q = searchQuery.toLowerCase().trim();
-
-    // 2. If a search query is provided, find the matching brand catalog
-    const prodRes = await fetch(`${cmsUrl}/api/products`, {
-      next: { revalidate: 60 },
-    });
-    const prodJson = await prodRes.json();
-    const products: ProductRecord[] =
-      prodJson.success && Array.isArray(prodJson.data?.products)
-        ? prodJson.data.products
-        : Array.isArray(prodJson.data)
-          ? prodJson.data
-          : [];
-
-    const matchedProduct = products.find((p) => {
-      const name = (p.name || "").toLowerCase();
-      const sub = (p.subCategoryTitle || "").toLowerCase();
-      const desc = (p.description || "").toLowerCase();
-      const specs = (p.specsText || "").toLowerCase();
-      return name.includes(q) || sub.includes(q) || desc.includes(q) || specs.includes(q);
-    });
-
-    const targetBrandSlug = matchedProduct?.categorySlug || defaultSlug;
-    return `/products/${targetBrandSlug}?search=${encodeURIComponent(searchQuery)}`;
+    const json = await res.json();
+    const data = json?.success ? json.data || {} : {};
+    return {
+      categories: Array.isArray(data.categories) ? data.categories : [],
+      products: Array.isArray(data.products) ? data.products : [],
+    };
   } catch (err) {
-    console.error("Error resolving product redirect from CMS:", err);
-    if (searchQuery) {
-      return `/products/hp-lubricants?search=${encodeURIComponent(searchQuery)}`;
-    }
-    return "/products/hp-lubricants";
+    console.error("Error loading product catalog from CMS:", err);
+    return { categories: [], products: [] };
   }
 }
 
@@ -71,8 +41,24 @@ export default async function AllProductsPage({
 }: {
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const query = typeof searchParams?.search === "string" ? searchParams.search : undefined;
+  const searchQuery = typeof searchParams?.search === "string" ? searchParams.search.trim() : "";
 
-  const destination = await resolveProductRedirect(query);
-  redirect(destination);
+  const { categories, products } = await loadCatalog();
+  const defaultSlug = categories[0]?.slug || "";
+
+  if (!searchQuery) {
+    if (!defaultSlug) notFound();
+    redirect(`/products/${defaultSlug}`);
+  }
+
+  const q = searchQuery.toLowerCase();
+  const matchedProduct = products.find((p) =>
+    [p.name, p.subCategoryTitle, p.description, p.specsText].some((field) =>
+      (field || "").toLowerCase().includes(q),
+    ),
+  );
+
+  const targetSlug = matchedProduct?.categorySlug || defaultSlug;
+  if (!targetSlug) notFound();
+  redirect(`/products/${targetSlug}?search=${encodeURIComponent(searchQuery)}`);
 }

@@ -4,6 +4,14 @@ import "./globals.css";
 import GoogleTranslator from "@/components/GoogleTranslator";
 import FirstTimePopupModal from "@/components/sections/FirstTimePopupModal";
 import CookieConsent from "@/components/CookieConsent";
+import { buildRootMetadata } from "@/lib/serverSEO";
+
+// Site-wide SEO is read from the CMS on every request (matches the no-cache policy of the CMS fetches)
+export const dynamic = "force-dynamic";
+
+export async function generateMetadata(): Promise<Metadata> {
+  return buildRootMetadata();
+}
 
 const openSans = Open_Sans({
   subsets: ["latin"],

@@ -73,14 +73,17 @@ export default function DownloadModal({
     setSubmittedName(leadName);
 
     try {
-      await submitEnquiry({
+      const res = await submitEnquiry({
         name: leadName,
-        company,
+        companyName: company,
         phone: mobile,
         email: email || undefined,
         product: `${productName} (${pdfType} Download)`,
-        message: `Requested ${pdfType} document for ${productName}. Company: ${company || "N/A"}`,
+        message: `Requested ${pdfType} document for ${productName}. Company: ${company}`,
       });
+      if (!res?.success) {
+        console.error("Download lead capture failed:", res?.error);
+      }
     } catch (err) {
       console.error("Download lead capture error:", err);
     } finally {

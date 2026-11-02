@@ -95,7 +95,7 @@ export default function Navbar({
           id: p.id,
           name: p.name,
           slug: p.slug,
-          categorySlug: p.categorySlug || "hp-lubricants",
+          categorySlug: p.categorySlug || "",
           subCategoryTitle: p.subCategoryTitle || "",
           description: p.description || "",
         });
@@ -132,8 +132,12 @@ export default function Navbar({
       return name.includes(q) || desc.includes(q) || sub.includes(q);
     });
 
-    const targetCat = matched ? matched.categorySlug : "hp-lubricants";
-    router.push(`/products/${targetCat}?search=${encodeURIComponent(searchQuery.trim())}`);
+    const encoded = encodeURIComponent(searchQuery.trim());
+    router.push(
+      matched?.categorySlug
+        ? `/products/${matched.categorySlug}?search=${encoded}`
+        : `/products?search=${encoded}`,
+    );
   };
 
   // Font sizing with local storage persistence and root style scaling
@@ -1010,9 +1014,17 @@ export default function Navbar({
               >
                 CONTACT US / LOCATE DEALER
               </Link>
-              <div className="text-center text-xs text-gray-500 font-medium">
-                Direct Contact: <span className="font-bold text-gray-800">+91 98765 43210</span>
-              </div>
+              {globalSEO?.phone && (
+                <div className="text-center text-xs text-gray-500 font-medium">
+                  Direct Contact:{" "}
+                  <a
+                    href={`tel:${globalSEO.phone.replace(/\s+/g, "")}`}
+                    className="font-bold text-gray-800 hover:text-[#C86218]"
+                  >
+                    {globalSEO.phone}
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

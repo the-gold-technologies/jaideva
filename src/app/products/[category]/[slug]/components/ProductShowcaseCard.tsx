@@ -46,14 +46,15 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
   return (
     <>
       {/* Category Title with Dark Blue Underline Bar */}
-      <div className="mb-8 border-b border-gray-200 pb-3 flex items-center justify-between">
-        <h1 className="text-2xl md:text-3xl font-extrabold text-[#002b5c] uppercase tracking-wider inline-block relative">
-          <span className="border-b-4 border-[#002b5c] pb-3 inline-block">{currentGroupTitle}</span>
-        </h1>
-        <span className="text-xs font-bold uppercase tracking-widest text-[#C86218] bg-red-50 px-3 py-1 rounded-full border border-red-100 hidden sm:inline-block">
-          Industrial Grade
-        </span>
-      </div>
+      {currentGroupTitle && (
+        <div className="mb-8 border-b border-gray-200 pb-3 flex items-center justify-between">
+          <p className="text-2xl md:text-3xl font-extrabold text-[#002b5c] uppercase tracking-wider inline-block relative">
+            <span className="border-b-4 border-[#002b5c] pb-3 inline-block">
+              {currentGroupTitle}
+            </span>
+          </p>
+        </div>
+      )}
 
       {/* Top Product Showcase Card */}
       <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-8 mb-10">
@@ -81,7 +82,7 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
                 {product.subtitle || currentGroupTitle}
               </span>
               {(() => {
-                const HeadingTag = getHeadingTag(product?.headingOptions || "", "h2");
+                const HeadingTag = getHeadingTag(product?.headingOptions || "", "h1");
                 return (
                   <HeadingTag className="text-2xl sm:text-3xl font-extrabold text-[#002b5c] tracking-tight mb-2">
                     {product.name}
@@ -110,16 +111,6 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
                   </p>
                 </div>
               ) : null}
-
-              {/* Quick Info Badges */}
-              <div className="flex flex-wrap gap-2 text-[11px] text-slate-600 font-medium">
-                <span className="bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
-                  📦 20L / 50L / 210L Barrel
-                </span>
-                <span className="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-md border border-emerald-200 font-semibold">
-                  ✓ In Stock & Ready to Dispatch
-                </span>
-              </div>
             </div>
 
             {/* Quick Action Buttons */}
@@ -131,13 +122,15 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
               >
                 Inquire Product
               </button>
-              <button
-                type="button"
-                onClick={() => onOpenDownload("TDS")}
-                className="bg-[#002b5c] hover:bg-[#001f42] text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
-              >
-                <FileText size={14} /> TDS
-              </button>
+              {product.pdfUrl && (
+                <button
+                  type="button"
+                  onClick={() => onOpenDownload("TDS")}
+                  className="bg-[#002b5c] hover:bg-[#001f42] text-white text-xs font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer"
+                >
+                  <FileText size={14} /> TDS
+                </button>
+              )}
             </div>
           </div>
 

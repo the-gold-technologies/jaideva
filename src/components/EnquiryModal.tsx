@@ -33,7 +33,7 @@ export default function EnquiryModal({ isOpen, onClose, initialProduct = "" }: E
 
   useEffect(() => {
     if (isOpen) {
-      setProduct("");
+      setProduct(initialProduct || "");
       setName("");
       setCompanyName("");
       setMobile("");
@@ -42,7 +42,7 @@ export default function EnquiryModal({ isOpen, onClose, initialProduct = "" }: E
       setErrorMessage("");
       refreshCaptcha();
     }
-  }, [isOpen]);
+  }, [isOpen, initialProduct]);
 
   if (!isOpen) return null;
 
@@ -55,17 +55,24 @@ export default function EnquiryModal({ isOpen, onClose, initialProduct = "" }: E
     setIsSubmitting(true);
     setErrorMessage("");
     try {
-      await submitEnquiry({
+      const res = await submitEnquiry({
         name,
         companyName,
         email: email || undefined,
         phone: mobile,
-        product: product || "General Enquiry",
+        product: product || "",
       });
-      setIsSubmitted(true);
+      if (res?.success) {
+        setIsSubmitted(true);
+      } else {
+        console.error("Enquiry submission failed:", res?.error);
+        setErrorMessage("We couldn't submit your enquiry. Please try again.");
+        refreshCaptcha();
+      }
     } catch (err) {
       console.error("Enquiry submission error:", err);
-      setIsSubmitted(true);
+      setErrorMessage("We couldn't submit your enquiry. Please try again.");
+      refreshCaptcha();
     } finally {
       setIsSubmitting(false);
     }
@@ -181,6 +188,12 @@ export default function EnquiryModal({ isOpen, onClose, initialProduct = "" }: E
                   onRefresh={refreshCaptcha}
                 />
               </div>
+
+              {errorMessage && (
+                <p className="text-xs text-red-600 font-semibold" role="alert">
+                  {errorMessage}
+                </p>
+              )}
 
               <div className="pt-2">
                 <button

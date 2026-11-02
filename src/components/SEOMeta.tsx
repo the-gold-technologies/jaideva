@@ -2,19 +2,33 @@
 
 import React, { useEffect, useMemo } from "react";
 import Script from "next/script";
+import { usePathname } from "next/navigation";
 import { useCMSStore, PageSEO } from "@/store/useCMSStore";
+import { useAnalyticsConsent } from "@/components/CookieConsent";
 
 interface SEOMetaProps {
   pageSlug: string;
   customSEO?: PageSEO | null;
 }
 
+// Stable empty object so effects/memos don't re-run on every render when a page has no SEO record
+const EMPTY_SEO: PageSEO = {};
+
+// Last path a page view was sent for (module-level so remounts on the same path don't double count)
+let lastTrackedPath = "";
+
 export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
   const { globalSEO, fetchGlobalSEO, pages, pageSEO, productDetails, blogPosts, products, blogs } =
     useCMSStore();
+  const pathname = usePathname();
+  const analyticsAllowed = useAnalyticsConsent();
 
   const isHome = pageSlug === "home";
-  const activeSEO: PageSEO = customSEO?.metaTitle ? customSEO : pageSEO?.[pageSlug] || {};
+  const storedSEO = pageSEO?.[pageSlug];
+  const activeSEO: PageSEO = useMemo(
+    () => (customSEO?.metaTitle ? customSEO : storedSEO || EMPTY_SEO),
+    [customSEO, storedSEO],
+  );
 
   // Auto fetch global SEO if not loaded yet
   useEffect(() => {
@@ -174,31 +188,6 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
       }
     }
 
-    // 8. Execute GA & GTM in window context
-    if (typeof window !== "undefined") {
-      (window as any).dataLayer = (window as any).dataLayer || [];
-      if (globalSEO?.googleAnalyticsId) {
-        if (!(window as any).gtag) {
-          (window as any).gtag = function () {
-            (window as any).dataLayer.push(arguments);
-          };
-          (window as any).gtag("js", new Date());
-        }
-        (window as any).gtag("config", globalSEO.googleAnalyticsId, {
-          page_path: window.location.pathname,
-          page_title: title,
-        });
-      }
-
-      if (globalSEO?.gtmId) {
-        (window as any).dataLayer.push({
-          event: "pageview",
-          page: window.location.pathname,
-          title: title,
-        });
-      }
-    }
-
     // 9. Custom Header Scripts
     if (globalSEO?.customHeaderScripts && typeof window !== "undefined") {
       const headerScriptId = "cms-custom-header-scripts";
@@ -230,24 +219,34 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
   const rawGaId = globalSEO?.googleAnalyticsId?.trim();
   const gaId = rawGaId ? rawGaId.match(/(G-[A-Z0-9]+|UA-[0-9-]+)/i)?.[0] || rawGaId : null;
 
+  // Page-view tracking: only with cookie consent, and exactly once per path
+  useEffect(() => {
+    if (!analyticsAllowed || (!gaId && !gtmId)) return;
+    if (lastTrackedPath === pathname) return;
+    lastTrackedPath = pathname;
+
+    const w = window as any;
+    w.dataLayer = w.dataLayer || [];
+
+    if (gaId) {
+      if (!w.gtag) {
+        w.gtag = function () {
+          w.dataLayer.push(arguments);
+        };
+        w.gtag("js", new Date());
+      }
+      w.gtag("config", gaId, { page_path: pathname });
+    }
+
+    if (gtmId) {
+      w.dataLayer.push({ event: "pageview", page: pathname });
+    }
+  }, [analyticsAllowed, gaId, gtmId, pathname]);
+
+  // Title/meta/canonical are rendered server-side via generateMetadata (see src/lib/serverSEO.ts);
+  // the effect above keeps them in sync on client-side navigation.
   return (
     <>
-      {/* Native Head Meta Tags for SSR / Search Engine Crawlers */}
-      {title && <title>{title}</title>}
-      {description && <meta name="description" content={description} />}
-      {keywords && <meta name="keywords" content={keywords} />}
-      {typeof activeSEO?.noIndex === "boolean" && (
-        <meta name="robots" content={activeSEO.noIndex ? "noindex, nofollow" : "index, follow"} />
-      )}
-      {currentUrl && <link rel="canonical" href={currentUrl} />}
-      {title && <meta property="og:title" content={title} />}
-      {description && <meta property="og:description" content={description} />}
-      {currentUrl && <meta property="og:url" content={currentUrl} />}
-      <meta property="og:type" content={pageSlug?.startsWith("blogs/") ? "article" : "website"} />
-      <meta name="twitter:card" content="summary_large_image" />
-      {title && <meta name="twitter:title" content={title} />}
-      {description && <meta name="twitter:description" content={description} />}
-
       {/* Structured Data (JSON-LD Schema Markup) */}
       {schemaString && (
         <script
@@ -257,56 +256,30 @@ export default function SEOMeta({ pageSlug, customSEO }: SEOMetaProps) {
         />
       )}
 
-      {/* Google Tag Manager (GTM) Native Scripts */}
-      {gtmId && (
-        <>
-          <Script
-            id="google-tag-manager-script"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                })(window,document,'script','dataLayer','${gtmId}');
-              `,
-            }}
-          />
-          <noscript>
-            <iframe
-              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
-              height="0"
-              width="0"
-              style={{ display: "none", visibility: "hidden" }}
-            />
-          </noscript>
-        </>
+      {/* Google Tag Manager — loaded only after the visitor accepts cookies */}
+      {analyticsAllowed && gtmId && (
+        <Script
+          id="google-tag-manager-script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','${gtmId}');
+            `,
+          }}
+        />
       )}
 
-      {/* Google Analytics (GA4) Native Scripts */}
-      {gaId && (
-        <>
-          <Script
-            id="google-analytics-src"
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-          />
-          <Script
-            id="google-analytics-init"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${gaId}', {
-                  page_path: window.location.pathname,
-                });
-              `,
-            }}
-          />
-        </>
+      {/* Google Analytics (GA4) — loaded only after consent; config is sent by the tracking effect */}
+      {analyticsAllowed && gaId && (
+        <Script
+          id="google-analytics-src"
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+        />
       )}
     </>
   );

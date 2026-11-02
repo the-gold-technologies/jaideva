@@ -223,21 +223,25 @@ export function ProductDetailsContent({
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={() => onOpenDownload("TDS")}
-            className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-[11px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm hover:shadow-md transition-all cursor-pointer"
-          >
-            <FileText size={14} /> Download TDS
-          </button>
+          {product.pdfUrl && (
+            <button
+              type="button"
+              onClick={() => onOpenDownload("TDS")}
+              className="bg-[#C86218] hover:bg-[#A74D0E] text-white text-[11px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm hover:shadow-md transition-all cursor-pointer"
+            >
+              <FileText size={14} /> Download TDS
+            </button>
+          )}
 
-          <button
-            type="button"
-            onClick={() => onOpenDownload("MSDS")}
-            className="bg-[#002b5c] hover:bg-[#001f42] text-white text-[11px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm hover:shadow-md transition-all cursor-pointer"
-          >
-            <FileText size={14} /> Download MSDS
-          </button>
+          {product.msdsUrl && (
+            <button
+              type="button"
+              onClick={() => onOpenDownload("MSDS")}
+              className="bg-[#002b5c] hover:bg-[#001f42] text-white text-[11px] font-bold uppercase tracking-wider px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-sm hover:shadow-md transition-all cursor-pointer"
+            >
+              <FileText size={14} /> Download MSDS
+            </button>
+          )}
 
           <button
             type="button"

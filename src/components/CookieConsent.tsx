@@ -4,6 +4,35 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Cookie, X } from "lucide-react";
 
+const CONSENT_KEY = "cookie_consent";
+const CONSENT_EVENT = "cookie-consent-change";
+
+function readAnalyticsConsent(): boolean {
+  try {
+    return localStorage.getItem(CONSENT_KEY) === "accepted";
+  } catch {
+    return false;
+  }
+}
+
+/** True only after the visitor has clicked "Accept Cookies". */
+export function useAnalyticsConsent(): boolean {
+  const [granted, setGranted] = useState(false);
+
+  useEffect(() => {
+    const update = () => setGranted(readAnalyticsConsent());
+    update();
+    window.addEventListener(CONSENT_EVENT, update);
+    window.addEventListener("storage", update);
+    return () => {
+      window.removeEventListener(CONSENT_EVENT, update);
+      window.removeEventListener("storage", update);
+    };
+  }, []);
+
+  return granted;
+}
+
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false);
   const [isRendered, setIsRendered] = useState(false);
@@ -39,17 +68,19 @@ export default function CookieConsent() {
 
   const handleAccept = () => {
     try {
-      localStorage.setItem("cookie_consent", "accepted");
+      localStorage.setItem(CONSENT_KEY, "accepted");
       document.cookie = "cookie_consent=accepted; path=/; max-age=31536000; SameSite=Lax";
     } catch {}
+    window.dispatchEvent(new Event(CONSENT_EVENT));
     closeBanner();
   };
 
   const handleDecline = () => {
     try {
-      localStorage.setItem("cookie_consent", "declined");
+      localStorage.setItem(CONSENT_KEY, "declined");
       document.cookie = "cookie_consent=declined; path=/; max-age=31536000; SameSite=Lax";
     } catch {}
+    window.dispatchEvent(new Event(CONSENT_EVENT));
     closeBanner();
   };
 
@@ -103,8 +134,8 @@ export default function CookieConsent() {
 
         {/* Content Body */}
         <p className="text-slate-600 text-[13.5px] sm:text-[14px] leading-relaxed mt-4 font-normal">
-          We use cookies to improve your browsing experience, optimize site performance, and
-          analyze traffic. Read our{" "}
+          We use cookies to improve your browsing experience, optimize site performance, and analyze
+          traffic. Read our{" "}
           <Link
             href="/privacy-policy"
             className="text-amber-600 underline underline-offset-2 decoration-amber-500 hover:text-amber-700 transition-colors font-medium"

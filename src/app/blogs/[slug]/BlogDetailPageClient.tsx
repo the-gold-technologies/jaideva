@@ -23,12 +23,21 @@ export default function BlogDetailPage() {
   const [enquiryProduct, setEnquiryProduct] = useState("");
 
   const { blogPosts, blogs, fetchBlogBySlug, fetchBlogs } = useCMSStore();
+  const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+    setIsFetching(true);
+    const requests: Promise<unknown>[] = [fetchBlogs()];
     if (slug) {
-      fetchBlogBySlug(slug).catch(console.error);
+      requests.push(fetchBlogBySlug(slug));
     }
-    fetchBlogs().catch(console.error);
+    Promise.allSettled(requests).then(() => {
+      if (!cancelled) setIsFetching(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [slug, fetchBlogBySlug, fetchBlogs]);
 
   const post: any = useMemo(() => {
@@ -61,6 +70,22 @@ export default function BlogDetailPage() {
     };
   }, [post]);
 
+  if (!post && isFetching) {
+    return (
+      <main className="min-h-screen bg-white text-gray-800 font-sans flex flex-col">
+        <Navbar
+          fontSizeMultiplier={fontSizeMultiplier}
+          setFontSizeMultiplier={setFontSizeMultiplier}
+          language={language}
+          setLanguage={setLanguage}
+        />
+        <div className="flex-1 flex items-center justify-center py-32" aria-busy="true">
+          <div className="w-10 h-10 border-4 border-[#002b5c] border-t-transparent rounded-full animate-spin" />
+        </div>
+      </main>
+    );
+  }
+
   if (!post) {
     return (
       <main className="min-h-screen bg-white text-gray-800 font-sans flex flex-col justify-between">
@@ -84,7 +109,12 @@ export default function BlogDetailPage() {
             <ArrowLeft size={16} /> Return to All Technical Articles
           </Link>
         </div>
-        <Footer onOpenEnquiry={() => setIsEnquiryOpen(true)} />
+        <Footer onOpenEnquiry={handleOpenEnquiry} />
+        <EnquiryModal
+          isOpen={isEnquiryOpen}
+          onClose={() => setIsEnquiryOpen(false)}
+          initialProduct={enquiryProduct}
+        />
       </main>
     );
   }

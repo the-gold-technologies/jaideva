@@ -33,14 +33,24 @@ export default function ProductDetailPage() {
   const [downloadPdfUrl, setDownloadPdfUrl] = useState("");
 
   const { productDetails, products, fetchProductBySlug, fetchProducts } = useCMSStore();
+  const [isFetching, setIsFetching] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
+    setIsFetching(true);
+    const requests: Promise<unknown>[] = [];
     if (productSlug) {
-      fetchProductBySlug(productSlug).catch(console.error);
+      requests.push(fetchProductBySlug(productSlug));
     }
     if (categorySlug) {
-      fetchProducts(categorySlug).catch(console.error);
+      requests.push(fetchProducts(categorySlug));
     }
+    Promise.allSettled(requests).then(() => {
+      if (!cancelled) setIsFetching(false);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [productSlug, categorySlug, fetchProductBySlug, fetchProducts]);
   const product: any = useMemo(() => {
     if (productDetails[productSlug]) return productDetails[productSlug];
@@ -75,6 +85,22 @@ export default function ProductDetailPage() {
     [product],
   );
 
+  if (!product && isFetching) {
+    return (
+      <main className="min-h-screen bg-white text-gray-800 font-sans flex flex-col">
+        <Navbar
+          fontSizeMultiplier={fontSizeMultiplier}
+          setFontSizeMultiplier={setFontSizeMultiplier}
+          language={language}
+          setLanguage={setLanguage}
+        />
+        <div className="flex-1 flex items-center justify-center py-32" aria-busy="true">
+          <div className="w-10 h-10 border-4 border-[#002b5c] border-t-transparent rounded-full animate-spin" />
+        </div>
+      </main>
+    );
+  }
+
   if (!product) {
     return (
       <>
@@ -84,7 +110,12 @@ export default function ProductDetailPage() {
           setFontSizeMultiplier={setFontSizeMultiplier}
           language={language}
           setLanguage={setLanguage}
-          onOpenEnquiry={() => setIsEnquiryOpen(true)}
+          onOpenEnquiry={handleOpenEnquiry}
+        />
+        <EnquiryModal
+          isOpen={isEnquiryOpen}
+          onClose={() => setIsEnquiryOpen(false)}
+          initialProduct={enquiryProduct}
         />
       </>
     );
