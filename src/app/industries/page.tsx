@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { buildPageMetadata } from "@/lib/serverSEO";
+import StructuredData from "@/components/StructuredData";
 import IndustriesPageClient from "./IndustriesPageClient";
 
 export const dynamic = "force-dynamic";
@@ -9,5 +10,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Page() {
-  return <IndustriesPageClient />;
+  return (
+    <>
+      <StructuredData pageSlug="industries" endpoint="/api/industries" />
+      <IndustriesPageClient />
+    </>
+  );
 }

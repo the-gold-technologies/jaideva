@@ -65,6 +65,7 @@ export default function BlogDetailPage() {
       metaDescription: post?.metaDescription || "",
       targetKeywords: post?.targetKeywords || "",
       canonicalUrl: post?.canonicalUrl || "",
+      noIndex: Boolean(post?.noIndex),
       schema: post?.schema || "",
       headingOptions: post?.headingOptions || "",
     };

@@ -23,12 +23,10 @@ export function ProductDetailsContent({
 
   if (!product) return null;
 
-  const hasMultiCols = Boolean(
-    product.tableHeaders &&
-    product.tableHeaders.length > 0 &&
-    !product.tableHeaders.includes("Property"),
-  );
-  const colCount = hasMultiCols ? product.tableHeaders!.length : 1;
+  // Legacy default ["Property", "Value"] = simple 2-column table; anything else = one column per header.
+  const tableHeaders = product.tableHeaders || [];
+  const hasMultiCols = tableHeaders.length > 0 && !tableHeaders.includes("Property");
+  const colCount = hasMultiCols ? tableHeaders.length : 1;
 
   return (
     <div className="space-y-6 mb-12">
@@ -145,18 +143,20 @@ export function ProductDetailsContent({
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-sans border-collapse">
+            <table
+              className={`w-full text-left text-xs font-sans border-collapse ${hasMultiCols ? "min-w-max" : ""}`}
+            >
               {/* Column headers (for multi-grade products) */}
               {hasMultiCols && (
                 <thead>
                   <tr className="bg-[#002b5c]/5 border-b border-slate-200">
-                    <th className="py-2.5 px-5 font-bold text-[#002b5c] border-r border-slate-200 text-[11px] uppercase tracking-wider w-[220px]">
+                    <th className="py-2.5 px-5 font-bold text-[#002b5c] border-r border-slate-200 text-[11px] uppercase tracking-wider w-[220px] min-w-[180px]">
                       Property
                     </th>
-                    {product.tableHeaders!.map((hdr, hIdx) => (
+                    {tableHeaders.map((hdr, hIdx) => (
                       <th
                         key={hIdx}
-                        className="py-2.5 px-5 text-center font-bold text-[#002b5c] border-r border-slate-200 last:border-r-0 text-[11px] uppercase tracking-wider"
+                        className="py-2.5 px-5 text-center font-bold text-[#002b5c] border-r border-slate-200 last:border-r-0 text-[11px] uppercase tracking-wider whitespace-nowrap"
                       >
                         {hdr}
                       </th>
@@ -174,18 +174,19 @@ export function ProductDetailsContent({
                         : "bg-slate-50/60 hover:bg-slate-50"
                     }`}
                   >
-                    <td className="py-2.5 px-5 font-semibold text-slate-700 border-r border-slate-200 text-[12px] w-[220px]">
+                    <td className="py-2.5 px-5 font-semibold text-slate-700 border-r border-slate-200 text-[12px] w-[220px] min-w-[180px]">
                       {row.property}
                     </td>
 
                     {hasMultiCols ? (
                       row.values ? (
-                        row.values.map((v, vIdx) => (
+                        // Render exactly one cell per header so rows always line up with the columns.
+                        tableHeaders.map((_, vIdx) => (
                           <td
                             key={vIdx}
-                            className="py-2.5 px-5 text-slate-800 font-bold border-r border-slate-100 last:border-r-0 text-center text-[12px]"
+                            className="py-2.5 px-5 text-slate-800 font-bold border-r border-slate-100 last:border-r-0 text-center text-[12px] whitespace-nowrap"
                           >
-                            {v}
+                            {row.values?.[vIdx] || ""}
                           </td>
                         ))
                       ) : (

@@ -79,6 +79,7 @@ export default function ProductDetailPage() {
       metaDescription: product?.metaDescription || "",
       targetKeywords: product?.targetKeywords || "",
       canonicalUrl: product?.canonicalUrl || "",
+      noIndex: Boolean(product?.noIndex),
       schema: product?.schema || "",
       headingOptions: product?.headingOptions || "",
     }),

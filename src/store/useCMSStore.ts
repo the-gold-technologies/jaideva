@@ -724,6 +724,7 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>((set, get) =>
             metaDescription: blogSEO.metaDescription || "",
             targetKeywords: blogSEO.targetKeywords || "",
             canonicalUrl: blogSEO.canonicalUrl || "",
+            noIndex: Boolean(blogSEO.noIndex),
             schema: blogSEO.schema || "",
             headingOptions: blogSEO.headingOptions || "",
           };

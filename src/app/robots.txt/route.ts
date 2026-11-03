@@ -14,7 +14,8 @@ export async function GET(request: Request) {
     "",
   );
 
-  let robotsContent = `User-agent: *\nAllow: /\n\nSitemap: ${origin}/sitemap.xml`;
+  let robotsContent = "User-agent: *\nAllow: /";
+  let sitemapEnabled = true;
 
   try {
     const apiUrl = getApiBaseUrl();
@@ -24,39 +25,24 @@ export async function GET(request: Request) {
     if (res.ok) {
       const json = await res.json();
       const globalConfig = json?.data;
-
-      if (globalConfig?.robotsTxt && globalConfig.robotsTxt.trim()) {
-        robotsContent = globalConfig.robotsTxt.trim();
-
-        // Dynamically point any sitemap URL in robots.txt to current origin
-        if (origin) {
-          robotsContent = robotsContent.replace(
-            /Sitemap:\s*https?:\/\/[^\s]+/gi,
-            `Sitemap: ${origin}/sitemap.xml`,
-          );
-        }
-
-        // If sitemap is enabled and not already listed, append it
-        if (
-          globalConfig.sitemapEnabled !== false &&
-          origin &&
-          !robotsContent.toLowerCase().includes("sitemap:")
-        ) {
-          robotsContent += `\n\nSitemap: ${origin}/sitemap.xml`;
-        }
-
-        // If sitemap is disabled in CMS, ensure no sitemap directive is advertised
-        if (globalConfig.sitemapEnabled === false) {
-          robotsContent = robotsContent
-            .split("\n")
-            .filter((line) => !line.trim().toLowerCase().startsWith("sitemap:"))
-            .join("\n")
-            .trim();
-        }
-      }
+      sitemapEnabled = globalConfig?.sitemapEnabled !== false;
+      const customRobots = (globalConfig?.robotsTxt || "").trim();
+      // Only use the CMS text if it is an actual robots file (has a User-agent rule)
+      if (/^\s*user-agent\s*:/im.test(customRobots)) robotsContent = customRobots;
     }
   } catch (err) {
     console.error("Error fetching robots.txt from CMS:", err);
+  }
+
+  // Sitemap directives are always generated here so they point at this site's own /sitemap.xml
+  // (the CMS default text contains a hardcoded domain) and disappear when the sitemap is disabled.
+  robotsContent = robotsContent
+    .split("\n")
+    .filter((line) => !line.trim().toLowerCase().startsWith("sitemap:"))
+    .join("\n")
+    .trim();
+  if (sitemapEnabled && origin) {
+    robotsContent += `\n\nSitemap: ${origin}/sitemap.xml`;
   }
 
   return new NextResponse(robotsContent, {

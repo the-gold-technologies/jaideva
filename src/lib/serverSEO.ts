@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
+import { cache } from "react";
+import { headers } from "next/headers";
 import { getApiBaseUrl, type GlobalSEO, type PageSEO } from "@/store/useCMSStore";
+import { buildJsonLd } from "@/lib/structuredData";
 
 /**
- * Server-side SEO helpers. These run inside `generateMetadata` so the page <title>,
- * description, canonical and robots tags are present in the initial HTML that
- * search engines receive (the page bodies themselves are still client-rendered).
+ * Server-side SEO helpers. These run inside `generateMetadata` and the page's
+ * <StructuredData> so the page <title>, description, canonical, robots tags and
+ * JSON-LD are present in the initial HTML that search engines receive (the page
+ * bodies themselves are still client-rendered).
  */
 
-async function fetchCMS(path: string): Promise<any | null> {
+// `cache` de-duplicates identical CMS calls within one request, so generateMetadata
+// and <StructuredData> share a single fetch per endpoint.
+const fetchCMS = cache(async (path: string): Promise<any | null> => {
   try {
     const res = await fetch(`${getApiBaseUrl()}${path}`, { cache: "no-store" });
     if (!res.ok) return null;
@@ -17,7 +23,7 @@ async function fetchCMS(path: string): Promise<any | null> {
     console.error(`SEO metadata fetch failed for ${path}:`, err);
     return null;
   }
-}
+});
 
 export async function getGlobalSEO(): Promise<GlobalSEO | null> {
   const json = await fetchCMS("/api/seo");
@@ -96,4 +102,34 @@ export async function buildPageMetadata(
 ): Promise<Metadata> {
   const [json, global] = await Promise.all([fetchCMS(endpoint), getGlobalSEO()]);
   return seoToMetadata(json?.seo || null, global, options);
+}
+
+/**
+ * Absolute site origin: NEXT_PUBLIC_SITE_URL when set, otherwise the incoming request's host
+ * (same rule as /sitemap.xml and /robots.txt), so JSON-LD URLs are never relative.
+ */
+function getSiteOrigin(): string {
+  const configured = (process.env.NEXT_PUBLIC_SITE_URL || "").trim();
+  if (configured) return configured.replace(/\/$/, "");
+
+  const h = headers();
+  const host = h.get("x-forwarded-host") || h.get("host") || "";
+  if (!host) return "";
+  const proto = h.get("x-forwarded-proto") || (host.includes("localhost") ? "http" : "https");
+  return `${proto}://${host}`;
+}
+
+/**
+ * JSON-LD for a page, built from the same CMS endpoint as its metadata.
+ * `pageSlug` uses the same keys as <SEOMeta> ("home", "blogs/<slug>", "product:<slug>", …).
+ */
+export async function buildPageJsonLd(pageSlug: string, endpoint: string): Promise<string> {
+  const [json, global] = await Promise.all([fetchCMS(endpoint), getGlobalSEO()]);
+  return buildJsonLd({
+    pageSlug,
+    seo: json?.seo || null,
+    globalSEO: global,
+    pageData: json?.data || null,
+    origin: getSiteOrigin(),
+  });
 }
