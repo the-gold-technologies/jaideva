@@ -17,7 +17,7 @@ export default function BrandClosingBanner({ onOpenEnquiry }: BrandClosingBanner
     title,
     description,
     btnLabel,
-    btnUrl = "/contact-us",
+    btnUrl = "",
     highlights = [],
   } = pages["home"]?.BrandClosingBannerSection || {};
 
@@ -84,7 +84,7 @@ export default function BrandClosingBanner({ onOpenEnquiry }: BrandClosingBanner
               </Link>
             ) : (
               <button
-                onClick={() => onOpenEnquiry && onOpenEnquiry("Industrial Lubrication Partnership")}
+                onClick={() => onOpenEnquiry && onOpenEnquiry("")}
                 className="inline-flex items-center justify-center gap-2 bg-[#C86218] hover:bg-[#A74D0E] text-white font-bold text-sm sm:text-base px-8 py-3.5 rounded-md shadow-md hover:shadow-lg transition-all duration-200 uppercase tracking-wider cursor-pointer"
               >
                 <span>{btnLabel}</span>

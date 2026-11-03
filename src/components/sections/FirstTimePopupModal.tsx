@@ -35,24 +35,31 @@ export default function FirstTimePopupModal() {
     isValid: captchaValid,
   } = useCaptcha();
 
-  // Check first visit and fetch page data
+  // Check first visit and fetch page data — open only when the CMS explicitly enables the popup
   useEffect(() => {
-    const hasSeenPopup = sessionStorage.getItem("hasSeenFirstTimePopup");
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    let hasSeenPopup = false;
+    try {
+      hasSeenPopup = sessionStorage.getItem("hasSeenFirstTimePopup") === "true";
+    } catch {}
 
     fetchPage("home")
       .then((data) => {
         const popupConfig = data?.FirstTimePopup || {};
-        const isEnabled = popupConfig.isEnabled ?? true;
-
-        if (isEnabled && !hasSeenPopup) {
-          const timer = setTimeout(() => {
-            setIsOpen(true);
-            refreshCaptcha();
-          }, 1200);
-          return () => clearTimeout(timer);
-        }
+        if (cancelled || popupConfig.isEnabled !== true || hasSeenPopup) return;
+        timer = setTimeout(() => {
+          setIsOpen(true);
+          refreshCaptcha();
+        }, 1200);
       })
       .catch((err) => console.error("Error fetching popup config:", err));
+
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
   }, [fetchPage, refreshCaptcha]);
 
   // Disable background scrolling and manage focus
@@ -129,7 +136,9 @@ export default function FirstTimePopupModal() {
     setTimeout(() => {
       setIsOpen(false);
       setIsClosing(false);
-      sessionStorage.setItem("hasSeenFirstTimePopup", "true");
+      try {
+        sessionStorage.setItem("hasSeenFirstTimePopup", "true");
+      } catch {}
     }, 220);
   };
 
@@ -194,8 +203,8 @@ export default function FirstTimePopupModal() {
   };
 
   const popupConfig = pages["home"]?.FirstTimePopup || {};
-  const isEnabled = popupConfig.isEnabled ?? true;
-  const showForm = popupConfig.showForm ?? true;
+  const isEnabled = popupConfig.isEnabled === true;
+  const showForm = popupConfig.showForm !== false;
   const popupImage = popupConfig.image || "";
   const formTitle = popupConfig.formTitle || "";
 

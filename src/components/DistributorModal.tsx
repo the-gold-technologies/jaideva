@@ -59,12 +59,12 @@ export default function DistributorModal({ isOpen, onClose, initialType }: Distr
   const [firmName, setFirmName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [state, setState] = useState("Uttar Pradesh");
+  const [state, setState] = useState("");
   const [city, setCity] = useState("");
-  const [lubeType, setLubeType] = useState(initialType);
+  const [lubeType, setLubeType] = useState("");
   const [currentBusiness, setCurrentBusiness] = useState("");
-  const [experienceYears, setExperienceYears] = useState("5-10 Years");
-  const [investmentCapacity, setInvestmentCapacity] = useState("₹10 - 25 Lakhs");
+  const [experienceYears, setExperienceYears] = useState("");
+  const [investmentCapacity, setInvestmentCapacity] = useState("");
   const [message, setMessage] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -82,16 +82,13 @@ export default function DistributorModal({ isOpen, onClose, initialType }: Distr
   const { submitDistributorLead } = useCMSStore();
 
   useEffect(() => {
-    if (initialType) {
-      setLubeType(initialType);
-    }
-  }, [initialType]);
-
-  useEffect(() => {
     if (isOpen) {
+      // Only pre-select a type the dropdown actually offers, so the UI and submitted value match
+      setLubeType(initialType && LUBE_TYPES.includes(initialType) ? initialType : "");
+      setErrorMessage("");
       refreshCaptcha();
     }
-  }, [isOpen]);
+  }, [isOpen, initialType]);
 
   if (!isOpen) return null;
 
@@ -140,6 +137,11 @@ export default function DistributorModal({ isOpen, onClose, initialType }: Distr
     setPhone("");
     setEmail("");
     setCity("");
+    setState("");
+    setLubeType("");
+    setCurrentBusiness("");
+    setExperienceYears("");
+    setInvestmentCapacity("");
     setMessage("");
     setCaptchaInput("");
     refreshCaptcha();
@@ -249,10 +251,14 @@ export default function DistributorModal({ isOpen, onClose, initialType }: Distr
                     Distributorship Interest Type <span className="text-[#C86218]">*</span>
                   </label>
                   <select
+                    required
                     value={lubeType}
                     onChange={(e) => setLubeType(e.target.value)}
                     className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0C356A] focus:ring-1 focus:ring-[#0C356A] bg-white transition-colors"
                   >
+                    <option value="" disabled>
+                      Select interest type
+                    </option>
                     {LUBE_TYPES.map((t) => (
                       <option key={t} value={t}>
                         {t}
@@ -282,10 +288,14 @@ export default function DistributorModal({ isOpen, onClose, initialType }: Distr
                     State <span className="text-[#C86218]">*</span>
                   </label>
                   <select
+                    required
                     value={state}
                     onChange={(e) => setState(e.target.value)}
                     className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0C356A] focus:ring-1 focus:ring-[#0C356A] bg-white transition-colors"
                   >
+                    <option value="" disabled>
+                      Select state
+                    </option>
                     {INDIAN_STATES.map((s) => (
                       <option key={s} value={s}>
                         {s}
@@ -319,6 +329,7 @@ export default function DistributorModal({ isOpen, onClose, initialType }: Distr
                     onChange={(e) => setExperienceYears(e.target.value)}
                     className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0C356A] focus:ring-1 focus:ring-[#0C356A] bg-white transition-colors"
                   >
+                    <option value="">Select experience</option>
                     <option value="New Entrant">New Entrant / Startup</option>
                     <option value="1-3 Years">1 - 3 Years</option>
                     <option value="3-5 Years">3 - 5 Years</option>
@@ -336,6 +347,7 @@ export default function DistributorModal({ isOpen, onClose, initialType }: Distr
                     onChange={(e) => setInvestmentCapacity(e.target.value)}
                     className="w-full px-3.5 py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-[#0C356A] focus:ring-1 focus:ring-[#0C356A] bg-white transition-colors"
                   >
+                    <option value="">Select investment range</option>
                     <option value="₹5 - 10 Lakhs">₹5 - 10 Lakhs</option>
                     <option value="₹10 - 25 Lakhs">₹10 - 25 Lakhs</option>
                     <option value="₹25 - 50 Lakhs">₹25 - 50 Lakhs</option>

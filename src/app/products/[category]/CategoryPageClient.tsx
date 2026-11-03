@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useParams } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -13,7 +13,8 @@ import { CategoryHero, CategorySidebar, CategoryProductList } from "./components
 function CategoryProductsPageContent() {
   const params = useParams();
   const categorySlug = params?.category as string;
-  const [activeSection, setActiveSection] = useState(0);
+  const [activeSection, setActiveSection] = useState("");
+  const pendingAnchorRef = useRef("");
 
   const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);
   const [language, setLanguage] = useState<"EN" | "HI">("EN");
@@ -25,7 +26,7 @@ function CategoryProductsPageContent() {
   const [downloadProductName, setDownloadProductName] = useState("");
   const [downloadPdfUrl, setDownloadPdfUrl] = useState("");
 
-  const { fetchProducts } = useCMSStore();
+  const { fetchProducts, products } = useCMSStore();
 
   useEffect(() => {
     if (categorySlug) {
@@ -33,31 +34,37 @@ function CategoryProductsPageContent() {
     }
   }, [categorySlug, fetchProducts]);
 
-  // Handle URL hash anchor navigation (e.g., #subcat-2)
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const handleHash = () => {
-        const hash = window.location.hash;
-        if (hash) {
-          const match = hash.match(/#subcat-(\d+)/);
-          if (match) {
-            const idx = parseInt(match[1], 10);
-            setActiveSection(idx);
-            setTimeout(() => {
-              const el = document.getElementById(`subcat-${idx}`);
-              if (el) {
-                el.scrollIntoView({ behavior: "smooth", block: "start" });
-              }
-            }, 150);
-          }
-        }
-      };
-
-      handleHash();
-      window.addEventListener("hashchange", handleHash);
-      return () => window.removeEventListener("hashchange", handleHash);
+  // Scroll to a pending #subcat-<name> anchor once its section has rendered
+  const scrollToPendingAnchor = useCallback(() => {
+    const anchorId = pendingAnchorRef.current;
+    if (!anchorId) return;
+    const el = document.getElementById(anchorId);
+    if (el) {
+      pendingAnchorRef.current = "";
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }, [categorySlug]);
+  }, []);
+
+  // Handle URL hash anchor navigation (e.g., #subcat-gear-oils)
+  useEffect(() => {
+    const handleHash = () => {
+      const anchorId = window.location.hash.slice(1);
+      if (!anchorId.startsWith("subcat-")) return;
+      setActiveSection(anchorId);
+      pendingAnchorRef.current = anchorId;
+      scrollToPendingAnchor();
+    };
+
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, [categorySlug, scrollToPendingAnchor]);
+
+  // Products arrive asynchronously; retry the pending scroll after they render
+  useEffect(() => {
+    const frame = requestAnimationFrame(scrollToPendingAnchor);
+    return () => cancelAnimationFrame(frame);
+  }, [products, scrollToPendingAnchor]);
 
   const handleOpenEnquiry = (productName?: string) => {
     setEnquiryProduct(productName || "");

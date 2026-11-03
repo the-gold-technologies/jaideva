@@ -16,6 +16,7 @@ import {
   Award,
 } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
+import { groupProductsBySubCategory } from "@/lib/productGroups";
 import { changeLanguage, useLanguage } from "@/components/GoogleTranslator";
 
 interface NavBrand {
@@ -42,9 +43,9 @@ export default function Navbar({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [mobileBrandsOpen, setMobileBrandsOpen] = useState(false);
-  const [mobileSelectedBrand, setMobileSelectedBrand] = useState<string | null>("hp-lubricants");
+  const [mobileSelectedBrand, setMobileSelectedBrand] = useState<string | null>(null);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [activeBrandId, setActiveBrandId] = useState<string>("hp-lubricants");
+  const [activeBrandId, setActiveBrandId] = useState<string>("");
   const [activeTab, setActiveTab] = useState<string>("");
 
   // Search state
@@ -212,18 +213,10 @@ export default function Navbar({
     if (productCategories && productCategories.length > 0) {
       return productCategories.map((c) => {
         const brandProds = (products || []).filter((p) => p.categorySlug === c.slug);
-        const subTitles = Array.from(
-          new Set(
-            brandProds
-              .map((p) => p.subCategoryTitle?.trim())
-              .filter((s): s is string => Boolean(s)),
-          ),
-        );
-
-        const categories = subTitles.map((title) => ({
-          name: title,
-          slug: title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        }));
+        // Same grouping as the category page, so #anchor links land on the right section
+        const categories = groupProductsBySubCategory(brandProds)
+          .filter((group) => !group.isUngrouped)
+          .map((group) => ({ name: group.title, slug: group.anchorId }));
 
         return {
           id: c.slug,
@@ -235,7 +228,7 @@ export default function Navbar({
     return [];
   }, [productCategories, products]);
 
-  const currentBrand = brandList.find((b) => b.id === activeBrandId) || null;
+  const currentBrand = brandList.find((b) => b.id === activeBrandId) || brandList[0] || null;
 
   const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
 
@@ -661,7 +654,7 @@ export default function Navbar({
                         <div className="border-b border-gray-100 bg-[#fbfcfe] px-4 py-2.5">
                           <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-visible">
                             {brandList.map((brand, bIdx) => {
-                              const isBrandActive = activeBrandId === brand.id;
+                              const isBrandActive = currentBrand?.id === brand.id;
                               return (
                                 <Link
                                   key={brand.id}
@@ -720,15 +713,16 @@ export default function Navbar({
                               onClick={() => setOpenDropdown(null)}
                               className="rounded-full bg-orange-50 px-2.5 py-1 text-[9px] font-bold text-[#C86218] hover:bg-orange-100 transition-colors"
                             >
-                              {currentBrand.categories.length} categories →
+                              {currentBrand.categories.length}{" "}
+                              {currentBrand.categories.length === 1 ? "category" : "categories"} →
                             </Link>
                           </div>
 
                           <div className="grid max-h-48 grid-cols-2 gap-2 overflow-y-auto pr-1 scrollbar-visible">
-                            {currentBrand.categories.map((cat, cIdx) => (
+                            {currentBrand.categories.map((cat) => (
                               <Link
-                                key={cIdx}
-                                href={`/products/${currentBrand.id}#subcat-${cIdx}`}
+                                key={cat.slug}
+                                href={`/products/${currentBrand.id}#${cat.slug}`}
                                 onClick={() => setOpenDropdown(null)}
                                 className="group flex items-center justify-between rounded-lg border border-gray-100 bg-[#f8fafc] px-3.5 py-2.5 transition hover:border-[#F4B24D] hover:bg-orange-50"
                               >
@@ -958,10 +952,10 @@ export default function Navbar({
                                           <span>View all {brand.name}</span>
                                           <ArrowRight size={11} />
                                         </Link>
-                                        {brand.categories.map((cat, cIdx) => (
+                                        {brand.categories.map((cat) => (
                                           <Link
-                                            key={cIdx}
-                                            href={`/products/${brand.id}#subcat-${cIdx}`}
+                                            key={cat.slug}
+                                            href={`/products/${brand.id}#${cat.slug}`}
                                             onClick={() => {
                                               setMobileMenuOpen(false);
                                               setMobileProductsOpen(false);

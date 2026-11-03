@@ -104,7 +104,7 @@ export default function CookieConsent() {
     <div
       role="region"
       aria-label="Cookie Preferences"
-      className={`fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:bottom-6 z-[9990] max-w-[480px] w-[calc(100%-2rem)] sm:w-full transition-all duration-300 ease-out transform ${
+      className={`fixed bottom-4 left-4 right-4 sm:right-auto sm:left-6 sm:bottom-6 z-40 max-w-[480px] w-[calc(100%-2rem)] sm:w-full transition-all duration-300 ease-out transform ${
         isVisible
           ? "opacity-100 translate-y-0 scale-100"
           : "opacity-0 translate-y-4 scale-95 pointer-events-none"

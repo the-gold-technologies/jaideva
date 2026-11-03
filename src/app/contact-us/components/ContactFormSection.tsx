@@ -56,6 +56,8 @@ export default function ContactFormSection() {
   const address = contactHeadquarter?.address || "";
   const workingHours = contactHeadquarter?.workingHours || "";
   const whatsapp = contactHeadquarter?.whatsapp || "";
+  // wa.me requires digits only (country code + number, no "+", spaces or dashes)
+  const whatsappDigits = whatsapp.replace(/\D/g, "");
 
   // Exact fields from ContactForm
   const formBadge = contactForm?.badge || "";
@@ -232,16 +234,16 @@ export default function ContactFormSection() {
             </div>
 
             {/* WhatsApp */}
-            {whatsapp && (
+            {whatsappDigits && (
               <div className="pt-2">
                 <a
-                  href={`https://wa.me/${whatsapp}?text=Hello%20${encodeURIComponent(companyName)},%20I%20have%20an%20enquiry.`}
+                  href={`https://wa.me/${whatsappDigits}?text=Hello%20${encodeURIComponent(companyName)},%20I%20have%20an%20enquiry.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-bold shadow-xs hover:shadow-md transition-all active:scale-[0.99]"
                 >
                   <MessageSquare className="w-4 h-4 fill-white" />
-                  Chat on WhatsApp ({phone})
+                  Chat on WhatsApp ({whatsapp})
                 </a>
               </div>
             )}

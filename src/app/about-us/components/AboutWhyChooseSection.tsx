@@ -49,14 +49,10 @@ function resolveIcon(iconKey: unknown): React.ElementType {
 
 export default function AboutWhyChooseSection() {
   const { pages } = useCMSStore();
-  const sectionData =
-    pages["about-us"]?.AboutWhyChooseSection ||
-    pages["about-us"]?.AboutWhyChoose ||
-    pages["about-us"]?.AboutJaiDevaContent ||
-    {};
+  const sectionData = pages["about-us"]?.AboutWhyChooseSection || {};
 
-  const whyChooseTitle = sectionData.whyChooseTitle || sectionData.title;
-  const whyChooseSubtitle = sectionData.whyChooseSubtitle || sectionData.subtitle;
+  const whyChooseTitle = sectionData.whyChooseTitle || "";
+  const whyChooseSubtitle = sectionData.whyChooseSubtitle || "";
   const whyChooseItems = sectionData.whyChooseItems || [];
 
   if (!whyChooseTitle && (!Array.isArray(whyChooseItems) || whyChooseItems.length === 0))

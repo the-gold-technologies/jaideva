@@ -20,6 +20,11 @@ export interface NetworkLocation {
   address?: string;
 }
 
+// CMS locations should carry a `type` array; guard so one malformed entry can't crash the page
+function locationTypes(loc: NetworkLocation): PinType[] {
+  return Array.isArray(loc.type) ? loc.type : [];
+}
+
 export default function ExistingBusinessNetworkSection() {
   const { pages } = useCMSStore();
   const cmsNetwork = pages["contact-us"]?.ExistingBusinessNetwork;
@@ -44,14 +49,14 @@ export default function ExistingBusinessNetworkSection() {
   const [viewMode, setViewMode] = useState<"regional" | "google">("regional");
   const [selectedLocation, setSelectedLocation] = useState<NetworkLocation | null>(null);
 
-  // Google Map Refs
+  // Live map refs
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
   const [mapType, setMapType] = useState<"roadmap" | "satellite">("roadmap");
   const tileLayerRef = useRef<any>(null);
 
-  // Initialize Leaflet Google Map only when Google view is selected
+  // Initialize the Leaflet map only when the live map view is selected
   useEffect(() => {
     if (viewMode !== "google") {
       if (mapInstanceRef.current) {
@@ -77,25 +82,34 @@ export default function ExistingBusinessNetworkSection() {
         minZoom: 7,
         maxZoom: 14,
         scrollWheelZoom: false,
-        attributionControl: false,
+        attributionControl: true,
       });
 
       mapInstanceRef.current = map;
 
-      const roadmapUrl = "https://mt{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}";
-      const satelliteUrl = "https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}";
-
-      const layer = L.tileLayer(mapType === "roadmap" ? roadmapUrl : satelliteUrl, {
-        subdomains: ["0", "1", "2", "3"],
-        maxZoom: 20,
-      }).addTo(map);
+      // Openly licensed tile providers (attribution required and shown via Leaflet's control)
+      const layer =
+        mapType === "roadmap"
+          ? L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              subdomains: ["a", "b", "c"],
+              maxZoom: 19,
+              attribution:
+                '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> contributors',
+            }).addTo(map)
+          : L.tileLayer(
+              "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+              {
+                maxZoom: 19,
+                attribution: "Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics",
+              },
+            ).addTo(map);
 
       tileLayerRef.current = layer;
 
       // Sleek, compact SVG teardrop pin marker
       const createLocationIcon = (loc: NetworkLocation) => {
-        const isWarehouse = loc.type.includes("warehouse");
-        const isOffice = loc.type.includes("office");
+        const isWarehouse = locationTypes(loc).includes("warehouse");
+        const isOffice = locationTypes(loc).includes("office");
 
         let pinColor = "#F59E0B"; // Yellow for Field
         let innerDotColor = "#78350F";
@@ -148,8 +162,8 @@ export default function ExistingBusinessNetworkSection() {
           icon: createLocationIcon(loc),
         });
 
-        const isWarehouse = loc.type.includes("warehouse");
-        const isOffice = loc.type.includes("office");
+        const isWarehouse = locationTypes(loc).includes("warehouse");
+        const isOffice = locationTypes(loc).includes("office");
 
         let badgeText = "Field Presence";
         let badgeBg = "#FEF3C7";
@@ -229,9 +243,9 @@ export default function ExistingBusinessNetworkSection() {
   }, [viewMode, mapType, locations]);
 
   // Quick summary counts
-  const warehouses = locations.filter((l) => l.type.includes("warehouse"));
-  const offices = locations.filter((l) => l.type.includes("office"));
-  const fieldHubs = locations.filter((l) => l.type.includes("field"));
+  const warehouses = locations.filter((l) => locationTypes(l).includes("warehouse"));
+  const offices = locations.filter((l) => locationTypes(l).includes("office"));
+  const fieldHubs = locations.filter((l) => locationTypes(l).includes("field"));
 
   if (!cmsNetwork && locations.length === 0) {
     return null;
@@ -264,7 +278,7 @@ export default function ExistingBusinessNetworkSection() {
             )}
           </div>
 
-          {/* View Mode Switcher: Regional Graphic vs Live Google Map */}
+          {/* View Mode Switcher: Regional Graphic vs Live Map */}
           <div className="inline-flex items-center p-1 bg-white rounded-xl border border-slate-200 shadow-2xs self-start sm:self-auto shrink-0">
             <button
               type="button"
@@ -289,7 +303,7 @@ export default function ExistingBusinessNetworkSection() {
               }`}
             >
               <MapPin className="w-3.5 h-3.5 text-rose-500" />
-              <span>Live Google Map</span>
+              <span>Live Map</span>
             </button>
           </div>
         </div>
@@ -339,14 +353,14 @@ export default function ExistingBusinessNetworkSection() {
                     onClick={() => setViewMode("google")}
                     className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0C356A] hover:text-blue-700 cursor-pointer ml-auto"
                   >
-                    <span>Explore on Live Google Map</span>
+                    <span>Explore on Live Map</span>
                     <span>→</span>
                   </button>
                 </div>
               )}
             </div>
           ) : (
-            /* VIEW 2: Interactive Google Map */
+            /* VIEW 2: Interactive Map */
             <div className="relative">
               {/* Map Type Controls & Fit All */}
               <div className="absolute top-3 right-3 z-20 flex items-center gap-1 bg-white/95 backdrop-blur-xs p-1 rounded-lg shadow-md border border-slate-200">
@@ -399,11 +413,6 @@ export default function ExistingBusinessNetworkSection() {
                 className="w-full h-[520px] sm:h-[580px] lg:h-[620px] z-10"
                 style={{ backgroundColor: "#F1F5F9" }}
               />
-
-              {/* Authentic Google Watermark */}
-              <div className="absolute bottom-2 left-3 z-20 bg-white/80 backdrop-blur-xs px-2 py-0.5 rounded text-[10px] font-black text-slate-700 shadow-xs border border-slate-200">
-                Google
-              </div>
             </div>
           )}
         </div>

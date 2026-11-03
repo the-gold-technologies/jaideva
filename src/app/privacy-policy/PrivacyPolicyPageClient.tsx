@@ -18,7 +18,7 @@ export default function PrivacyPolicyPage() {
   const [enquiryProduct, setEnquiryProduct] = useState("");
 
   const [isDistributorOpen, setIsDistributorOpen] = useState(false);
-  const [distributorType, setDistributorType] = useState("Industrial Lube Distributor (ILD)");
+  const [distributorType, setDistributorType] = useState("");
 
   const { fetchPage, pages, pageSEO, globalSEO, isLoading } = useCMSStore();
 

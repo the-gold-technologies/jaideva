@@ -68,30 +68,34 @@ export function CategoryHero({ onOpenEnquiry }: CategoryHeroProps) {
               </p>
             )}
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              {onOpenEnquiry && (
-                <button
-                  type="button"
-                  onClick={onOpenEnquiry}
-                  className="inline-flex items-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-[#C86218]/25 transition hover:bg-[#A74D0E] cursor-pointer"
-                >
-                  <Phone size={13} />
-                  {category.primaryCtaText || "Request a Quote"}
-                </button>
-              )}
-              <a
-                href="#subcat-0"
-                onClick={(e) => {
-                  e.preventDefault();
-                  document
-                    .getElementById("subcat-0")
-                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
-                className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b]"
-              >
-                {category.secondaryCtaText} <ArrowRight size={12} />
-              </a>
-            </div>
+            {((onOpenEnquiry && category.primaryCtaText) || category.secondaryCtaText) && (
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                {onOpenEnquiry && category.primaryCtaText && (
+                  <button
+                    type="button"
+                    onClick={onOpenEnquiry}
+                    className="inline-flex items-center gap-2 rounded-md bg-[#C86218] px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-lg shadow-[#C86218]/25 transition hover:bg-[#A74D0E] cursor-pointer"
+                  >
+                    <Phone size={13} />
+                    {category.primaryCtaText}
+                  </button>
+                )}
+                {category.secondaryCtaText && (
+                  <a
+                    href="#category-products"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document
+                        .getElementById("category-products")
+                        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                    className="inline-flex items-center gap-2 rounded-md border border-white/40 bg-white/10 px-5 py-3.5 text-[11px] font-extrabold uppercase tracking-widest text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b]"
+                  >
+                    {category.secondaryCtaText} <ArrowRight size={12} />
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
           {heroProduct && (

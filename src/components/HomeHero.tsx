@@ -40,7 +40,7 @@ export default function HomeHero({ onOpenEnquiry, onOpenDistributor }: HomeHeroP
       window.location.href = primaryBtnUrl;
       return;
     }
-    onOpenEnquiry(primaryBtnLabel || "General Lubricant Enquiry");
+    onOpenEnquiry("");
   };
 
   const handleSecondaryClick = () => {
@@ -54,7 +54,7 @@ export default function HomeHero({ onOpenEnquiry, onOpenDistributor }: HomeHeroP
       window.location.href = secondaryBtnUrl;
       return;
     }
-    onOpenDistributor(secondaryBtnLabel || "Industrial Lube Distributor (ILD)");
+    onOpenDistributor("");
   };
 
   return (

@@ -34,7 +34,7 @@ export default function MultiBrandSolutionsSection() {
     paragraph1,
     paragraph2,
     btnLabel,
-    btnUrl = "#brands",
+    btnUrl = "",
     steps = [],
   } = pages["home"]?.MultiBrandSolutionsSection || {};
 
@@ -101,7 +101,7 @@ export default function MultiBrandSolutionsSection() {
             )}
 
             {/* CTA Button */}
-            {btnLabel && (
+            {btnLabel && btnUrl && (
               <div className="mt-8">
                 <Link
                   href={btnUrl}

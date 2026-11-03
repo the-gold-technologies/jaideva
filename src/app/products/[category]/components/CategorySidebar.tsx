@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { Layers, Droplet, Phone, ChevronRight } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
+import { useCategoryGroups } from "./useCategoryGroups";
 
 interface CategorySidebarProps {
-  activeSection: number;
-  onSelectSection: (index: number) => void;
+  activeSection: string;
+  onSelectSection: (anchorId: string) => void;
   onOpenEnquiry?: () => void;
 }
 
@@ -17,26 +17,11 @@ export function CategorySidebar({
   onSelectSection,
   onOpenEnquiry,
 }: CategorySidebarProps) {
-  const params = useParams();
-  const categorySlug = params?.category as string;
-  const { productCategories, products } = useCMSStore();
+  const { productCategories } = useCMSStore();
+  const { categorySlug, groups: subCategoryGroups } = useCategoryGroups();
 
   const category = productCategories?.find((c) => c.slug === categorySlug);
-
-  const subCategoryGroups = useMemo(() => {
-    if (!products) return [];
-    const catProducts = products.filter((p) => !categorySlug || p.categorySlug === categorySlug);
-    const groupMap = new Map<string, { title: string; count: number }>();
-    catProducts.forEach((p) => {
-      const title = p.subCategoryTitle || "Featured Products";
-      const key = title.toLowerCase();
-      if (!groupMap.has(key)) {
-        groupMap.set(key, { title, count: 0 });
-      }
-      groupMap.get(key)!.count += 1;
-    });
-    return Array.from(groupMap.values());
-  }, [products, categorySlug]);
+  const activeAnchorId = activeSection || subCategoryGroups[0]?.anchorId || "";
 
   return (
     <aside className="hidden lg:flex flex-col w-60 shrink-0 sticky top-28 self-start gap-4">
@@ -58,13 +43,13 @@ export function CategorySidebar({
         </div>
 
         <nav className="divide-y divide-gray-50">
-          {subCategoryGroups.map((group, idx) => (
+          {subCategoryGroups.map((group) => (
             <a
-              key={idx}
-              href={`#subcat-${idx}`}
-              onClick={() => onSelectSection(idx)}
+              key={group.anchorId}
+              href={`#${group.anchorId}`}
+              onClick={() => onSelectSection(group.anchorId)}
               className={`flex items-center gap-3 px-4 py-3 transition-all border-l-[3px] group ${
-                activeSection === idx
+                activeAnchorId === group.anchorId
                   ? "border-[#C86218] bg-orange-50/70 text-[#C86218]"
                   : "border-transparent text-gray-500 hover:bg-gray-50 hover:text-[#002b5c] hover:border-gray-200"
               }`}
@@ -72,7 +57,7 @@ export function CategorySidebar({
               <Droplet
                 size={12}
                 className={`shrink-0 transition-colors ${
-                  activeSection === idx
+                  activeAnchorId === group.anchorId
                     ? "fill-[#C86218] text-[#C86218]"
                     : "fill-gray-300 text-gray-300 group-hover:fill-gray-400"
                 }`}
@@ -82,12 +67,12 @@ export function CategorySidebar({
               </span>
               <span
                 className={`text-[10px] font-bold shrink-0 px-1.5 py-0.5 rounded ${
-                  activeSection === idx
+                  activeAnchorId === group.anchorId
                     ? "bg-[#C86218]/15 text-[#C86218]"
                     : "bg-gray-100 text-gray-400"
                 }`}
               >
-                {group.count}
+                {group.products.length}
               </span>
             </a>
           ))}

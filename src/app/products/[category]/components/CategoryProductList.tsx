@@ -1,61 +1,23 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React from "react";
 import Link from "next/link";
-import { useParams, useSearchParams } from "next/navigation";
-import { useCMSStore, CMSProduct } from "@/store/useCMSStore";
+import { useCMSStore } from "@/store/useCMSStore";
 import { CategoryEmptyState } from "./CategoryEmptyState";
 import { CategoryProductSection } from "./CategoryProductSection";
+import { useCategoryGroups } from "./useCategoryGroups";
 
 interface CategoryProductListProps {
   onOpenEnquiry: (productName?: string) => void;
 }
 
 export function CategoryProductList({ onOpenEnquiry }: CategoryProductListProps) {
-  const params = useParams();
-  const searchParams = useSearchParams();
-  const categorySlug = params?.category as string;
-  const searchQuery = (searchParams?.get("search") || "").trim();
-
-  const { products, productCategories } = useCMSStore();
+  const { productCategories } = useCMSStore();
+  const { categorySlug, searchQuery, groups } = useCategoryGroups();
   const category = productCategories?.find((c) => c.slug === categorySlug);
 
-  const subCategoryGroups = useMemo(() => {
-    const q = searchQuery.toLowerCase();
-    const catProducts = (products || []).filter((p) => {
-      if (categorySlug && p.categorySlug !== categorySlug) return false;
-      if (!q) return true;
-      return (
-        p.name?.toLowerCase().includes(q) ||
-        p.description?.toLowerCase().includes(q) ||
-        p.specsText?.toLowerCase().includes(q) ||
-        p.subCategoryTitle?.toLowerCase().includes(q)
-      );
-    });
-
-    const groupMap = new Map<
-      string,
-      { title: string; coverImage?: string; products: CMSProduct[] }
-    >();
-
-    catProducts.forEach((p) => {
-      const title = p.subCategoryTitle || "Featured Products";
-      const key = title.toLowerCase();
-      if (!groupMap.has(key)) {
-        groupMap.set(key, {
-          title,
-          coverImage: p.containerImage || category?.coverImage,
-          products: [],
-        });
-      }
-      groupMap.get(key)!.products.push(p);
-    });
-
-    return Array.from(groupMap.values());
-  }, [products, categorySlug, category, searchQuery]);
-
   return (
-    <div className="flex-1 min-w-0 flex flex-col gap-8">
+    <div id="category-products" className="flex-1 min-w-0 flex flex-col gap-8 scroll-mt-28">
       {searchQuery && (
         <div className="p-4 sm:p-5 bg-blue-50/80 border border-blue-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
           <div>
@@ -77,13 +39,16 @@ export function CategoryProductList({ onOpenEnquiry }: CategoryProductListProps)
         </div>
       )}
 
-      {subCategoryGroups.length === 0 ? (
+      {groups.length === 0 ? (
         <CategoryEmptyState searchQuery={searchQuery} categorySlug={categorySlug} />
       ) : (
-        subCategoryGroups.map((group, idx) => (
+        groups.map((group, idx) => (
           <CategoryProductSection
-            key={idx}
-            group={group}
+            key={group.anchorId}
+            group={{
+              ...group,
+              coverImage: group.products[0]?.containerImage || category?.coverImage,
+            }}
             index={idx}
             categorySlug={categorySlug}
             onOpenEnquiry={onOpenEnquiry}

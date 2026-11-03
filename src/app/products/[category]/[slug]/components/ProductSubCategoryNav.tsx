@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Droplet } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
+import { groupProductsBySubCategory } from "@/lib/productGroups";
 
 export function ProductSubCategoryNav() {
   const params = useParams();
@@ -19,17 +20,8 @@ export function ProductSubCategoryNav() {
 
   const subCategoryList = useMemo(() => {
     if (!products) return [];
-    const catProducts = products.filter(
-      (p) => !activeCategorySlug || p.categorySlug === activeCategorySlug,
-    );
-    const titles = Array.from(
-      new Set(catProducts.map((p) => p.subCategoryTitle).filter((t): t is string => Boolean(t))),
-    );
-    return titles.map((title, idx) => ({
-      title,
-      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-      index: idx,
-    }));
+    const catProducts = products.filter((p) => p.categorySlug === activeCategorySlug);
+    return groupProductsBySubCategory(catProducts).filter((group) => !group.isUngrouped);
   }, [products, activeCategorySlug]);
 
   if (!subCategoryList || subCategoryList.length === 0) return null;
@@ -48,15 +40,15 @@ export function ProductSubCategoryNav() {
               key={rIdx}
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 items-center py-5 border-b border-gray-200"
             >
-              {rowItems.map((subGroup, cIdx) => {
+              {rowItems.map((subGroup) => {
                 const isCurrentGroup = Boolean(
                   currentGroupTitle &&
                   subGroup.title.trim().toLowerCase() === currentGroupTitle.trim().toLowerCase(),
                 );
                 return (
                   <Link
-                    key={cIdx}
-                    href={`/products/${category?.slug || activeCategorySlug}#subcat-${subGroup.index !== undefined ? subGroup.index : rIdx * 4 + cIdx}`}
+                    key={subGroup.anchorId}
+                    href={`/products/${category?.slug || activeCategorySlug}#${subGroup.anchorId}`}
                     className="flex items-center gap-3.5 group transition-colors py-1.5"
                   >
                     <Droplet

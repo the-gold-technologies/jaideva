@@ -2,11 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { Package, ArrowRight, ChevronRight, Phone } from "lucide-react";
+import { Package, ChevronRight, Phone } from "lucide-react";
 import { CMSProduct } from "@/store/useCMSStore";
 
 interface CategoryProductSectionProps {
   group: {
+    anchorId: string;
     title: string;
     coverImage?: string;
     products: CMSProduct[];
@@ -22,11 +23,11 @@ export function CategoryProductSection({
   categorySlug,
   onOpenEnquiry,
 }: CategoryProductSectionProps) {
-  const firstProductSlug = group.products[0]?.slug || "";
+  const productCount = group.products.length;
 
   return (
     <section
-      id={`subcat-${index}`}
+      id={group.anchorId}
       className="scroll-mt-28 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group/card hover:shadow-md hover:border-gray-200 transition-all duration-300"
     >
       {/* Section Header */}
@@ -43,16 +44,8 @@ export function CategoryProductSection({
         <div className="flex items-center gap-2 shrink-0">
           <span className="inline-flex items-center gap-1 bg-[#002b5c]/8 text-[#002b5c] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">
             <Package size={9} />
-            {group.products.length} Products
+            {productCount} {productCount === 1 ? "Product" : "Products"}
           </span>
-          {firstProductSlug && (
-            <Link
-              href={`/products/${categorySlug}/${firstProductSlug}`}
-              className="hidden sm:inline-flex items-center gap-1 bg-[#C86218] hover:bg-[#a74f10] text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full transition-all"
-            >
-              View All <ArrowRight size={10} />
-            </Link>
-          )}
         </div>
       </div>
 
@@ -112,19 +105,11 @@ export function CategoryProductSection({
             ))}
           </div>
 
-          {/* Bottom Bar: Mobile View All & Enquiry */}
-          <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between sm:justify-end gap-4">
-            {firstProductSlug && (
-              <Link
-                href={`/products/${categorySlug}/${firstProductSlug}`}
-                className="sm:hidden inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-[#C86218] hover:text-[#a74f10] transition-colors"
-              >
-                View All <ArrowRight size={11} />
-              </Link>
-            )}
+          {/* Bottom Bar: Enquiry */}
+          <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-end gap-4">
             <button
               type="button"
-              onClick={() => onOpenEnquiry(group.products[0]?.name)}
+              onClick={() => onOpenEnquiry(group.title)}
               className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-gray-400 hover:text-[#002b5c] transition-colors cursor-pointer"
             >
               <Phone size={11} /> Enquire

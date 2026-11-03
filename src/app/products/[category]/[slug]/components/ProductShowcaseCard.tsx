@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { FileText, Search } from "lucide-react";
+import { FileText } from "lucide-react";
 import { useCMSStore, getHeadingTag } from "@/store/useCMSStore";
 
 interface ProductShowcaseCardProps {
@@ -23,12 +23,15 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
   const activeCategorySlug = product?.categorySlug || categorySlug;
   const category = productCategories?.find((c) => c.slug === activeCategorySlug);
 
+  // Products in the same series (same brand + same sub-category), including the current one
+  const seriesKey = (product?.subCategoryTitle || "").trim().toLowerCase();
   const siblingProducts = useMemo(() => {
     if (!products || products.length === 0) return [];
     return products
       .filter(
         (p) =>
-          (!activeCategorySlug || p.categorySlug === activeCategorySlug) && p.slug !== productSlug,
+          p.categorySlug === activeCategorySlug &&
+          (p.subCategoryTitle || "").trim().toLowerCase() === seriesKey,
       )
       .map((p) => ({
         id: p.id,
@@ -36,7 +39,7 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
         slug: p.slug,
         categorySlug: p.categorySlug || categorySlug,
       }));
-  }, [products, activeCategorySlug, productSlug, categorySlug]);
+  }, [products, activeCategorySlug, seriesKey, categorySlug]);
 
   if (!product) return null;
 
@@ -70,9 +73,6 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
                 className="max-h-72 object-contain mx-auto transition-transform duration-300 group-hover:scale-105"
               />
             )}
-            <div className="absolute bottom-3.5 right-3.5 bg-white/90 backdrop-blur-sm p-2 rounded-lg border border-slate-200 text-slate-500 shadow-xs">
-              <Search size={15} />
-            </div>
           </div>
 
           {/* Center Column: Product Name, Subtitle, Specifications & Quick CTAs */}
@@ -146,7 +146,7 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
                   <Link
                     key={sib.id}
                     href={`/products/${category?.slug || product.categorySlug}/${sib.slug}`}
-                    className={`block px-3.5 py-2 text-xs rounded-xl font-bold uppercase transition-all flex items-center justify-between ${
+                    className={`px-3.5 py-2 text-xs rounded-xl font-bold uppercase transition-all flex items-center justify-between ${
                       isCurrent
                         ? "bg-[#002b5c] text-white shadow-xs"
                         : "bg-white hover:bg-slate-200 text-slate-700 border border-slate-100"

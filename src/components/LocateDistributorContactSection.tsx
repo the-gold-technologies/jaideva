@@ -83,7 +83,7 @@ export default function LocateDistributorContactSection({ onOpenEnquiry }: Conta
               <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:w-48 lg:shrink-0">
                 <button
                   type="button"
-                  onClick={() => onOpenEnquiry && onOpenEnquiry("Jai Deva Oil Co. Direct Contact")}
+                  onClick={() => onOpenEnquiry && onOpenEnquiry("")}
                   className="w-full bg-[#C86218] hover:bg-[#A74D0E] text-white font-bold py-3 px-4 rounded text-xs uppercase tracking-wider shadow-sm transition-all text-center cursor-pointer"
                 >
                   {btn1Text}
