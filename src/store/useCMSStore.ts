@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { ProductSection } from "@/lib/productSections";
 
 export interface NavLink {
   title: string;
@@ -113,6 +114,8 @@ export interface CMSProduct {
     values?: string[];
   }>;
   tableHeaders?: string[];
+  tablePropertyHeader?: string | null;
+  customSections?: ProductSection[];
   order?: number;
   isFeatured?: boolean;
   metaTitle?: string | null;

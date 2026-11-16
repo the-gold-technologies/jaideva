@@ -91,8 +91,8 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
               })()}
               <div className="w-12 h-1 bg-[#002b5c] rounded-full mb-4" />
 
-              {/* Specifications or Key Highlights */}
-              {product.specsText ? (
+              {/* Meets Specifications (only when set in the CMS) */}
+              {product.specsText?.trim() && (
                 <div className="bg-slate-50 border-l-4 border-[#C86218] rounded-r-xl p-3.5 shadow-xs mb-4">
                   <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#C86218] mb-1">
                     Meets Specifications:
@@ -101,16 +101,7 @@ export function ProductShowcaseCard({ onOpenEnquiry, onOpenDownload }: ProductSh
                     {product.specsText}
                   </p>
                 </div>
-              ) : product.applicationAreas ? (
-                <div className="bg-slate-50 border-l-4 border-[#002b5c] rounded-r-xl p-3.5 shadow-xs mb-4">
-                  <h3 className="text-[11px] font-bold uppercase tracking-wider text-[#002b5c] mb-1">
-                    Key Application:
-                  </h3>
-                  <p className="text-xs text-slate-700 leading-relaxed font-sans font-medium">
-                    {product.applicationAreas}
-                  </p>
-                </div>
-              ) : null}
+              )}
             </div>
 
             {/* Quick Action Buttons */}

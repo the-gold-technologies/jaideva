@@ -5,6 +5,8 @@ import { useParams } from "next/navigation";
 import { FileText, CheckCircle2, Zap, Layers, FlaskConical, MessageSquareDot } from "lucide-react";
 import { useCMSStore } from "@/store/useCMSStore";
 import { FormattedText } from "@/components/FormattedText";
+import { SpecTable } from "@/components/SpecTable";
+import { ProductCustomSections } from "@/components/ProductCustomSections";
 
 interface ProductDetailsContentProps {
   onOpenEnquiry: (productName?: string) => void;
@@ -22,11 +24,6 @@ export function ProductDetailsContent({
   const product = productDetails[productSlug] || products?.find((p) => p.slug === productSlug);
 
   if (!product) return null;
-
-  // Legacy default ["Property", "Value"] = simple 2-column table; anything else = one column per header.
-  const tableHeaders = product.tableHeaders || [];
-  const hasMultiCols = tableHeaders.length > 0 && !tableHeaders.includes("Property");
-  const colCount = hasMultiCols ? tableHeaders.length : 1;
 
   return (
     <div className="space-y-6 mb-12">
@@ -130,85 +127,15 @@ export function ProductDetailsContent({
       )}
 
       {/* Physico-Chemical Properties Table */}
-      {product.propertiesTable && product.propertiesTable.length > 0 && (
-        <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
-          {/* Table Header */}
-          <div className="flex items-center gap-3 px-6 pt-5 pb-4 border-b border-slate-100">
-            <div className="w-8 h-8 rounded-lg bg-[#002b5c]/10 flex items-center justify-center shrink-0">
-              <FlaskConical size={16} className="text-[#002b5c]" />
-            </div>
-            <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
-              {product.propertiesTableTitle || "Physico-Chemical Properties"}
-            </h3>
-          </div>
+      <SpecTable
+        title={product.propertiesTableTitle || "Physico-Chemical Properties"}
+        propertyHeader={product.tablePropertyHeader}
+        tableHeaders={product.tableHeaders}
+        rows={product.propertiesTable}
+      />
 
-          <div className="overflow-x-auto">
-            <table
-              className={`w-full text-left text-xs font-sans border-collapse ${hasMultiCols ? "min-w-max" : ""}`}
-            >
-              {/* Column headers (for multi-grade products) */}
-              {hasMultiCols && (
-                <thead>
-                  <tr className="bg-[#002b5c]/5 border-b border-slate-200">
-                    <th className="py-2.5 px-5 font-bold text-[#002b5c] border-r border-slate-200 text-[11px] uppercase tracking-wider w-[220px] min-w-[180px]">
-                      Property
-                    </th>
-                    {tableHeaders.map((hdr, hIdx) => (
-                      <th
-                        key={hIdx}
-                        className="py-2.5 px-5 text-center font-bold text-[#002b5c] border-r border-slate-200 last:border-r-0 text-[11px] uppercase tracking-wider whitespace-nowrap"
-                      >
-                        {hdr}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-              )}
-              <tbody>
-                {product.propertiesTable.map((row, rIdx) => (
-                  <tr
-                    key={rIdx}
-                    className={`border-b border-slate-100 last:border-b-0 transition-colors ${
-                      rIdx % 2 === 0
-                        ? "bg-white hover:bg-slate-50/70"
-                        : "bg-slate-50/60 hover:bg-slate-50"
-                    }`}
-                  >
-                    <td className="py-2.5 px-5 font-semibold text-slate-700 border-r border-slate-200 text-[12px] w-[220px] min-w-[180px]">
-                      {row.property}
-                    </td>
-
-                    {hasMultiCols ? (
-                      row.values ? (
-                        // Render exactly one cell per header so rows always line up with the columns.
-                        tableHeaders.map((_, vIdx) => (
-                          <td
-                            key={vIdx}
-                            className="py-2.5 px-5 text-slate-800 font-bold border-r border-slate-100 last:border-r-0 text-center text-[12px] whitespace-nowrap"
-                          >
-                            {row.values?.[vIdx] || ""}
-                          </td>
-                        ))
-                      ) : (
-                        <td
-                          colSpan={colCount}
-                          className="py-2.5 px-5 text-slate-800 font-bold border-slate-100 text-center text-[12px]"
-                        >
-                          {row.value}
-                        </td>
-                      )
-                    ) : (
-                      <td className="py-2.5 px-5 text-slate-800 font-bold text-[12px]">
-                        {row.value}
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      {/* Additional Sections (added per product in the CMS) */}
+      <ProductCustomSections sections={product.customSections} productName={product.name} />
 
       {/* Action Buttons: TDS, MSDS, & Inquire */}
       <div className="bg-gradient-to-r from-[#002b5c]/5 via-slate-50 to-[#C86218]/5 border border-slate-200 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
