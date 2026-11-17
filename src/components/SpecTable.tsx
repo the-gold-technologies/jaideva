@@ -27,7 +27,10 @@ export function SpecTable({ title, propertyHeader, tableHeaders, rows }: SpecTab
         ? "Property"
         : ""
       : propertyHeader.trim();
-  const hasHeaderRow = hasMultiCols || !!propertyTitle;
+  // Empty titles / columns are not shown
+  const hasValueHeaders = specTable.headers.some(Boolean);
+  const hasPropertyCol = !!propertyTitle || specTable.rows.some((r) => r.property);
+  const hasHeaderRow = hasValueHeaders || (hasPropertyCol && !!propertyTitle);
   const colCount = specTable.colCount;
 
   return (
@@ -48,12 +51,14 @@ export function SpecTable({ title, propertyHeader, tableHeaders, rows }: SpecTab
           {hasHeaderRow && (
             <thead>
               <tr className="bg-[#002b5c]/5 border-b border-slate-200">
-                <th
-                  scope="col"
-                  className="py-2.5 px-5 font-bold text-[#002b5c] border-r border-slate-200 text-[11px] uppercase tracking-wider w-[220px] min-w-[180px] whitespace-pre-line"
-                >
-                  {propertyTitle || <span className="sr-only">Property</span>}
-                </th>
+                {hasPropertyCol && (
+                  <th
+                    scope="col"
+                    className="py-2.5 px-5 font-bold text-[#002b5c] border-r border-slate-200 last:border-r-0 text-[11px] uppercase tracking-wider w-[220px] min-w-[180px] whitespace-pre-line"
+                  >
+                    {propertyTitle}
+                  </th>
+                )}
                 {hasMultiCols ? (
                   specTable.headers.map((hdr, hIdx) => (
                     <th
@@ -65,9 +70,7 @@ export function SpecTable({ title, propertyHeader, tableHeaders, rows }: SpecTab
                     </th>
                   ))
                 ) : (
-                  <th scope="col">
-                    <span className="sr-only">Value</span>
-                  </th>
+                  <th scope="col" />
                 )}
               </tr>
             </thead>
@@ -82,12 +85,14 @@ export function SpecTable({ title, propertyHeader, tableHeaders, rows }: SpecTab
                     : "bg-slate-50/60 hover:bg-slate-50"
                 }`}
               >
-                <th
-                  scope="row"
-                  className="py-2.5 px-5 font-semibold text-slate-700 border-r border-slate-200 text-[12px] text-left w-[220px] min-w-[180px] whitespace-pre-line"
-                >
-                  {row.property}
-                </th>
+                {hasPropertyCol && (
+                  <th
+                    scope="row"
+                    className="py-2.5 px-5 font-semibold text-slate-700 border-r border-slate-200 text-[12px] text-left w-[220px] min-w-[180px] whitespace-pre-line"
+                  >
+                    {row.property}
+                  </th>
+                )}
                 {row.values ? (
                   // One cell per column so rows always line up with the headers
                   row.values.map((v, vIdx) => (

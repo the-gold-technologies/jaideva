@@ -128,7 +128,7 @@ export function ProductDetailsContent({
 
       {/* Physico-Chemical Properties Table */}
       <SpecTable
-        title={product.propertiesTableTitle || "Physico-Chemical Properties"}
+        title={product.propertiesTableTitle || ""}
         propertyHeader={product.tablePropertyHeader}
         tableHeaders={product.tableHeaders}
         rows={product.propertiesTable}

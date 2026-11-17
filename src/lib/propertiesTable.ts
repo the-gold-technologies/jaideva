@@ -64,19 +64,32 @@ export function normalizePropertiesTable(
     headers = [];
   }
 
-  const colCount = Math.max(headers.length, maxValues, 1);
-  while (headers.length > 0 && headers.length < colCount) headers.push("");
+  const fullCount = Math.max(headers.length, maxValues, 1);
+  while (headers.length < fullCount) headers.push("");
+  const rowValues = rows.map((r) => {
+    if (!r.values) return null;
+    const values = r.values.slice(0, fullCount);
+    while (values.length < fullCount) values.push("");
+    return values;
+  });
+
+  // Columns with no header and no value in any row are not shown
+  let keep = headers.map((_, i) => i).filter((i) => headers[i] || rowValues.some((v) => v && v[i]));
+  if (keep.length === 0) keep = [0];
+
+  const colCount = keep.length;
+  const keptHeaders = keep.map((i) => headers[i]);
 
   return {
-    headers,
+    // [] = no value-column headers at all (simple two-column table)
+    headers: colCount === 1 && !keptHeaders[0] ? [] : keptHeaders,
     colCount,
-    rows: rows.map((r) => {
-      if (!r.values || colCount === 1) {
-        return { property: r.property, value: r.values ? r.values[0] : r.value, values: null };
+    rows: rows.map((r, rIdx) => {
+      const values = rowValues[rIdx];
+      if (!values || colCount === 1) {
+        return { property: r.property, value: values ? values[keep[0]] : r.value, values: null };
       }
-      const values = r.values.slice(0, colCount);
-      while (values.length < colCount) values.push("");
-      return { property: r.property, value: r.value, values };
+      return { property: r.property, value: r.value, values: keep.map((i) => values[i]) };
     }),
   };
 }
