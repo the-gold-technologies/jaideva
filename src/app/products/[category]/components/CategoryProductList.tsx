@@ -47,7 +47,7 @@ export function CategoryProductList({ onOpenEnquiry }: CategoryProductListProps)
             key={group.anchorId}
             group={{
               ...group,
-              coverImage: group.products[0]?.containerImage || category?.coverImage,
+              coverImage: category?.subCategoryImages?.[group.title] || "",
             }}
             index={idx}
             categorySlug={categorySlug}

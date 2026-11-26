@@ -139,6 +139,8 @@ export interface CMSProductCategory {
   primaryCtaText?: string;
   secondaryCtaText?: string;
   featuredBadgeText?: string;
+  /** Image per sub-category group on the brand page, keyed by sub-category title. */
+  subCategoryImages?: Record<string, string>;
   order?: number;
   isFeatured?: boolean;
   _count?: { products: number };
