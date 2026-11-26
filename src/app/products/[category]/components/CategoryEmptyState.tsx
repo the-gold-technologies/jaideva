@@ -13,7 +13,7 @@ interface CategoryEmptyStateProps {
 export function CategoryEmptyState({ searchQuery, categorySlug }: CategoryEmptyStateProps) {
   const { productCategories } = useCMSStore();
   const category = productCategories?.find((c) => c.slug === categorySlug);
-  const categoryName = category?.name || "products";
+  const categoryName = category?.name || "";
 
   if (searchQuery) {
     return (

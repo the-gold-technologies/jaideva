@@ -318,7 +318,7 @@ export default function ExistingBusinessNetworkSection() {
                 <div className="relative w-full max-w-[820px] mx-auto rounded-xl overflow-hidden flex items-center justify-center bg-white">
                   <img
                     src={regionalMapImage}
-                    alt={heading || "Operating Region Map"}
+                    alt={heading || ""}
                     loading="lazy"
                     decoding="async"
                     className="w-full h-auto max-h-[460px] sm:max-h-[500px] object-contain"

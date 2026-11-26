@@ -190,18 +190,18 @@ export default function AboutImageGallerySection({ onOpenEnquiry }: AboutImageGa
                 )}
               </div>
 
-              <div className="flex shrink-0">
-                <button
-                  type="button"
-                  onClick={() =>
-                    onOpenEnquiry && onOpenEnquiry("Bulk Industrial Supply Consultation")
-                  }
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#C86218] hover:bg-[#a94e0e] px-6 py-3.5 text-xs font-black uppercase tracking-wider text-white transition-colors shadow-lg"
-                >
-                  <span>{bannerButtonText || "Schedule a Supply Consultation"}</span>
-                  <ArrowRight size={14} />
-                </button>
-              </div>
+              {bannerButtonText && (
+                <div className="flex shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => onOpenEnquiry && onOpenEnquiry("")}
+                    className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#C86218] hover:bg-[#a94e0e] px-6 py-3.5 text-xs font-black uppercase tracking-wider text-white transition-colors shadow-lg"
+                  >
+                    <span>{bannerButtonText}</span>
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}

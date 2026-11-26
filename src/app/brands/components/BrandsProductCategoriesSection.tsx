@@ -51,7 +51,7 @@ export default function BrandsProductCategoriesSection() {
                   <div className="relative h-56 overflow-hidden">
                     <img
                       src={category.image}
-                      alt={category.name || "Product category"}
+                      alt={category.name || ""}
                       loading="lazy"
                       decoding="async"
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"

@@ -31,7 +31,7 @@ export default function IndustriesHero({ onOpenEnquiry }: IndustriesHeroProps) {
         {bannerImage && (
           <img
             src={bannerImage}
-            alt={heading || "Industries hero"}
+            alt={heading || ""}
             fetchPriority="high"
             decoding="async"
             className="absolute inset-0 -z-20 h-full w-full object-cover object-center"

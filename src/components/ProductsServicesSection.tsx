@@ -12,7 +12,13 @@ interface ProductsServicesProps {
 export default function ProductsServicesSection({ onSelectCategory }: ProductsServicesProps) {
   const { pages } = useCMSStore();
 
-  const { title, subtitle, items = [] } = pages["home"]?.ProductsServicesSection || {};
+  const {
+    title,
+    subtitle,
+    btnLabel,
+    btnUrl,
+    items = [],
+  } = pages["home"]?.ProductsServicesSection || {};
 
   if (!title && items.length === 0) {
     return null;
@@ -99,15 +105,17 @@ export default function ProductsServicesSection({ onSelectCategory }: ProductsSe
         </div>
 
         {/* View All Products Button */}
-        <div className="mt-10 text-center">
-          <Link
-            href="/products"
-            className="inline-flex items-center justify-center gap-2 bg-[#0C356A] hover:bg-[#082142] text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-8 py-3 rounded shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
-          >
-            <span>View All Products</span>
-            <ArrowRight size={16} />
-          </Link>
-        </div>
+        {btnLabel && btnUrl && (
+          <div className="mt-10 text-center">
+            <Link
+              href={btnUrl}
+              className="inline-flex items-center justify-center gap-2 bg-[#0C356A] hover:bg-[#082142] text-white font-bold text-xs sm:text-sm uppercase tracking-wider px-8 py-3 rounded shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer"
+            >
+              <span>{btnLabel}</span>
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

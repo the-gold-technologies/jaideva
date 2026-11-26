@@ -89,7 +89,7 @@ export default function ContactFormSection() {
         companyName: formData.companyName || undefined,
         phone: formData.phone,
         email: formData.email || undefined,
-        product: formData.product || "General Enquiry",
+        product: formData.product || "",
         message: formData.message,
       });
 

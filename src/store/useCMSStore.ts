@@ -859,7 +859,7 @@ export const useCMSStore = create<CMSStoreState & CMSStoreActions>((set, get) =>
         body: JSON.stringify({
           ...data,
           company: data.companyName || "",
-          email: data.email || "noemail@provided.com",
+          email: data.email || "",
         }),
       });
 

@@ -239,7 +239,7 @@ export default function DownloadModal({
             <CheckCircle2 size={44} className="mx-auto text-green-500 mb-3" />
             <h3 className="text-xl font-extrabold text-[#002b5c] mb-1">Download Started!</h3>
             <p className="text-xs text-gray-600 mb-6 leading-relaxed">
-              Thank you <strong>{submittedName || "there"}</strong>. The technical document{" "}
+              Thank you <strong>{submittedName || ""}</strong>. The technical document{" "}
               <strong>
                 {productName} ({pdfType})
               </strong>{" "}

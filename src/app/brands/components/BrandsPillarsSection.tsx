@@ -130,7 +130,7 @@ export default function BrandsPillarsSection() {
               <div className="relative rounded-3xl overflow-hidden border border-slate-200 shadow-xl group">
                 <img
                   src={sidePhoto}
-                  alt={heading || "Sealed motor oil barrels and warehouse distribution"}
+                  alt={heading || ""}
                   loading="lazy"
                   decoding="async"
                   className="w-full h-[460px] object-cover object-center group-hover:scale-105 transition-transform duration-700"

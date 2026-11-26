@@ -51,9 +51,9 @@ export default function AboutWhyChooseSection() {
   const { pages } = useCMSStore();
   const sectionData = pages["about-us"]?.AboutWhyChooseSection || {};
 
-  const whyChooseTitle = sectionData.whyChooseTitle || "";
-  const whyChooseSubtitle = sectionData.whyChooseSubtitle || "";
-  const whyChooseItems = sectionData.whyChooseItems || [];
+  const whyChooseTitle = sectionData.title || "";
+  const whyChooseSubtitle = sectionData.subtitle || "";
+  const whyChooseItems = sectionData.items || [];
 
   if (!whyChooseTitle && (!Array.isArray(whyChooseItems) || whyChooseItems.length === 0))
     return null;

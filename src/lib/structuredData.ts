@@ -106,20 +106,10 @@ function generatePageSchema({
     "@type": ["LocalBusiness", "AutoPartsStore"],
     "@id": `${origin}/#organization`,
     name: companyName,
-    alternateName: "Authorized Multi-Brand Lubricants Distributor Jai Deva Oil Co.",
     url: origin,
     logo: companyLogo,
     image: companyLogo,
-    priceRange: "₹₹",
     description: globalSEO?.siteDescription || "",
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        opens: "09:00",
-        closes: "19:00",
-      },
-    ],
   };
 
   if (companyPhone) {

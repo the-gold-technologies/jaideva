@@ -35,7 +35,7 @@ export function ProductDetailsContent({
               <Layers size={16} className="text-[#002b5c]" />
             </div>
             <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
-              {product.descriptionTitle || "Product Description"}
+              {product.descriptionTitle || ""}
             </h3>
           </div>
           <div className="px-6 py-5">
@@ -56,7 +56,7 @@ export function ProductDetailsContent({
                 <Zap size={16} className="text-[#C86218]" />
               </div>
               <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
-                {product.applicationAreasTitle || "Application Areas"}
+                {product.applicationAreasTitle || ""}
               </h3>
             </div>
             <div className="px-6 py-5 flex-1">
@@ -75,7 +75,7 @@ export function ProductDetailsContent({
                 <CheckCircle2 size={16} className="text-emerald-600" />
               </div>
               <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
-                {product.performanceBenefitsTitle || "Performance Benefits"}
+                {product.performanceBenefitsTitle || ""}
               </h3>
             </div>
             <ul className="px-6 py-5 space-y-2.5 flex-1">
@@ -103,7 +103,7 @@ export function ProductDetailsContent({
               <FlaskConical size={16} className="text-amber-600" />
             </div>
             <h3 className="text-sm sm:text-base font-bold text-[#002b5c] tracking-tight">
-              {product.specialFeaturesTitle || "Special Features"}
+              {product.specialFeaturesTitle || ""}
             </h3>
           </div>
           <div className="px-6 py-5">

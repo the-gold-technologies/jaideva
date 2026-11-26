@@ -54,12 +54,21 @@ export default function Navbar({
   const searchDropdownRef = useRef<HTMLDivElement>(null);
   const mobileSearchDropdownRef = useRef<HTMLDivElement>(null);
 
-  const { products, productCategories, fetchProducts, globalSEO, fetchGlobalSEO } = useCMSStore();
+  const {
+    products,
+    productCategories,
+    fetchProducts,
+    globalSEO,
+    fetchGlobalSEO,
+    navLinks,
+    fetchNavLinks,
+  } = useCMSStore();
 
   useEffect(() => {
     fetchGlobalSEO().catch(console.error);
     fetchProducts().catch(console.error);
-  }, [fetchGlobalSEO, fetchProducts]);
+    fetchNavLinks().catch(console.error);
+  }, [fetchGlobalSEO, fetchProducts, fetchNavLinks]);
 
   // Click outside search dropdown listener
   useEffect(() => {
@@ -230,26 +239,21 @@ export default function Navbar({
 
   const currentBrand = brandList.find((b) => b.id === activeBrandId) || brandList[0] || null;
 
-  const logoSrc = globalSEO?.logo || "/jaideva-logo.png";
+  const logoSrc = globalSEO?.logo || "";
+  const logoAlt = globalSEO?.siteTitle || "";
 
-  const navItems = [
-    { name: "HOME", link: "/" },
-    { name: "ABOUT", link: "/about-us" },
-    { name: "BRANDS", link: "/brands", hasBrandsDropdown: true },
-    {
-      name: "PRODUCTS",
-      link: "/products",
-      isMegaMenu: true,
-    },
-    { name: "INDUSTRIES", link: "/industries" },
-    { name: "GALLERY", link: "/events" },
-    { name: "BLOG", link: "/blogs" },
-    { name: "CONTACT", link: "/contact-us" },
-  ];
+  // Top-level menu comes from CMS > Navigation > Menu Links. The Brands dropdown and the
+  // Products mega menu are built from CMS brand/product data, attached by link URL.
+  const navItems = (navLinks || []).map((navLink) => ({
+    name: navLink.title,
+    link: navLink.link,
+    hasBrandsDropdown: navLink.link === "/brands",
+    isMegaMenu: navLink.link === "/products",
+  }));
 
   const checkIsActive = (item: { name: string; link: string }) => {
     if (item.link === "/") {
-      return pathname === "/" && (!activeTab || activeTab === "HOME");
+      return pathname === "/" && (!activeTab || activeTab === item.name);
     }
     if (item.link.startsWith("/") && item.link !== "/") {
       return pathname === item.link || pathname.startsWith(item.link + "/");
@@ -515,16 +519,15 @@ export default function Navbar({
       <div className="flex items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-12 lg:py-3">
         {/* Logo */}
         <Link href="/" className="flex items-center py-1">
-          <img
-            src={logoSrc}
-            alt="JAI DEVA OIL CO."
-            fetchPriority="high"
-            decoding="async"
-            className="h-12 w-auto object-contain sm:h-14 lg:h-[72px]"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = "/jaideva-logo.png";
-            }}
-          />
+          {logoSrc && (
+            <img
+              src={logoSrc}
+              alt={logoAlt}
+              fetchPriority="high"
+              decoding="async"
+              className="h-12 w-auto object-contain sm:h-14 lg:h-[72px]"
+            />
+          )}
         </Link>
 
         {/* Desktop Menu */}
@@ -544,7 +547,7 @@ export default function Navbar({
                     setActiveTab(item.name);
                     setOpenDropdown(null);
                   }}
-                  className={`flex items-center gap-1 font-sans text-[14px] font-bold tracking-normal transition ${
+                  className={`flex items-center gap-1 font-sans text-[14px] font-bold uppercase tracking-normal transition ${
                     isActive ? "text-[#C86218] font-bold" : "text-[#0C356A] hover:text-[#C86218]"
                   }`}
                 >
@@ -769,16 +772,15 @@ export default function Navbar({
           {/* Header Bar inside Mobile Overlay */}
           <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 bg-white sticky top-0 z-10 shadow-xs">
             <Link href="/" onClick={() => setMobileMenuOpen(false)} className="flex items-center">
-              <img
-                src={logoSrc}
-                alt="JAI DEVA OIL CO."
-                loading="lazy"
-                decoding="async"
-                className="h-12 w-auto object-contain"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "/jaideva-logo.png";
-                }}
-              />
+              {logoSrc && (
+                <img
+                  src={logoSrc}
+                  alt={logoAlt}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-12 w-auto object-contain"
+                />
+              )}
             </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
@@ -808,7 +810,7 @@ export default function Navbar({
                               : "text-[#0C356A] hover:text-[#C86218]"
                           }`}
                         >
-                          <span>{item.name}</span>
+                          <span className="uppercase">{item.name}</span>
                           {mobileBrandsOpen ? (
                             <ChevronDown
                               size={20}
@@ -879,7 +881,7 @@ export default function Navbar({
                               : "text-[#0C356A] hover:text-[#C86218]"
                           }`}
                         >
-                          <span>{item.name}</span>
+                          <span className="uppercase">{item.name}</span>
                           {mobileProductsOpen ? (
                             <ChevronDown
                               size={20}
@@ -991,7 +993,7 @@ export default function Navbar({
                           isActive ? "text-[#C86218]" : "text-[#0C356A] hover:text-[#C86218]"
                         }`}
                       >
-                        <span>{item.name}</span>
+                        <span className="uppercase">{item.name}</span>
                       </Link>
                     </div>
                   );

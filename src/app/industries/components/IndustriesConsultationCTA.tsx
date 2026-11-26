@@ -58,11 +58,7 @@ export default function IndustriesConsultationCTA({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onOpenEnquiry(
-      currentSector
-        ? `${currentSector} - ${buttonText || "Technical Enquiry"}`
-        : buttonText || "Technical Enquiry",
-    );
+    onOpenEnquiry([currentSector, buttonText].filter(Boolean).join(" - "));
   };
 
   return (

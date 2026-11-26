@@ -10,9 +10,10 @@ interface ContactSectionProps {
 }
 
 export default function LocateDistributorContactSection({ onOpenEnquiry }: ContactSectionProps) {
-  const { pages } = useCMSStore();
+  const { pages, globalSEO } = useCMSStore();
+  const logoSrc = globalSEO?.logo || "";
 
-  const { contactTitle, companyName, address, phone, email, workingHours, btn1Text } =
+  const { companyName, address, phone, email, workingHours, btn1Text } =
     pages["home"]?.LocateDistributorSection || {};
 
   if (!phone && !email && !address) {
@@ -26,13 +27,15 @@ export default function LocateDistributorContactSection({ onOpenEnquiry }: Conta
           <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             {/* Brand */}
             <div className="flex shrink-0 items-center">
-              <img
-                src="/jaideva-logo.png"
-                alt={companyName || ""}
-                loading="lazy"
-                decoding="async"
-                className="h-14 sm:h-16 w-auto object-contain"
-              />
+              {logoSrc && (
+                <img
+                  src={logoSrc}
+                  alt={companyName || ""}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-14 sm:h-16 w-auto object-contain"
+                />
+              )}
             </div>
 
             {/* Contact Information Row */}

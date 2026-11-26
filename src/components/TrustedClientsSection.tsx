@@ -11,7 +11,7 @@ export interface BrandItem {
 
 export default function TrustedClientsSection() {
   const { pages } = useCMSStore();
-  const { title, subtitle, clients = [] } = pages["home"]?.TrustedClientsSection || {};
+  const { title, description, clients = [] } = pages["home"]?.TrustedClientsSection || {};
 
   if (!Array.isArray(clients) || clients.length === 0) {
     return null;
@@ -46,9 +46,9 @@ export default function TrustedClientsSection() {
           </h2>
         )}
 
-        {subtitle && (
+        {description && (
           <p className="mt-4 text-gray-600 text-sm md:text-base max-w-3xl mx-auto font-medium">
-            {subtitle}
+            {description}
           </p>
         )}
       </div>

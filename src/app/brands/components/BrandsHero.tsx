@@ -28,7 +28,7 @@ export default function BrandsHero({ onOpenEnquiry }: BrandsHeroProps) {
       {bannerImage && (
         <img
           src={bannerImage}
-          alt={heading || "Brands hero"}
+          alt={heading || ""}
           fetchPriority="high"
           decoding="async"
           className="absolute inset-0 -z-20 h-full w-full object-cover object-center"
@@ -62,7 +62,7 @@ export default function BrandsHero({ onOpenEnquiry }: BrandsHeroProps) {
           </a>
           <button
             type="button"
-            onClick={() => onOpenEnquiry && onOpenEnquiry("Brand Consultation")}
+            onClick={() => onOpenEnquiry && onOpenEnquiry("")}
             className="inline-flex items-center justify-center gap-2 rounded-md border border-white/40 bg-white/10 px-6 py-3.5 text-sm font-extrabold uppercase tracking-wide text-white transition hover:border-[#F4B24D] hover:bg-[#F4B24D] hover:text-[#071f3b] cursor-pointer"
           >
             {ctaSecondaryText}

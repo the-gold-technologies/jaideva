@@ -289,13 +289,15 @@ export default function BlogDetailPage() {
                   className="group border border-gray-200 rounded-xl overflow-hidden shadow-xs hover:shadow-md transition"
                 >
                   <div className="h-36 overflow-hidden bg-gray-100">
-                    <img
-                      src={rel.coverImage || "/blogs-banner.jpg"}
-                      alt={rel.title}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+                    {rel.coverImage && (
+                      <img
+                        src={rel.coverImage}
+                        alt={rel.title}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    )}
                   </div>
                   <div className="p-4">
                     {rel.category && (
