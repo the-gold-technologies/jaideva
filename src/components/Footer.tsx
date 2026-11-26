@@ -38,13 +38,13 @@ export default function Footer({ onOpenEnquiry }: FooterProps) {
             <div className="md:col-span-5 space-y-5">
               {logoSrc && (
                 <Link href="/" className="inline-block">
-                  <div className="bg-white rounded-xl p-2.5 inline-flex items-center shadow-md">
+                  <div className="bg-white rounded-xl px-4 py-2.5 sm:px-5 sm:py-3 inline-flex items-center shadow-md">
                     <img
                       src={logoSrc}
                       alt={globalSEO?.siteTitle || ""}
                       loading="lazy"
                       decoding="async"
-                      className="h-10 w-auto object-contain"
+                      className="w-48 sm:w-52 max-w-full h-auto object-contain"
                     />
                   </div>
                 </Link>
